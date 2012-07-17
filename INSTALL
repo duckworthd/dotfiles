@@ -1,0 +1,9 @@
+Install Instructions
+
+1) symlin .vim/ and .vimrc to ~/
+
+    $ ln -s ~/path/to/this/.vim ~/.vim
+    $ ln -s ~/path/to/this/.vimrc ~/.vimrc
+
+2) Get a copy of Vim with +python and +ruby (check this with :version)
+3) Use and enjoy
