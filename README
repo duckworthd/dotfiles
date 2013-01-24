@@ -26,35 +26,35 @@ Keys
 
 Plugins
 -------
-SuperTab
-  Tab completion for pretty much everything
-SnipMate
-  Code snippet completion for many languages.  Type start of snippet, then tab
-  to use.
-CtrlP
-  Fuzzy file and buffer search
-EasyTags
-  Automatic tagging of files, so you can press <C-]> to go to function/method
-  definitions.
-JavaScript
-  Better JavaScript folding, amongst other things
-NerdTree
-  An easy to navigate file explorer
-Python-Mode
-  Tons of enhancements when working with Python files such as folding,
-  next/previous function/method/class, breakpoints, run script from vim,
-  automated PEP8 checking, and more
-Pig
-  Apache Pig syntax highlighting
-Scala
-  Rudimentary Scala syntax highlighting and indentation
-Surround
-  Add, remove, and modify "surrounding" characters, like HTML tags,
-  parentheses, and quotations
-Matlab
-  Matlab syntax highlighting and indentation
-Vim Addon Manager
+vim-addon-manager
   Add and update addons by name
+vim-colors-solarized
+  Better colors!
+vim-scala
+  Scala syntax highlighting
+vim-jade
+  Jade (NodeJS template language) syntax highlighting
+supertab
+  Tab completion for damn near anything
+vim-snipmate, snipmate-snippets
+  Tab-activated snippets
+python_fold.vim
+  syntax aware folding for Python
+ctrlp.vim
+  A pure VimScript alternative to Command-T
+ack.vim
+  Ack integration in vim
+nerdtree
+  Easy folder navigation within vim
+vim-surround
+  Commands for selecting within/around ", (, [, etc
+pig.vim
+  Apache Pig syntax highlighting
+vim-easytags
+  CTags in Vim
+vim-matlab
+  Matlab syntax highlighting
+
 
 Features
 --------
