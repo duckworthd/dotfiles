@@ -4,23 +4,29 @@
   " Load everything in ~/.vim/bundles
   set runtimepath+=~/.vim/bundle/vim-addon-manager/
   call vam#ActivateAddons([
+  \ 'github:MarcWeber/vim-addon-mw-utils',
+  \ 'github:altercation/vim-colors-solarized',
+  \ 'github:derekwyatt/vim-scala',
+  \ 'github:digitaltoad/vim-jade',
   \ 'github:ervandew/supertab',
   \ 'github:garbas/vim-snipmate',
-  \ 'github:MarcWeber/vim-addon-mw-utils',
-  \ 'github:tomtom/tlib_vim',
+  \ 'github:hattya/python_fold.vim',
   \ 'github:honza/snipmate-snippets',
   \ 'github:kien/ctrlp.vim',
-  \ 'github:xolox/vim-easytags',
-  \ 'github:pangloss/vim-javascript',
+  \ 'github:mileszs/ack.vim',
   \ 'github:scrooloose/nerdtree',
-  \ 'github:klen/python-mode',
-  \ 'github:vim-scripts/pig.vim',
-  \ 'github:derekwyatt/vim-scala',
+  \ 'github:sontek/rope-vim',
+  \ 'github:tomtom/tlib_vim',
   \ 'github:tpope/vim-surround',
+  \ 'github:vim-scripts/pig.vim',
+  \ 'github:xolox/vim-easytags',
+  \ 'github:xolox/vim-shell',
   \], {'auto_install' : 0})
+  " \ 'github:pangloss/vim-javascript',
   " \ 'github:Raimondi/delimitMate',
   " \ 'github:majutsushi/tagbar',
   " \ 'github:jcf/vim-latex'
+  " \ 'github:klen/python-mode',
 
   " for plugins that don't appear anywhere on git
   set runtimepath+=~/.vim/unmanaged/matlab/
@@ -36,6 +42,11 @@
 
   if has('gui_macvim')
     set macmeta   " lets me use <A-...> in MacVim
+    set guifont=Consolas:h12
+  endif
+
+  if has('unix') && !has('mac')
+    set guifont=Monospace\ 9
   endif
 
   "set clipboard=unnamed    " always copy to windows/mac clipboard for use in other apps
@@ -46,6 +57,7 @@
   set textwidth=0           " don't automatically cut lines
   set fileencoding=utf-8    " default to UTF-8
   set switchbuf=usetab      " when using :bn and such, iterate across tabs too
+  set mouse=a               " enable mouse usage on some terminals
 " }}}
 
 " Tabs {{{
@@ -60,6 +72,8 @@
   " backups will be written to ~/.vimetc/backup, but must be restored manually.
   " no location history is kept, so if 2 files share the same name the last
   " one you edited will overwrite the other
+
+
   set backup                          " enable backups
   let s:etcdir=$HOME.'/.vimetc/'
   let &backupdir=s:etcdir.'backup/'   " backup directory
@@ -69,14 +83,15 @@
   silent execute '!mkdir -p ' . &backupdir
   silent execute '!mkdir -p ' . &directory
   silent execute '!mkdir -p ' . &viewdir
-  au BufWinLeave * silent! mkview
+  autocmd BufWinLeave * silent! mkview
     "save view for files matching '*' when leaving a buffer
-  au BufWinEnter * silent! loadview
+  autocmd BufWinEnter * silent! loadview
     "load view for files matching '*' when entering a buffer
+  set viminfo=                          " disable viminfo
 "}}}
 
 " Undo History {{{
-  if v:version >= 703
+  if !has('win32') && !has('win64') && v:version >= 703
     set undofile        " Save undo's after file closes
     let &undodir=s:etcdir.'undo/' " where to save undo histories
     silent execute '!mkdir -p ' . &undodir
@@ -98,8 +113,12 @@
   noremap <C-Right>   <C-W>l
 
   " up/down within a single wrapped line
-  noremap <Up>   gk
-  noremap <Down> gj
+  nnoremap <Up>   gk
+  nnoremap <Down> gj
+  vnoremap <Up>   gk
+  vnoremap <Down> gj
+  inoremap <Up>   <C-o>gk
+  inoremap <Down> <C-o>gj
 
   " ALT+(+/-) to resize buffer
   noremap <A-k>   <C-w>+
@@ -126,10 +145,56 @@
 
   " clear highlighted search term
   nnoremap <silent> <Esc> :nohlsearch<CR>
+  nnoremap <silent> <C-c> :nohlsearch<CR>
+
+  " quicker scroll up/down
+  noremap <C-e> 3<C-e>
+  noremap <C-y> 3<C-y>
+
+  " start binding window scrolling together
+  noremap <leader>sb  :set scrollbind!<CR>
+
+  " Don't use Shift+direction
+  noremap <S-Down>  <Down>
+  noremap <S-Up>    <Up>
+
+  " start/end of line in insert mode
+  inoremap <C-a>  <C-o>^
+  inoremap <C-e>  <C-o>$
+
+  " previous/next word in insert mode
+  inoremap <C-f>  <C-o>w
+  inoremap <C-b>  <C-o>b
+
+  " alternatives to arrow keys in insert mode (steps on switch split keys)
+  " inoremap <C-j>  <Down>
+  " inoremap <C-k>  <Up>
+  " inoremap <C-h>  <Left>
+  " inoremap <C-l>  <Right>
+
+  " fix weird behaviour in xterm that results in arrow keys entering 'ABCD'
+  noremap OD  <Left>
+  noremap OC  <Right>
+  noremap OA  <Up>
+  noremap OB  <Down>
+
+  " Disable help by F1
+  noremap <F1> <Nop>
+  inoremap <F1> <Nop>
 "}}}
 
 " UI {{{
-  color desert
+  if has('win32') || has('win64')
+    color desert
+  else
+    color solarized
+    if !has('gui_running') && $TERM_PROGRAM == 'Apple_Terminal'
+      let g:solarized_termcolors = &t_Co  " solarized has bugs in Terminal.app
+      let g:solarized_termtrans = 1
+      colorscheme solarized
+    endif
+  endif
+  set background=dark " dark background
   set cursorline      " Hightlight current line
   set ruler           " Show line ruler
   set number          " line numbers
@@ -140,7 +205,7 @@
   set wildmenu        " see options listed
   set scrolloff=3     " minimum number of lines below cursor
   set foldenable      " auto fold code
-  set foldmethod=expr " fold based on language-specific expr
+  " set foldmethod=expr " fold based on language-specific expr
   set showcmd         " show partial command in lower right
   set wrap            " wrap lines
 
@@ -149,6 +214,8 @@
   set listchars+=trail:\~  " periods for extra whitespace
   set listchars+=extends:>    " character to show at end when wrapping
   set listchars+=precedes:<   " character to show at beginning when wrapping
+
+  set completeopt=menuone,longest " popup menu for completions, insert longest match first
 "}}}
 
 " Status Line {{{
@@ -210,10 +277,14 @@
     noremap <leader>cb :CtrlPBuffer<CR>
   " }}}
 
-  " python-mode {{{
-    let g:pymode_lint_write = 0     " don't run code checker on save
-    let g:pymode_options_indent = 0 " don't step on my indentation
-    let g:pymode_options_other = 0  " don't set wrap, textwidth
+  " " python-mode {{{
+  "   let g:pymode_lint = 0           " don't run code checker on save
+  "   let g:pymode_indent = 0         " don't step on my indentation
+  "   let g:pymode_options = 0        " don't set wrap, textwidth
+  " " }}}
+
+  " rope {{{
+    " see Python section of languages
   " }}}
 
   " vim-javascript {{{
@@ -237,24 +308,37 @@
     endfunction
 
     augroup javascript
-      au!
-      au FileType javascript :call JavaScriptFold()
-      au FileType javascript :setlocal fen
+      autocmd!
+      autocmd FileType javascript :call JavaScriptFold()
+      autocmd FileType javascript :setlocal foldenable foldmethod=syntax
     augroup END
   " }}}
 
   " Pig {{{
     augroup pig
-      au!
-      au BufNewFile,BufRead *.pig :setlocal filetype=pig syntax=pig foldmethod=indent
+      autocmd!
+      autocmd BufNewFile,BufRead *{.pig,.pig.substituted,.pig.expanded} :setlocal filetype=pig syntax=pig foldmethod=indent
         " whenever you open/read a .pig file, use pig syntax
     augroup END
   " }}}
 
+  " Python {{{
+    augroup python
+      autocmd!
+      autocmd FileType python setlocal omnifunc=pythoncomplete#Complete " use pythoncomplete for tab completion
+      autocmd FileType python let g:SuperTabDefaultCompletionType = "<c-x><c-n>"   " use preceding characters to decide what to show
+
+      " go to def, rename in python
+      autocmd FileType python map <leader>j :RopeGotoDefinition<CR>
+      autocmd FileType python map <leader>r :RopeRename<CR>
+      autocmd Filetype python setlocal foldmethod=expr
+    augroup END
+  " }}}
+
   " vimrc {{{
-    augroup vimrc
-      au!
-      au BufNewFile,BufRead .vimrc :setlocal foldmethod=marker
+    augroup vim
+      autocmd!
+      autocmd FileType vim :setlocal foldmethod=marker
     augroup END
   " }}}
 " }}}
