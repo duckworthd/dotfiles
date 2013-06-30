@@ -10,23 +10,30 @@
   \ 'github:digitaltoad/vim-jade',
   \ 'github:ervandew/supertab',
   \ 'github:garbas/vim-snipmate',
-  \ 'github:hattya/python_fold.vim',
-  \ 'github:honza/snipmate-snippets',
+  \ 'github:honza/vim-snippets',
+  \ 'github:JuliaLang/julia-vim',
   \ 'github:kien/ctrlp.vim',
+  \ 'github:Lokaltog/vim-easymotion',
   \ 'github:mileszs/ack.vim',
   \ 'github:scrooloose/nerdtree',
-  \ 'github:sontek/rope-vim',
+  \ 'github:scrooloose/syntastic',
+  \ 'github:Shougo/unite.vim',
+  \ 'github:Shougo/vimproc.vim',
   \ 'github:tomtom/tlib_vim',
   \ 'github:tpope/vim-surround',
   \ 'github:vim-scripts/pig.vim',
   \ 'github:xolox/vim-easytags',
-  \ 'github:xolox/vim-shell',
+  \ 'github:xolox/vim-misc',
   \], {'auto_install' : 0})
-  " \ 'github:pangloss/vim-javascript',
-  " \ 'github:Raimondi/delimitMate',
-  " \ 'github:majutsushi/tagbar',
-  " \ 'github:jcf/vim-latex'
-  " \ 'github:klen/python-mode',
+  " \ 'github:hattya/python_fold.vim',  " slow slow slow
+  " \ 'github:pangloss/vim-javascript', " slow slow slow
+  " \ 'github:Raimondi/delimitMate',    " gets in the way
+  " \ 'github:sontek/rope-vim',         " slow slow slow
+  " \ 'github:majutsushi/tagbar',       " doesn't work when I need it
+  " \ 'github:jcf/vim-latex'            " messes with my shortcuts
+  " \ 'github:klen/python-mode',        " slow slow slow
+  " \ 'github:xolox/vim-shell',         " never use it
+  " \ 'github:Valloric/YouCompleteMe',  " crashes
 
   " for plugins that don't appear anywhere on git
   set runtimepath+=~/.vim/unmanaged/matlab/
@@ -35,9 +42,10 @@
 " Environment {{{
   if has('win32') || has('win64')
     set backspace=indent,eol,start  " enable backspace
-		set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,$HOME/.vim/after
+    set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,$HOME/.vim/after
       " Use /.vim for runtime path on Windows
     set guifont=Consolas:h9:cANSI   " font for GUI on Windows
+    set clipboard=unnamed           " copy to clipboard
   endif
 
   if has('gui_macvim')
@@ -79,14 +87,18 @@
   let &backupdir=s:etcdir.'backup/'   " backup directory
   let &directory=s:etcdir.'swap/'     " swap file directory (crash recovery)
   let &viewdir=s:etcdir.'views/'      " view directory (where you last were)
-  silent execute '!mkdir -p ' . s:etcdir
-  silent execute '!mkdir -p ' . &backupdir
-  silent execute '!mkdir -p ' . &directory
-  silent execute '!mkdir -p ' . &viewdir
-  autocmd BufWinLeave * silent! mkview
-    "save view for files matching '*' when leaving a buffer
-  autocmd BufWinEnter * silent! loadview
-    "load view for files matching '*' when entering a buffer
+  if !has('win32') && !has('win64')
+    silent execute '!mkdir -p ' . s:etcdir
+    silent execute '!mkdir -p ' . &backupdir
+    silent execute '!mkdir -p ' . &directory
+    silent execute '!mkdir -p ' . &viewdir
+    autocmd BufWinLeave * silent! mkview
+      "save view for files matching '*' when leaving a buffer
+    autocmd BufWinEnter * silent! loadview
+      "load view for files matching '*' when entering a buffer
+  else
+    set noswapfile nobackup nowritebackup
+  endif
   set viminfo=                          " disable viminfo
 "}}}
 
@@ -252,14 +264,14 @@
 
   " easytags {{{
     let g:easytags_cmd  = s:ctags_loc
-    let g:easytags_file = s:etcdir.'/tags'
+    let g:easytags_file = s:etcdir.'tags'
       " Where easytags saves its tag info
-    let g:easytags_on_cursorhold = 1
+    let g:easytags_on_cursorhold = 0
       " If you stop typing for a bit, :UpdateTags runs
-    "let g:easytags_autorecurse = 1
+    let g:easytags_autorecurse = 1
       " :UpdateTags updates everything in the same directory as
       " the current file.
-    nnoremap <leader>ut :UpdateTags --recurse<CR>
+    nnoremap <leader>ut :UpdateTags<CR>
       " Force tag update for all files under the source tree of the
       " currently open file.
   " }}}
@@ -291,6 +303,35 @@
     let g:html_indent_inctags = "html,body,head,tbody"
     let g:html_indent_script1 = "inc"
     let g:html_indent_style1 = "inc"
+  " }}}
+
+  " EasyMotion {{{
+    let g:EasyMotion_leader_key = '<Space>'
+  " }}}
+
+  " unite.vim {{{
+    call unite#filters#matcher_default#use(['matcher_fuzzy']) " use fuzzy matching
+
+    " enable copy/paste history
+    let g:unite_source_history_yank_enable = 1
+    let g:unite_enable_start_insert = 1
+    let g:unite_enable_short_source_names = 1
+    " nnoremap <leader>t :<C-u>Unite -start-insert file_rec<CR>
+    " nnoremap <leader>f :<C-u>Unite -no-split -buffer-name=files   -start-insert file<cr>
+    nnoremap <leader>r :<C-u>Unite -no-split -buffer-name=mru     -start-insert file_mru<cr>
+    nnoremap <leader>y :<C-u>Unite -no-split -buffer-name=yank    -start-insert history/yank<cr>
+    nnoremap <leader>b :<C-u>Unite -no-split -buffer-name=buffer  -start-insert buffer<cr>
+
+    " Custom mappings for the unite buffer
+    autocmd FileType unite call s:unite_settings()
+    function! s:unite_settings()
+      " Play nice with supertab
+      let b:SuperTabDisabled=1
+      " Enable navigation with control-j and control-k in insert mode
+      imap <buffer> <C-j>   <Plug>(unite_select_next_line)
+      imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
+    endfunction
+
   " }}}
 " }}}
 
@@ -331,7 +372,7 @@
       " go to def, rename in python
       autocmd FileType python map <leader>j :RopeGotoDefinition<CR>
       autocmd FileType python map <leader>r :RopeRename<CR>
-      autocmd Filetype python setlocal foldmethod=expr
+      autocmd Filetype python setlocal foldmethod=indent
     augroup END
   " }}}
 
@@ -339,6 +380,23 @@
     augroup vim
       autocmd!
       autocmd FileType vim :setlocal foldmethod=marker
+    augroup END
+  " }}}
+  "
+  " giant files {{{
+    let g:LargeFile=1024 * 1024 * 10  " bigger than 10MB? disable some options
+    function! DisableBigFileOptions(f)
+      if getfsize(a:f) > g:LargeFile
+        set eventignore+=FileType     " don't detect filetype
+        setlocal noswapfile bufhidden=unload undolevels=-1
+      else
+        set eventignore-=FileType
+      endif
+    endfunction
+
+    augroup LargeFile
+      autocmd!
+      autocmd BufReadPre * let f=expand("<afile>") | call DisableBigFileOptions(f)
     augroup END
   " }}}
 " }}}
