@@ -10,13 +10,19 @@
   \ 'github:digitaltoad/vim-jade',
   \ 'github:ervandew/supertab',
   \ 'github:garbas/vim-snipmate',
+  \ 'github:godlygeek/tabular',
   \ 'github:honza/vim-snippets',
+  \ 'github:jnwhiteh/vim-golang',
   \ 'github:JuliaLang/julia-vim',
   \ 'github:kien/ctrlp.vim',
+  \ 'github:klen/python-mode',
   \ 'github:Lokaltog/vim-easymotion',
+  \ 'github:mattn/emmet-vim',
   \ 'github:mileszs/ack.vim',
+  \ 'github:nathanaelkane/vim-indent-guides',
   \ 'github:scrooloose/nerdtree',
   \ 'github:scrooloose/syntastic',
+  \ 'github:Shougo/neocomplete.vim',
   \ 'github:Shougo/unite.vim',
   \ 'github:Shougo/vimproc.vim',
   \ 'github:tomtom/tlib_vim',
@@ -31,7 +37,6 @@
   " \ 'github:sontek/rope-vim',         " slow slow slow
   " \ 'github:majutsushi/tagbar',       " doesn't work when I need it
   " \ 'github:jcf/vim-latex'            " messes with my shortcuts
-  " \ 'github:klen/python-mode',        " slow slow slow
   " \ 'github:xolox/vim-shell',         " never use it
   " \ 'github:Valloric/YouCompleteMe',  " crashes
 
@@ -40,12 +45,12 @@
 " }}}
 
 " Environment {{{
-  if has('win32') || has('win64')
+  if has('win16') || has('win32') || has('win64')
     set backspace=indent,eol,start  " enable backspace
     set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,$HOME/.vim/after
       " Use /.vim for runtime path on Windows
     set guifont=Consolas:h9:cANSI   " font for GUI on Windows
-    set clipboard=unnamed           " copy to clipboard
+    "set clipboard=unnamed           " copy to clipboard
   endif
 
   if has('gui_macvim')
@@ -57,6 +62,11 @@
     set guifont=Monospace\ 9
   endif
 
+  " ignore these files/folders when tab-completing paths
+  set wildignore+=*.pyc,*.o,*.so,*.obj,*.swp,*.zip,*.tar,*.gz,*.exe,*.dll
+  set wildignore+=*/tmp/*,*/.git/*,*/.svn/*,*/.hg/*
+  
+
   "set clipboard=unnamed    " always copy to windows/mac clipboard for use in other apps
   set hidden                " allow for hidden buffers
   set ffs=unix,dos          " save files with unix line endings
@@ -66,6 +76,7 @@
   set fileencoding=utf-8    " default to UTF-8
   set switchbuf=usetab      " when using :bn and such, iterate across tabs too
   set mouse=a               " enable mouse usage on some terminals
+  set virtualedit=block     " lets you move the cursor past the end of the line
 " }}}
 
 " Tabs {{{
@@ -92,10 +103,10 @@
     silent execute '!mkdir -p ' . &backupdir
     silent execute '!mkdir -p ' . &directory
     silent execute '!mkdir -p ' . &viewdir
-    autocmd BufWinLeave * silent! mkview
-      "save view for files matching '*' when leaving a buffer
-    autocmd BufWinEnter * silent! loadview
-      "load view for files matching '*' when entering a buffer
+    " autocmd BufWinLeave * silent! mkview
+    "   "save view for files matching '*' when leaving a buffer
+    " autocmd BufWinEnter * silent! loadview
+    "   "load view for files matching '*' when entering a buffer
   else
     set noswapfile nobackup nowritebackup
   endif
@@ -113,6 +124,16 @@
 " }}}
 
 " Keys {{{
+  " USE "0p INSTEAD TO PASTE LAST YANKED CONTENT
+  " " delete doesn't modify clipboard
+  " nnoremap dd  "_dd
+  " nnoremap d   "_d
+  " nnoremap x   "_x
+  " nnoremap X   "_X
+  " vnoremap d   "_d
+  " vnoremap x   "_x
+  " vnoremap X   "_X
+
   " Switching splits
   noremap <C-j> <C-W>j
   noremap <C-k> <C-W>k
@@ -148,10 +169,10 @@
   " relative line numbers
   noremap <leader>ln  :call ToggleRelativeLineNumbers()<CR>
   function! ToggleRelativeLineNumbers()
-    if &relativenumber == 0
-      set relativenumber
+    if (&relativenumber == 1)
+      set norelativenumber
     else
-      set number
+      set relativenumber
     endif
   endfunction
 
@@ -193,6 +214,9 @@
   " Disable help by F1
   noremap <F1> <Nop>
   inoremap <F1> <Nop>
+
+  " delete surrounding function
+  nnoremap <leader>dsf m`F(Bdwxf)x``
 "}}}
 
 " UI {{{
@@ -253,14 +277,14 @@
     let s:ctags_loc = 'ctags'
   endif
 
-  " TagBar {{{
-    nnoremap <leader>tb :TagbarToggle<CR>
-      " Open/Close TagBar
-    let g:tagbar_autoclose = 0
-      " Don't close tagbar when selecting a tag
-    let g:tagbar_ctags_bin = s:ctags_loc
-      " where to find ctags
-  " }}}
+  " " TagBar {{{
+  "   nnoremap <leader>tb :TagbarToggle<CR>
+  "     " Open/Close TagBar
+  "   let g:tagbar_autoclose = 0
+  "     " Don't close tagbar when selecting a tag
+  "   let g:tagbar_ctags_bin = s:ctags_loc
+  "     " where to find ctags
+  " " }}}
 
   " easytags {{{
     let g:easytags_cmd  = s:ctags_loc
@@ -278,6 +302,7 @@
 
   " NERDTree {{{
     nnoremap <leader>nt   :NERDTreeToggle<CR>
+    let NERDTreeIgnore = ['\.pyc$']
   " }}}
 
   " CtrlP {{{
@@ -287,16 +312,16 @@
       " 2: use nearest ancestor with .git, .svn. or whatever
     noremap <leader>cp :CtrlP<CR>
     noremap <leader>cb :CtrlPBuffer<CR>
+
+    let g:ctrlp_follow_symlinks = 1   " follow symlinks
   " }}}
 
-  " " python-mode {{{
-  "   let g:pymode_lint = 0           " don't run code checker on save
-  "   let g:pymode_indent = 0         " don't step on my indentation
-  "   let g:pymode_options = 0        " don't set wrap, textwidth
-  " " }}}
-
-  " rope {{{
-    " see Python section of languages
+  " python-mode {{{
+    let g:pymode_lint = 0           " don't run code checker on save
+    let g:pymode_rope = 0           " don't use rope for code analysis
+    let g:pymode_indent = 0         " don't step on my indentation
+    let g:pymode_options = 0        " don't set wrap, textwidth
+    let g:pymode_folding = 1        " do control indentation
   " }}}
 
   " vim-javascript {{{
@@ -309,29 +334,21 @@
     let g:EasyMotion_leader_key = '<Space>'
   " }}}
 
-  " unite.vim {{{
-    call unite#filters#matcher_default#use(['matcher_fuzzy']) " use fuzzy matching
+  " neocomplete {{{
+    let g:neocomplete#enable_at_startup = 1   " start neocomplete on startup
+  " }}}
 
-    " enable copy/paste history
-    let g:unite_source_history_yank_enable = 1
-    let g:unite_enable_start_insert = 1
-    let g:unite_enable_short_source_names = 1
-    " nnoremap <leader>t :<C-u>Unite -start-insert file_rec<CR>
-    " nnoremap <leader>f :<C-u>Unite -no-split -buffer-name=files   -start-insert file<cr>
-    nnoremap <leader>r :<C-u>Unite -no-split -buffer-name=mru     -start-insert file_mru<cr>
-    nnoremap <leader>y :<C-u>Unite -no-split -buffer-name=yank    -start-insert history/yank<cr>
-    nnoremap <leader>b :<C-u>Unite -no-split -buffer-name=buffer  -start-insert buffer<cr>
+  " vim-indent-guides {{{
+    let g:indent_guides_enable_on_vim_startup = 1
+  " }}}
 
-    " Custom mappings for the unite buffer
-    autocmd FileType unite call s:unite_settings()
-    function! s:unite_settings()
-      " Play nice with supertab
-      let b:SuperTabDisabled=1
-      " Enable navigation with control-j and control-k in insert mode
-      imap <buffer> <C-j>   <Plug>(unite_select_next_line)
-      imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
-    endfunction
-
+  " Tabular {{{
+    nnoremap <Leader>t= :Tabularize /=<CR>
+    vnoremap <Leader>t= :Tabularize /=<CR>
+    nnoremap <Leader>t: :Tabularize /:<CR>
+    vnoremap <Leader>t: :Tabularize /:<CR>
+    nnoremap <Leader>t, :Tabularize /,/r0l1<CR>
+    vnoremap <Leader>t, :Tabularize /,/r0l1<CR>
   " }}}
 " }}}
 
@@ -363,19 +380,6 @@
     augroup END
   " }}}
 
-  " Python {{{
-    augroup python
-      autocmd!
-      autocmd FileType python setlocal omnifunc=pythoncomplete#Complete " use pythoncomplete for tab completion
-      autocmd FileType python let g:SuperTabDefaultCompletionType = "<c-x><c-n>"   " use preceding characters to decide what to show
-
-      " go to def, rename in python
-      autocmd FileType python map <leader>j :RopeGotoDefinition<CR>
-      autocmd FileType python map <leader>r :RopeRename<CR>
-      autocmd Filetype python setlocal foldmethod=indent
-    augroup END
-  " }}}
-
   " vimrc {{{
     augroup vim
       autocmd!
@@ -397,6 +401,20 @@
     augroup LargeFile
       autocmd!
       autocmd BufReadPre * let f=expand("<afile>") | call DisableBigFileOptions(f)
+    augroup END
+  " }}}
+
+  " yaml {{{
+    augroup yaml
+      autocmd!
+      autocmd FileType yaml :setlocal foldmethod=indent
+    augroup END
+  " }}}
+
+  " html {{{
+    augroup yaml
+      autocmd!
+      autocmd FileType html :setlocal foldmethod=indent
     augroup END
   " }}}
 " }}}

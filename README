@@ -23,6 +23,10 @@ Keys
   Push the current line down one line.  use k to move up one line.
 <Esc>
   Clear highlighted search
+<Space>w
+  Use EasyMotion to find a word
+:w
+  Save and execute Syntastic, the syntax checker
 
 Plugins
 -------

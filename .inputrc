@@ -1,0 +1,68 @@
+# See http://cnswww.cns.cwru.edu/~chet/readline/readline.html for details.
+
+set completion-ignore-case on
+set show-all-if-ambiguous on
+
+# never ring the terminal bell (default: audible)
+set bell-style none
+
+# scroll edited lines horizontally instead of wrapping onto a new screen line
+# (default: off)
+#set horizontal-scroll-mode off
+
+# append a slash to completed directory names (default: on)
+set mark-directories on
+
+# append a slash to completed names which are symlinks to directories (subject
+# to the value of mark-directories) (default: off)
+set mark-symlinked-directories on
+
+# a character denoting a file's type is appended to the filename when listing
+# possible completions (default: off)
+set visible-stats on
+
+# use vi key bindings by default (default: emacs)
+set editing-mode vi
+set keymap vi
+
+#use Unicode & do NOT use the "8bit hack" to input/output non-ASCII characters
+# See http://code.google.com/p/iterm2/wiki/Keybindings
+set input-meta on
+set output-meta on
+set convert-meta off
+
+# When pressing up or down arrows,
+# show only history entries that match what was already typed
+"\e[A":history-search-backward
+"\e[B":history-search-forward
+"\e[C":forward-char
+"\e[D":backward-char
+"\C-l":clear-screen
+
+set keymap vi-command
+"\e[A":history-search-backward
+"\e[B":history-search-forward
+"\e[C":forward-char
+"\e[D":backward-char
+"\C-l":clear-screen
+#
+# ^o autocomplete
+"\C-o":insert-completions
+
+set keymap vi-insert
+"\e[A":history-search-backward
+"\e[B":history-search-forward
+"\e[C":forward-char
+"\e[D":backward-char
+"\C-l":clear-screen
+"\C-a":beginning-of-line
+"\C-e":end-of-line
+"\M-f":forward-word
+"\M-b":backward-word
+
+# ^p check for partial match in history
+"\C-p":dynamic-complete-history
+
+# ^n cycle through the list of partial matches
+"\C-n":menu-complete
+
