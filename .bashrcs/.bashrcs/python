@@ -1,0 +1,5 @@
+export PYTHONIOENCODING=utf_8
+export PATH=/opt/local/Library/Frameworks/Python.framework/Versions/2.7/bin:$PATH
+export PYTHONPATH=~/.config/ipython/extensions/:$PYTHONPATH
+export PYTHONPATH=~/.ipython/extensions/:$PYTHONPATH
+export PYTHONPATH=$PYTHONPATH:/opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/

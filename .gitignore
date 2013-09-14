@@ -1,5 +1,6 @@
 .DS_store
 .dropbox
+.svn
 
 # managed by Vim Addon Manager (VAM)
 .vim/bundle

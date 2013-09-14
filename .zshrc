@@ -19,6 +19,8 @@ for rc in $(find ~/.zsh/plugins/ -iname '*.zsh'); do
 done
 
 # machine-local settings
-for rc in $(find ~/.zsh/apps/ -iname '*.zsh'); do
-  source $rc
-done
+if [ -e ~/.zsh-local ]; then
+  for rc in $(find ~/.zsh-local/ -iname '*.zsh'); do
+    source $rc
+  done
+fi

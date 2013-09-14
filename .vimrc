@@ -5,30 +5,34 @@
   set runtimepath+=~/.vim/bundle/vim-addon-manager/
   call vam#ActivateAddons([
   \ 'github:MarcWeber/vim-addon-mw-utils',
-  \ 'github:altercation/vim-colors-solarized',
-  \ 'github:derekwyatt/vim-scala',
-  \ 'github:digitaltoad/vim-jade',
-  \ 'github:ervandew/supertab',
-  \ 'github:garbas/vim-snipmate',
-  \ 'github:godlygeek/tabular',
-  \ 'github:honza/vim-snippets',
-  \ 'github:jnwhiteh/vim-golang',
-  \ 'github:JuliaLang/julia-vim',
-  \ 'github:kien/ctrlp.vim',
-  \ 'github:klen/python-mode',
-  \ 'github:Lokaltog/vim-easymotion',
-  \ 'github:mattn/emmet-vim',
-  \ 'github:mileszs/ack.vim',
-  \ 'github:nathanaelkane/vim-indent-guides',
-  \ 'github:scrooloose/nerdtree',
-  \ 'github:scrooloose/syntastic',
-  \ 'github:Shougo/neocomplete.vim',
+  \ 'github:altercation/vim-colors-solarized',  " solarized theme
+  \ 'github:bling/vim-airline',                 " status line
+  \ 'github:bling/vim-bufferline',              " tabs on buffer line
+  \ 'github:derekwyatt/vim-scala',              " scala syntax recognition
+  \ 'github:digitaltoad/vim-jade',              " jade syntax recognition
+  \ 'github:ervandew/supertab',                 " tab for completion
+  \ 'github:garbas/vim-snipmate',               " code snippets
+  \ 'github:godlygeek/tabular',                 " :Tabularize
+  \ 'github:honza/vim-snippets',                " snippets for snipmate
+  \ 'github:jnwhiteh/vim-golang',               " golang syntax recognition
+  \ 'github:JuliaLang/julia-vim',               " julia syntax recognition
+  \ 'github:kien/ctrlp.vim',                    " fuzzy file finding
+  \ 'github:klen/python-mode',                  " python folding
+  \ 'github:Lokaltog/vim-easymotion',           " quickly find by character
+  \ 'github:mattn/emmet-vim',                   " <C-y> for HTML completion
+  \ 'github:mileszs/ack.vim',                   " :Ack to search with ack
+  \ 'github:nathanaelkane/vim-indent-guides',   " alternate tab colors
+  \ 'github:scrooloose/nerdtree',               " file explorer
+  \ 'github:scrooloose/syntastic',              " syntax checker
+  \ 'github:Shougo/neocomplete.vim',            " context sensitive completion
   \ 'github:Shougo/unite.vim',
   \ 'github:Shougo/vimproc.vim',
+  \ 'github:sickill/vim-pasta',                 " paste with indentation sensitivity
+  \ 'github:sjl/gundo.vim',                     " undotree visualization
   \ 'github:tomtom/tlib_vim',
-  \ 'github:tpope/vim-surround',
-  \ 'github:vim-scripts/pig.vim',
-  \ 'github:xolox/vim-easytags',
+  \ 'github:tpope/vim-surround',                " delete surrounding braces, etc
+  \ 'github:vim-scripts/pig.vim',               " pig syntax recognition
+  \ 'github:xolox/vim-easytags',                " ctags integration
   \ 'github:xolox/vim-misc',
   \], {'auto_install' : 0})
   " \ 'github:hattya/python_fold.vim',  " slow slow slow
@@ -46,7 +50,6 @@
 
 " Environment {{{
   if has('win16') || has('win32') || has('win64')
-    set backspace=indent,eol,start  " enable backspace
     set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,$HOME/.vim/after
       " Use /.vim for runtime path on Windows
     set guifont=Consolas:h9:cANSI   " font for GUI on Windows
@@ -64,9 +67,9 @@
 
   " ignore these files/folders when tab-completing paths
   set wildignore+=*.pyc,*.o,*.so,*.obj,*.swp,*.zip,*.tar,*.gz,*.exe,*.dll
-  set wildignore+=*/tmp/*,*/.git/*,*/.svn/*,*/.hg/*
-  
+  set wildignore+=*/tmp/*,*/.git/*,*/.svn/*,*/.hg/*,*/target/*
 
+  set backspace=indent,eol,start  " enable backspace the way you'd expect
   "set clipboard=unnamed    " always copy to windows/mac clipboard for use in other apps
   set hidden                " allow for hidden buffers
   set ffs=unix,dos          " save files with unix line endings
@@ -255,13 +258,13 @@
 "}}}
 
 " Status Line {{{
-  "<path/to/file.pig      Line: 45/200 Col: 10/ 90 Filetype: [pig] Encoding: utf-8
-  set statusline=%F       " full path to this file, 40 char max
-  set statusline+=%=      " switch to right side
-  set statusline+=Line:\ %l/%L  " line numbers
-  set statusline+=\ Col:\ %c/%{col('$')-1}    " col numbers
-  set statusline+=\ Filetype:\ %y             " filetype
-  set statusline+=\ Encoding:\ %{&encoding}   " file encoding
+  " "<path/to/file.pig      Line: 45/200 Col: 10/ 90 Filetype: [pig] Encoding: utf-8
+  " set statusline=%F       " full path to this file, 40 char max
+  " set statusline+=%=      " switch to right side
+  " set statusline+=Line:\ %l/%L  " line numbers
+  " set statusline+=\ Col:\ %c/%{col('$')-1}    " col numbers
+  " set statusline+=\ Filetype:\ %y             " filetype
+  " set statusline+=\ Encoding:\ %{&encoding}   " file encoding
   set laststatus=2        " always show status line
 " }}}
 
@@ -349,6 +352,23 @@
     vnoremap <Leader>t: :Tabularize /:<CR>
     nnoremap <Leader>t, :Tabularize /,/r0l1<CR>
     vnoremap <Leader>t, :Tabularize /,/r0l1<CR>
+  " }}}
+
+  " ack.vim {{{
+    nnoremap <Leader>a :Ack 
+  " }}}
+
+  " gundo.vim {{{
+    nnoremap <Leader>gu :GundoToggle<CR>
+  " }}}
+
+  " vim-airline {{{
+    let g:airline#extensions#bufferline#enabled = 1   " integrate with vim-bufferline
+  " }}}
+
+  " unite.vim {{{
+    " start unite with search for files and buffers
+    nnoremap <leader>un :Unite -start-insert file_rec/async buffer<CR>
   " }}}
 " }}}
 

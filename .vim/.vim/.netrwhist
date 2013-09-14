@@ -1,0 +1,11 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =9
+let g:netrw_dirhist_1='/Users/duckworthd/Dropbox/miniprojects/yannopt/yannopt'
+let g:netrw_dirhist_2='/Users/dux/Dropbox/umass/research/topic-models/sparse-coding/python'
+let g:netrw_dirhist_3='/Users/duckworthd/Dropbox/miniprojects/template'
+let g:netrw_dirhist_4='/Users/duckworthd/Dropbox/miniprojects/yannopt/yannopt'
+let g:netrw_dirhist_5='/Users/dux/Dropbox/miniprojects/yannopt/yannopt'
+let g:netrw_dirhist_6='/Users/dux/Dropbox/umass/research/topic-models/convex-clustering/python'
+let g:netrw_dirhist_7='/Users/dux/Dropbox/miniprojects/yannopt'
+let g:netrw_dirhist_8='/Users/duckworthd/Dropbox/umass/research/topic-models/convex-clustering/python/convex_clustering'
+let g:netrw_dirhist_9='/Users/duckworthd/Dropbox/vim/.bashrcs'

@@ -9,5 +9,5 @@ alias ....="cd ../../.."
 
 # listing
 alias l="ls -l"
-alias ll="ls -la"
+alias ll="ls -lha"
 alias sl=ls

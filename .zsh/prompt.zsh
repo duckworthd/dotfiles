@@ -16,3 +16,5 @@ PS1+="${PR_WHITE}%~${RESET}"
 # new line
 PS1+="
 > "
+
+export PS1

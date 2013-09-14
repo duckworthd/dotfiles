@@ -1,0 +1,2 @@
+alias scala='scala -Djava.awt.headless=true'
+export SCALA_HOME=/usr/local/Cellar/scala29/2.9.2/

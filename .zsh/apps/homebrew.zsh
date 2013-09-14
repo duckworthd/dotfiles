@@ -1,8 +1,8 @@
-PATH="/usr/local/bin:$PATH"
-PATH="/usr/local/sbin:$PATH"
-CFLAGS+=" -I/usr/local/include"
-CPPFLAGS+=" -I/usr/local/include"
-LDFLAGS+=" -L/usr/local/lib"
+export PATH="/usr/local/bin:$PATH"
+export PATH="/usr/local/sbin:$PATH"
+export CFLAGS="$CFLAGS -I/usr/local/include"
+export CPPFLAGS="$CPPFLAGS -I/usr/local/include"
+export LDFLAGS="$LDFLAGS -L/usr/local/lib"
 
 # scala
-SCALA_HOME=/usr/local/Cellar/scala29/2.9.3/
+export SCALA_HOME=/usr/local/Cellar/scala29/2.9.3/
