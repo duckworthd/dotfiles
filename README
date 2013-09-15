@@ -3,69 +3,68 @@ duckworthd's vim setup
 
 Keys
 ----
+<leader>un
+  Open unite.vim for fuzzy file selection.
+<Leader>t=
+  reformat selected text with columns delimited by "=" via :Tabularize.
+  Replace "=" with ":" or ","
 <leader>nt
-  Open NerdTree
+  Open NerdTree for visual file navigation
 <leader>ln
   Swap between absolute and relative line numbering
 <leader>cp
-  Open CtrlP for fuzzy file search under the current project
-<leader>cb
-  Open CtrlP for fuzzy file search amongst open buffers
+  Open CtrlP for fuzzy file search under the current project (a projected is
+  defined by having a ".svn", ".git", or ".hg" folder in it).
+<leader>a
+  Open ack search
+<leader>gu
+  Open visual undotree
+ds"
+  delete surrounding doublequotes. Replace "d" (delete) with "c" (change).
+  Replace " with ', ), ], }.
+<C-a> and <C-e>
+  go to start/end of line in insert mode
+<C-f> and <C-b>
+  go forward/backward one word in insert mode
+<Tab>
+  Cycle through completion list if it's open, else expand snippet.
 <A-j>
-  Decrease height of current split by one character.  Use other directions for
-  similar behaviour.
+  Decrease height of current split by one character.  Replace "j" with "k",
+  "l", or "h".
 <C-j>
-  Move cursor to split below this one.  Use other directions for similar
-  behaviour.
+  Move cursor to split below this one. Replace "j" with "k", "l", or "h".
 <leader>cd
   Change current directory to the folder the currently open buffer is in
 <C-A-j>
   Push the current line down one line.  use k to move up one line.
-<Esc>
-  Clear highlighted search
+<C-c>
+  Clear highlighted search (normal mode only)
 <Space>w
-  Use EasyMotion to find a word
-:w
-  Save and execute Syntastic, the syntax checker
+  Use EasyMotion to find a word. Replace "w" with "fa" to find the next "a"
+  character.
+<C-y>,
+  Autocomplete or surround text with HTML tag
+:UpdateTags
+  enable "jump to definition" via <C-]> (undo with <C-t>)
 
 Plugins
 -------
-vim-addon-manager
-  Add and update addons by name
-vim-colors-solarized
-  Better colors!
-vim-scala
-  Scala syntax highlighting
-vim-jade
-  Jade (NodeJS template language) syntax highlighting
-supertab
-  Tab completion for damn near anything
-vim-snipmate, snipmate-snippets
-  Tab-activated snippets
-python_fold.vim
-  syntax aware folding for Python
-ctrlp.vim
-  A pure VimScript alternative to Command-T
-ack.vim
-  Ack integration in vim
-nerdtree
-  Easy folder navigation within vim
-vim-surround
-  Commands for selecting within/around ", (, [, etc
-pig.vim
-  Apache Pig syntax highlighting
-vim-easytags
-  CTags in Vim
-vim-matlab
-  Matlab syntax highlighting
-
+* solarized color scheme
+* vim-airline for status line
+* tabular (:Tabularize) for reformatting text around special characters
+* neocomplete and neosnippets for context completion and snippet expansion
+* ctrlp and Unite for fuzzy file search
+* vim-indent-guides for visual tab
+* syntastic for syntax checking in most languages on file save
+* ack.vim (:Ack) for searching with ack
+* indentation-aware pasting with vim-pasta
 
 Features
 --------
+* syntax highlighting for scala, jade, golang, julia, pig, matlab
 * 2-space tabs
 * automatic file backups in ~/.vimetc/backup/
 * automatic swap files for crash recovery in ~/.vimetc/swap/
-* automatic view management in ~/.vimetc/views
 * undo history that persists after you close a file
 * status bar that tells you line number, column number, filetype, and encoding
 * tildes for trailing whitespace

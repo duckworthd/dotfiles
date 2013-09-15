@@ -1,21 +1,11 @@
 Install Instructions
+====================
 
-1) symlin .vim/ and .vimrc to ~/
+1) run setup.sh
 
-    $ ln -s ~/path/to/this/.vim ~/.vim
-    $ ln -s ~/path/to/this/.vimrc ~/.vimrc
+    $ ./setup.sh
 
 2) Get a copy of Vim with +python and +ruby (check this with :version). It must
    be version 7.3.584+.
 
-3) Compile YouCompleteMe by executing,
-
-    $ cd ~/.vim/bundle/github-Valloric-YouCompleteMe/
-    $ ./install.sh
-
-4) Compile vimproc
-
-    $ cd ~/.vim/bundle/github-Shougo-vimproc.vim
-    $ make -f make_mac.mak
-
-5) Use and enjoy
+3) Use and enjoy

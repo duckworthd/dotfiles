@@ -2,58 +2,63 @@
   set nocompatible
 
   " Load everything in ~/.vim/bundles
-  set runtimepath+=~/.vim/bundle/vim-addon-manager/
-  call vam#ActivateAddons([
-  \ 'github:MarcWeber/vim-addon-mw-utils',
-  \ 'github:altercation/vim-colors-solarized',  " solarized theme
-  \ 'github:bling/vim-airline',                 " status line
-  \ 'github:bling/vim-bufferline',              " tabs on buffer line
-  \ 'github:derekwyatt/vim-scala',              " scala syntax recognition
-  \ 'github:digitaltoad/vim-jade',              " jade syntax recognition
-  \ 'github:ervandew/supertab',                 " tab for completion
-  \ 'github:garbas/vim-snipmate',               " code snippets
-  \ 'github:godlygeek/tabular',                 " :Tabularize
-  \ 'github:honza/vim-snippets',                " snippets for snipmate
-  \ 'github:jnwhiteh/vim-golang',               " golang syntax recognition
-  \ 'github:JuliaLang/julia-vim',               " julia syntax recognition
-  \ 'github:kien/ctrlp.vim',                    " fuzzy file finding
-  \ 'github:klen/python-mode',                  " python folding
-  \ 'github:Lokaltog/vim-easymotion',           " quickly find by character
-  \ 'github:mattn/emmet-vim',                   " <C-y> for HTML completion
-  \ 'github:mileszs/ack.vim',                   " :Ack to search with ack
-  \ 'github:nathanaelkane/vim-indent-guides',   " alternate tab colors
-  \ 'github:scrooloose/nerdtree',               " file explorer
-  \ 'github:scrooloose/syntastic',              " syntax checker
-  \ 'github:Shougo/neocomplete.vim',            " context sensitive completion
-  \ 'github:Shougo/unite.vim',
-  \ 'github:Shougo/vimproc.vim',
-  \ 'github:sickill/vim-pasta',                 " paste with indentation sensitivity
-  \ 'github:sjl/gundo.vim',                     " undotree visualization
-  \ 'github:tomtom/tlib_vim',
-  \ 'github:tpope/vim-surround',                " delete surrounding braces, etc
-  \ 'github:vim-scripts/pig.vim',               " pig syntax recognition
-  \ 'github:xolox/vim-easytags',                " ctags integration
-  \ 'github:xolox/vim-misc',
-  \], {'auto_install' : 0})
-  " \ 'github:hattya/python_fold.vim',  " slow slow slow
-  " \ 'github:pangloss/vim-javascript', " slow slow slow
-  " \ 'github:Raimondi/delimitMate',    " gets in the way
-  " \ 'github:sontek/rope-vim',         " slow slow slow
-  " \ 'github:majutsushi/tagbar',       " doesn't work when I need it
-  " \ 'github:jcf/vim-latex'            " messes with my shortcuts
-  " \ 'github:xolox/vim-shell',         " never use it
-  " \ 'github:Valloric/YouCompleteMe',  " crashes
+  set runtimepath+=~/.vim/bundle/neobundle.vim
+  call neobundle#rc(expand('~/.vim/bundle/'))
 
-  " for plugins that don't appear anywhere on git
-  set runtimepath+=~/.vim/unmanaged/matlab/
+  " let NeoBundle manage itself
+  NeoBundleFetch 'Shougo/NeoBundle.vim'
+
+  NeoBundle 'MarcWeber/vim-addon-mw-utils'
+  NeoBundle 'altercation/vim-colors-solarized'
+  NeoBundle 'bling/vim-airline'
+  NeoBundle 'bling/vim-bufferline'
+  NeoBundle 'derekwyatt/vim-scala'
+  NeoBundle 'digitaltoad/vim-jade'
+  NeoBundle 'godlygeek/tabular'
+  NeoBundle 'honza/vim-snippets'
+  NeoBundle 'jnwhiteh/vim-golang'
+  NeoBundle 'JuliaLang/julia-vim'
+  NeoBundle 'kien/ctrlp.vim'
+  NeoBundle 'klen/python-mode'
+  NeoBundle 'Lokaltog/vim-easymotion'
+  NeoBundle 'mattn/emmet-vim'
+  NeoBundle 'mileszs/ack.vim'
+  NeoBundle 'nathanaelkane/vim-indent-guides'
+  NeoBundle 'scrooloose/nerdtree'
+  NeoBundle 'scrooloose/syntastic'
+  NeoBundle 'Shougo/neocomplete.vim'
+  NeoBundle 'Shougo/unite.vim'
+  NeoBundle 'Shougo/vimproc.vim', {
+      \ 'build' : {
+      \     'windows' : 'make -f make_mingw32.mak',
+      \     'cygwin' : 'make -f make_cygwin.mak',
+      \     'mac' : 'make -f make_mac.mak',
+      \     'unix' : 'make -f make_unix.mak',
+      \    },
+      \ }
+  NeoBundle 'Shougo/neosnippet'
+  NeoBundle 'sickill/vim-pasta'
+  NeoBundle 'sjl/gundo.vim'
+  NeoBundle 'tomtom/tlib_vim'
+  NeoBundle 'tpope/vim-surround'
+  NeoBundle 'vim-scripts/pig.vim'
+  NeoBundle 'vim-scripts/MatlabFilesEdition'
+  NeoBundle 'xolox/vim-easytags'
+  NeoBundle 'xolox/vim-misc'
+  " NeoBundle 'hattya/python_fold.vim'             " slow slow slow
+  " NeoBundle 'pangloss/vim-javascript'            " slow slow slow
+  " NeoBundle 'Raimondi/delimitMate'               " gets in the way
+  " NeoBundle 'sontek/rope-vim'                    " slow slow slow
+  " NeoBundle 'majutsushi/tagbar'                  " doesn't work when I need it
+  " NeoBundle 'jcf/vim-latex'                      " messes with my shortcuts
+  " NeoBundle 'xolox/vim-shell'                    " never use it
+  " NeoBundle 'Valloric/YouCompleteMe'             " crashes
 " }}}
 
 " Environment {{{
   if has('win16') || has('win32') || has('win64')
-    set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,$HOME/.vim/after
-      " Use /.vim for runtime path on Windows
+    set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME " Use /.vim for runtime path on Windows
     set guifont=Consolas:h9:cANSI   " font for GUI on Windows
-    "set clipboard=unnamed           " copy to clipboard
   endif
 
   if has('gui_macvim')
@@ -75,11 +80,11 @@
   set ffs=unix,dos          " save files with unix line endings
   syntax on                 " syntax highlighting
   filetype plugin indent on " use plugin, indentation style for filetype
-  set textwidth=0           " don't automatically cut lines
+  set textwidth=0           " don't automatically split lines after they get too long
   set fileencoding=utf-8    " default to UTF-8
   set switchbuf=usetab      " when using :bn and such, iterate across tabs too
   set mouse=a               " enable mouse usage on some terminals
-  set virtualedit=block     " lets you move the cursor past the end of the line
+  set virtualedit=block     " lets you move the cursor past the end of the line when selecting blocks of text
 " }}}
 
 " Tabs {{{
@@ -94,7 +99,6 @@
   " backups will be written to ~/.vimetc/backup, but must be restored manually.
   " no location history is kept, so if 2 files share the same name the last
   " one you edited will overwrite the other
-
 
   set backup                          " enable backups
   let s:etcdir=$HOME.'/.vimetc/'
@@ -146,7 +150,7 @@
   noremap <C-Up>    <C-W>k
   noremap <C-Down>  <C-W>j
   noremap <C-Left>  <C-W>h
-  noremap <C-Right>   <C-W>l
+  noremap <C-Right> <C-W>l
 
   " up/down within a single wrapped line
   nnoremap <Up>   gk
@@ -199,8 +203,8 @@
   inoremap <C-e>  <C-o>$
 
   " previous/next word in insert mode
-  inoremap <C-f>  <C-o>w
-  inoremap <C-b>  <C-o>b
+  inoremap <C-f>  <C-o>W
+  inoremap <C-b>  <C-o>B
 
   " alternatives to arrow keys in insert mode (steps on switch split keys)
   " inoremap <C-j>  <Down>
@@ -238,10 +242,10 @@
   set ruler           " Show line ruler
   set number          " line numbers
   set hlsearch        " highlight search matches
-  set incsearch       " search before enter
-  set ignorecase      " ignore case if all lower case search
-  set smartcase       " case sensitive if upper case search
-  set wildmenu        " see options listed
+  set incsearch       " search before pressing <CR>
+  set ignorecase      " ignore case in search...
+  set smartcase       " ...unless one of the characters is upper case
+  set wildmenu        " see options listed in minibuffer
   set scrolloff=3     " minimum number of lines below cursor
   set foldenable      " auto fold code
   " set foldmethod=expr " fold based on language-specific expr
@@ -250,7 +254,7 @@
 
   set list            " enable the following
   set listchars=tab:\ \   " tabs look like spaces
-  set listchars+=trail:\~  " periods for extra whitespace
+  set listchars+=trail:\~  " ~ for extra whitespace
   set listchars+=extends:>    " character to show at end when wrapping
   set listchars+=precedes:<   " character to show at beginning when wrapping
 
@@ -258,6 +262,7 @@
 "}}}
 
 " Status Line {{{
+  " SEE vim-airline FOR TAB COMPLETION
   " "<path/to/file.pig      Line: 45/200 Col: 10/ 90 Filetype: [pig] Encoding: utf-8
   " set statusline=%F       " full path to this file, 40 char max
   " set statusline+=%=      " switch to right side
@@ -273,23 +278,15 @@
   set spell         " spell check
 "}}}
 
-" Plugins {{{
-  if has('win32') || has('win64')
-    let s:ctags_loc = $HOME.'/.vim/lib/ctags58/ctags'
-  else
-    let s:ctags_loc = 'ctags'
-  endif
-
-  " " TagBar {{{
-  "   nnoremap <leader>tb :TagbarToggle<CR>
-  "     " Open/Close TagBar
-  "   let g:tagbar_autoclose = 0
-  "     " Don't close tagbar when selecting a tag
-  "   let g:tagbar_ctags_bin = s:ctags_loc
-  "     " where to find ctags
-  " " }}}
+" Plugins Configuration {{{
 
   " easytags {{{
+    if has('win32') || has('win64')
+      let s:ctags_loc = $HOME.'/.vim/lib/ctags58/ctags'
+    else
+      let s:ctags_loc = 'ctags'
+    endif
+
     let g:easytags_cmd  = s:ctags_loc
     let g:easytags_file = s:etcdir.'tags'
       " Where easytags saves its tag info
@@ -313,8 +310,7 @@
       " 0: use pwd
       " 1: use directory of current file
       " 2: use nearest ancestor with .git, .svn. or whatever
-    noremap <leader>cp :CtrlP<CR>
-    noremap <leader>cb :CtrlPBuffer<CR>
+    noremap <leader>cp :CtrlPMixed<CR>
 
     let g:ctrlp_follow_symlinks = 1   " follow symlinks
   " }}}
@@ -339,6 +335,21 @@
 
   " neocomplete {{{
     let g:neocomplete#enable_at_startup = 1   " start neocomplete on startup
+
+    " <CR>: close popup and save indent.
+    inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+    function! s:my_cr_function()
+      return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+    endfunction
+
+    " <TAB>: completion? see neosnippet.vim
+
+    " <C-h>, <BS>: close popup and delete backword char.
+    inoremap <expr><C-h>  neocomplete#smart_close_popup()."\<C-h>"
+    inoremap <expr><BS>   neocomplete#smart_close_popup()."\<C-h>"
+
+    " Close popup by <Space>.
+    inoremap <expr><Space> pumvisible() ? neocomplete#close_popup()."\<Space>" : "\<Space>"
   " }}}
 
   " vim-indent-guides {{{
@@ -355,7 +366,7 @@
   " }}}
 
   " ack.vim {{{
-    nnoremap <Leader>a :Ack 
+    nnoremap <Leader>a :Ack<space>
   " }}}
 
   " gundo.vim {{{
@@ -369,6 +380,29 @@
   " unite.vim {{{
     " start unite with search for files and buffers
     nnoremap <leader>un :Unite -start-insert file_rec/async buffer<CR>
+  " }}}
+
+  " neosnippet.vim {{{
+    " <C-k> to insert snippet
+    imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+    smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+    xmap <C-k>     <Plug>(neosnippet_expand_target)
+
+    " <Tab> completion
+    imap <expr><TAB>  pumvisible() ?
+        \  "\<C-n>"
+        \: neosnippet#expandable_or_jumpable() ?
+          \  "\<Plug>(neosnippet_expand_or_jump)"
+          \: "\<TAB>"
+    smap <expr><TAB>  pumvisible() ?
+        \  "\<C-n>"
+        \: neosnippet#expandable_or_jumpable() ?
+          \  "\<Plug>(neosnippet_expand_or_jump)"
+          \: "\<TAB>"
+
+    " use honzo/vim-snippet's snippets instead of the builtins
+    let g:neosnippet#enable_snipmate_compatibility = 1
+    let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
   " }}}
 " }}}
 
