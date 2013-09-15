@@ -1,2 +1,0 @@
-# where homebrew has its executables
-export PATH=/usr/local/bin:$PATH

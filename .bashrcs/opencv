@@ -1,2 +1,0 @@
-# shortcut for compiling opencv apps
-alias gcc-opencv='g++ `pkg-config --cflags --libs opencv` '

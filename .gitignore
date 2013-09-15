@@ -4,3 +4,7 @@
 
 # managed by Vim Addon Manager (VAM)
 .vim/bundle
+
+# ignore bash configuration (I rely on .zsh these days)
+.bashrcs/
+.bash_profile

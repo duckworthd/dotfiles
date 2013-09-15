@@ -1,2 +1,0 @@
-alias aquamacs='open -a /Applications/Aquamacs.app $1'
-alias memacs='open -a /Applications/Emacs.app $1'

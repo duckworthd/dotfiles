@@ -1,2 +1,0 @@
-# enable autocompletion for awscli
-complete -C aws_completer aws
