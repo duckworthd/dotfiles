@@ -1,12 +1,16 @@
+///////////////////////////// Imports //////////////////////////////////////////
+slate.source("~/.slate.d/configure.js");
+slate.source("~/.slate.d/golden.js");
+
 ///////////////////////////// Environment //////////////////////////////////////
-S.configAll({
+slate.configAll({
   "defaultToCurrentScreen"         : true,
   "secondsBetweenRepeat"           : 0.1,
   "checkDefaultsOnLoad"            : true,
   "focusCheckWidthMax"             : 3000,
   "orderScreensLeftToRight"        : true,
   "windowHintsShowIcons"           : true,
-  "windowHintsIgnoreHiddenWindows" : false,
+  "windowHintsIgnoreHiddenWindows" : true,
   "windowHintsSpread"              : true
 });
 
@@ -65,13 +69,18 @@ var fullscreen = slate.operation("move", {
   "height" : "screenSizeY"
 });
 
-/**
- * Collect all windows except with a specified name
- */
-var collectWindows = function(ignore) {
-  var windows = [];
+// parse a confiuration object with defaults
+var configure = function(args, defaults) {
+  return _.extend(defaults, args || {});
+}
+
+// Collect all windows except with a specified name
+var collectWindows = function() {
+  var args = configure(arguments[0], {"ignore": []}),
+      windows = [];
+
   slate.eachApp(function(app) {
-    if (_.contains(ignore, app.name())) return;
+    if (_.contains(args.ignore, app.name())) return;
     app.eachWindow(function(win) {
       if (!win.isResizable()) return;
       if (win.isMinimizedOrHidden()) return;
@@ -91,42 +100,30 @@ var retile = function(windowObject) {
 
   // collect windows
   slate.log("retrieving windows...");
-  var windows = collectWindows(["iTerm"]);
+  var windows = collectWindows({"ignore": ["iTerm"]});
   slate.log("retrieved " + windows.length.toString() + " windows");
 
   // decide on window size for non-main windows (40% of right side)
   slate.log("determining window sizes...");
-  var ss          = slate.screen().rect();
-  var windowSizeX = ss.width * 0.4;
-  var windowSizeY = ss.height / (windows.length - 1);
-  var winPosY     = 0;
+  var ss = slate.screen().rect(),
+      sizes = golden({
+        'width'  : ss.width,
+        'height' : ss.height,
+        'n'      : windows.length
+      });
+  slate.log("determined sizes for " + sizes.length.toString() + " windows");
 
   slate.log("moving windows");
-  for (i = 0; i < windows.length; i++) {
-    w = windows[i];
+  for (var i = 0; i < windows.length; i++) {
+    var w = windows[i],
+        s = sizes[i];
 
-    if (w.title() == windowObject.title()) {
-      // main window; resize to 60% of left side
-      mainWidth = (windows.length > 1) ? "screenSizeX*0.6" : "screenSizeX";
-
-      w.doOperation("move", {
-        "x"      : "screenOriginX",
-        "y"      : "screenOriginY",
-        "width"  : mainWidth,
-        "height" : "screenSizeY"
-      });
-    }
-    else {
-      // "other" window; 40% of right size
-      w.doOperation("move", {
-        "x"      : "screenSizeX*0.6",
-        "y"      : winPosY,
-        "width"  : windowSizeX,
-        "height" : windowSizeY
-      });
-
-      winPosY += windowSizeY;
-    }
+    w.doOperation("move", {
+      "x"      : s.xMin,
+      "y"      : s.yMin,
+      "width"  : s.xMax - s.xMin,
+      "height" : s.yMax - s.yMin
+    });
   }
 }
 
@@ -155,15 +152,6 @@ slate.bind("h:alt;cmd;ctrl",   focus.left);
 slate.bind("l:alt;cmd;ctrl",  focus.right);
 slate.bind("k:alt;cmd;ctrl",    focus.top);
 slate.bind("j:alt;cmd;ctrl", focus.bottom);
-
-// // divide screen into grid
-// slate.bind("g:alt;cmd", slate.operation("grid", {
-//   "grids": {
-//     "1366x768": { "width"  : 4, "height" : 3 }
-//   },
-//   "padding": 0
-// }))
-// })
 
 // Basic keybinds
 slate.bind("r:cmd;alt", retile);
