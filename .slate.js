@@ -92,7 +92,8 @@ var throw_ = (function(){
 
       // move this window to the next one
       var newScreen = screens[ (incr(i) + screens.length) % screens.length ];
-      slate.operation("throw", {"screen": newScreen});
+      slate.log("New screen #" + newScreen);
+      window.doOperation(slate.operation("throw", {"screen": newScreen}));
     }
   };
 
@@ -183,12 +184,9 @@ slate.bind("h:alt;cmd;ctrl",   focus.left);
 slate.bind("l:alt;cmd;ctrl",  focus.right);
 slate.bind("k:alt;cmd;ctrl",    focus.top);
 slate.bind("j:alt;cmd;ctrl", focus.bottom);
-for (var i=0; i<10; i++) {
-  slate.bind(i.toString() + ":alt;cmd;ctrl",   focus.index(i));
-}
 
-// Basic keybinds
-slate.bind("r:cmd;alt", retile);
+// golden layout
+slate.bind("g:cmd;alt", retile);
 
 // grow/shrink screen
 slate.bind("o:alt;cmd", slate.operation("resize", { "width" : "+10%", "height" :  "+0%"  }));
