@@ -1,30 +1,37 @@
-// layout panes in a "golden spiral"-like design. Depends on `configure.js`
+// golden spiral
 var golden = function() {
   // parse arguments
   var defaults = {
-        // screen size
-        'width'       : 1000,
-        'height'      : 1000,
+        // screen limits
+        'xMin' : 0,
+        'yMin' : 0,
+        'xMax' : 1000,
+        'yMax' : 1000,
 
         // number of windows
-        'n'           : 10,
+        'n' : 10,
 
         // number of panes per layer
-        'count'       : function(layer) { return layer == 0 ? 2 : 3; },
+        'count' : function(layer) { return layer == 0 ? 2 : 3; },
 
         // initial orientation of splits
-        'orientation' : 'vertical'
+        'orientation' : 'horizontal'
       },
       args = configure(arguments[0], defaults);
+
+  slate.log("xMin: " + args.xMin.toString());
+  slate.log("yMin: " + args.yMin.toString());
+  slate.log("xMax: " + args.xMax.toString());
+  slate.log("yMax: " + args.yMax.toString());
 
   var layer = 0,
       boxes = [],
       orientation = args.orientation,
       box = {
-        'xMin': 0,
-        'yMin': 0,
-        'xMax': args.width,
-        'yMax': args.height
+        'xMin' : args.xMin,
+        'xMax' : args.xMax,
+        'yMin' : args.yMin,
+        'yMax' : args.yMax
       },
       remaining = function() { return args.n - boxes.length; };
 
@@ -72,4 +79,4 @@ var golden = function() {
   }
 
   return boxes;
-};
+}

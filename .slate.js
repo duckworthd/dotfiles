@@ -69,11 +69,6 @@ var fullscreen = slate.operation("move", {
   "height" : "screenSizeY"
 });
 
-// parse a confiuration object with defaults
-var configure = function(args, defaults) {
-  return _.extend(defaults, args || {});
-}
-
 // Collect all windows except with a specified name
 var collectWindows = function() {
   var args = configure(arguments[0], {"ignore": []}),
@@ -92,9 +87,7 @@ var collectWindows = function() {
   return windows;
 };
 
-/**
- * a sort of "golden spiral" layout
- */
+// layout according to golden spiral
 var retile = function(windowObject) {
   slate.log("retiling");
 
@@ -107,9 +100,10 @@ var retile = function(windowObject) {
   slate.log("determining window sizes...");
   var ss = slate.screen().rect(),
       sizes = golden({
-        'width'  : ss.width,
-        'height' : ss.height,
-        'n'      : windows.length
+        'xMax' : ss.width,
+        'yMax' : ss.height,
+        'n'    : windows.length,
+        'orientation': 'vertical'
       });
   slate.log("determined sizes for " + sizes.length.toString() + " windows");
 
