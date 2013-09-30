@@ -57,6 +57,13 @@ var focus = (function() {
   focus.right  = slate.operation("focus", { "direction" : "right"  });
   focus.top    = slate.operation("focus", { "direction" : "up"  });
   focus.bottom = slate.operation("focus", { "direction" : "down"  });
+  focus.index  = function(index) {
+    return function(window) {
+      // get all open windows; choose the `index`th one
+      var windows = collectWindows();
+      if (index < windows.length) { windows[index].focus(); }
+    };
+  };
 
   return focus;
 }());
@@ -128,8 +135,10 @@ var retile = function(windowObject) {
   slate.log("determining window sizes...");
   var ss = slate.screen().rect(),
       sizes = golden({
-        'xMax' : ss.width,
-        'yMax' : ss.height,
+        'xMin' : ss.x,
+        'xMax' : ss.x + ss.width,
+        'yMin' : ss.y,
+        'yMax' : ss.y + ss.height,
         'n'    : windows.length,
         'orientation': 'vertical'
       });
@@ -174,13 +183,18 @@ slate.bind("h:alt;cmd;ctrl",   focus.left);
 slate.bind("l:alt;cmd;ctrl",  focus.right);
 slate.bind("k:alt;cmd;ctrl",    focus.top);
 slate.bind("j:alt;cmd;ctrl", focus.bottom);
+for (var i=0; i<10; i++) {
+  slate.bind(i.toString() + ":alt;cmd;ctrl",   focus.index(i));
+}
 
 // Basic keybinds
 slate.bind("r:cmd;alt", retile);
 
 // grow/shrink screen
-slate.bind("=:alt;cmd", slate.operation("resize", { "width" : "+10%", "height" : "+10%"  }));
-slate.bind("-:alt;cmd", slate.operation("resize", { "width" : "-10%", "height" : "-10%"  }));
+slate.bind("o:alt;cmd", slate.operation("resize", { "width" : "+10%", "height" :  "+0%"  }));
+slate.bind("y:alt;cmd", slate.operation("resize", { "width" : "-10%", "height" :  "+0%"  }));
+slate.bind("i:alt;cmd", slate.operation("resize", { "width" :  "+0%", "height" : "+10%"  }));
+slate.bind("u:alt;cmd", slate.operation("resize", { "width" :  "+0%", "height" : "-10%"  }));
 
 // move to screen
 slate.bind("n:alt;cmd", throw_.next);
