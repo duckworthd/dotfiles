@@ -10,10 +10,16 @@ function show() {
 PROJECT_DIR=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 
 echo 'Linking dotfiles to HOME'
+# for each dotfile in this directory...
 for FNAME in $(find $PROJECT_DIR \
                     -name ".[^.]*" \
                     -maxdepth 1 \
-                    \( ! -iname ".git*" -or -iname '.dropbox' \) 
+                    \( ! -iname ".git*" -or -iname '.dropbox' \)
               ); do
-  show ln -s $FNAME ~/$(basename $FNAME)
+  OUTPUT=~/$(basename "$FNAME")
+  # if $OUTPUT isn't a file or a directory
+  if [ ! -f "$OUTPUT" ] && [ ! -d "$OUTPUT" ]; then
+    # softlink $FNAME to $OUTPUT
+    show ln -s "$FNAME" "$OUTPUT"
+  fi
 done
