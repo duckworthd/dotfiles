@@ -19,6 +19,7 @@ unset LSCOLORS
 #expor tLSCOLORS=gxfxcxdxbxegedabagacad
 
 export CLICOLOR=1
+export TERM=xterm-256color
 
 # use `dircolors` or `gdircolors` to set LS_COLORS
 if hash dircolors 2>/dev/null; then
@@ -26,5 +27,11 @@ if hash dircolors 2>/dev/null; then
 elif hash gdircolors 2>/dev/null; then
   DIRCOLORS=gdircolors
 fi
-eval `$DIRCOLORS ~/.dir_colors`
-export TERM=xterm-256color
+
+# Coloring by filetype (for ls).
+# Append user's ~/.dir_colors if it exists.
+if [ -e ~/.dir_colors ] || [ -e /etc/DIR_COLORS ]; then
+  GLOBAL=$([ -e /etc/DIR_COLORS ] && echo /etc/DIR_COLORS)
+  LOCAL=$([ -e ~/.dir_colors ] && echo ~/.dir_colors)
+  eval "$($DIRCOLORS -b <(cat $GLOBAL $LOCAL))"
+fi
