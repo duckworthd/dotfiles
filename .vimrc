@@ -9,25 +9,70 @@
   NeoBundleFetch 'Shougo/NeoBundle.vim'
 
   NeoBundle 'MarcWeber/vim-addon-mw-utils'
+
+  " solarized color scheme
   NeoBundle 'altercation/vim-colors-solarized'
+
+  " status bar
   NeoBundle 'bling/vim-airline'
+
+  " extension for status bar
   NeoBundle 'bling/vim-bufferline'
+
+  " color scheme
+  NeoBundle 'cseelus/sleepwalker-vim'
+
+  " scala syntax
   NeoBundle 'derekwyatt/vim-scala'
+
+  " jade syntax
   NeoBundle 'digitaltoad/vim-jade'
+
+  " all the colorschemes!
+  NeoBundle 'flazz/vim-colorschemes'
+
+  " align text by "=" or ":" or whatever else
   NeoBundle 'godlygeek/tabular'
+
+  " snippets for neosnippet
   NeoBundle 'honza/vim-snippets'
+
+  " golang syntax
   NeoBundle 'jnwhiteh/vim-golang'
+
+  " julia syntax
   NeoBundle 'JuliaLang/julia-vim'
+
+  " file search
   NeoBundle 'kien/ctrlp.vim'
+
+  " python folding
   NeoBundle 'klen/python-mode'
+
+  " quick character search
   NeoBundle 'Lokaltog/vim-easymotion'
-  NeoBundle 'mattn/emmet-vim'
+
+  "  HTML completion
+  "NeoBundle 'mattn/emmet-vim'
+
+  " ack for searching
   NeoBundle 'mileszs/ack.vim'
+
+  " show indents
   NeoBundle 'nathanaelkane/vim-indent-guides'
+
+  " file navigation
   NeoBundle 'scrooloose/nerdtree'
+
+  " syntax checking on lots of languages
   NeoBundle 'scrooloose/syntastic'
+
+  " tab completion
   NeoBundle 'Shougo/neocomplete.vim'
+
+  " file/buffer/everything fuzzy search
   NeoBundle 'Shougo/unite.vim'
+
   NeoBundle 'Shougo/vimproc.vim', {
       \ 'build' : {
       \     'windows' : 'make -f make_mingw32.mak',
@@ -36,15 +81,36 @@
       \     'unix' : 'make -f make_unix.mak',
       \    },
       \ }
+
+  " snippet completion
   NeoBundle 'Shougo/neosnippet'
-  NeoBundle 'sickill/vim-pasta'
+  " NeoBundle 'sickill/vim-pasta'
+
+  " visual undo tree
   NeoBundle 'sjl/gundo.vim'
+
+  " change multiple variable with the same name at once
+  NeoBundle 'terryma/vim-multiple-cursors'
   NeoBundle 'tomtom/tlib_vim'
+
+  " delete surrounding parentheses, etc
   NeoBundle 'tpope/vim-surround'
+
+  " automatically open/close parentheses
+  NeoBundle 'vim-scripts/Auto-Pairs'
+
+  " pig syntax
   NeoBundle 'vim-scripts/pig.vim'
+
+  " matlab syntax
   NeoBundle 'vim-scripts/MatlabFilesEdition'
+
+  " ctags integration
   NeoBundle 'xolox/vim-easytags'
+
+  " dependency...
   NeoBundle 'xolox/vim-misc'
+
   " NeoBundle 'hattya/python_fold.vim'             " slow slow slow
   " NeoBundle 'pangloss/vim-javascript'            " slow slow slow
   " NeoBundle 'Raimondi/delimitMate'               " gets in the way
@@ -227,17 +293,11 @@
 "}}}
 
 " UI {{{
-  if has('win32') || has('win64')
-    color desert
-  else
-    color solarized
-    if !has('gui_running') && $TERM_PROGRAM == 'Apple_Terminal'
-      let g:solarized_termcolors = &t_Co  " solarized has bugs in Terminal.app
-      let g:solarized_termtrans = 1
-      colorscheme solarized
-    endif
+  color ir_black
+  if $TERM == "xterm-256color" " enable 256 colors
+    set t_Co=256
   endif
-  set background=dark " dark background
+  set background=dark " dark background (automatically set by sleepwalker)
   set cursorline      " Hightlight current line
   set ruler           " Show line ruler
   set number          " line numbers
@@ -275,7 +335,7 @@
 
 " Etc {{{
   set history=1000  " long history
-  set spell         " spell check
+  " set spell         " spell check
 "}}}
 
 " Plugins Configuration {{{
@@ -403,6 +463,10 @@
     " use honzo/vim-snippet's snippets instead of the builtins
     let g:neosnippet#enable_snipmate_compatibility = 1
     let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
+  " }}}
+
+  " vim-multiple-cursors {{{
+    let g:multi_cursor_quit_key='<C-c>'
   " }}}
 " }}}
 
