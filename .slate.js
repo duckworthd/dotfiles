@@ -10,7 +10,7 @@ slate.configAll({
   "focusCheckWidthMax"             : 3000,
   "orderScreensLeftToRight"        : true,
   "windowHintsShowIcons"           : true,
-  "windowHintsIgnoreHiddenWindows" : true,
+  "windowHintsIgnoreHiddenWindows" : false,
   "windowHintsSpread"              : true
 });
 
@@ -68,6 +68,34 @@ var fullscreen = slate.operation("move", {
   "width"  : "screenSizeX",
   "height" : "screenSizeY"
 });
+
+// throw window to another screen
+var throw_ = (function(){
+  var throw_ = {};
+
+  var throwBuilder = function(incr) {
+    return function(window) {
+      var currentScreen = window.screen().id();
+
+      // determine which screen this window is in
+      var screens = [];
+      slate.eachScreen(function(screen) { screens.push(screen.id()); });
+      var i = _.indexOf(screens, currentScreen);
+      slate.log("Found " + screens.length.toString() + " screens; current is #" + i.toString());
+
+      // move this window to the next one
+      var newScreen = screens[ (incr(i) + screens.length) % screens.length ];
+      slate.operation("throw", {"screen": newScreen});
+    }
+  };
+
+  throw_.next = throwBuilder(function(x) { return x + 1; });
+  throw_.prev = throwBuilder(function(x) { return x - 1; });
+
+  slate.log("Constructed throw_");
+
+  return throw_;
+})();
 
 // Collect all windows except with a specified name
 var collectWindows = function() {
@@ -149,3 +177,11 @@ slate.bind("j:alt;cmd;ctrl", focus.bottom);
 
 // Basic keybinds
 slate.bind("r:cmd;alt", retile);
+
+// grow/shrink screen
+slate.bind("=:alt;cmd", slate.operation("resize", { "width" : "+10%", "height" : "+10%"  }));
+slate.bind("-:alt;cmd", slate.operation("resize", { "width" : "-10%", "height" : "-10%"  }));
+
+// move to screen
+slate.bind("n:alt;cmd", throw_.next);
+slate.bind("p:alt;cmd", throw_.prev);
