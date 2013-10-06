@@ -96,8 +96,8 @@
   " delete surrounding parentheses, etc
   NeoBundle 'tpope/vim-surround'
 
-  " automatically open/close parentheses
-  NeoBundle 'vim-scripts/Auto-Pairs'
+  " " automatically open/close parentheses
+  " NeoBundle 'vim-scripts/Auto-Pairs'
 
   " pig syntax
   NeoBundle 'vim-scripts/pig.vim'
