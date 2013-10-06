@@ -14,6 +14,10 @@ slate.configAll({
   "windowHintsSpread"              : true
 });
 
+var BROWSER  = "Google Chrome",
+    TERMINAL = 'iTerm',
+    CHAT     = 'HipChat';
+
 ///////////////////////////// Layouts //////////////////////////////////////////
 // push active window around
 var push = (function() {
@@ -107,13 +111,18 @@ var throw_ = (function(){
 
 // Collect all windows except with a specified name
 var collectWindows = function() {
-  var args = configure(arguments[0], {"ignore": []}),
+  var args = configure(arguments[0], {
+        "ignore": [],
+        "currentScreenOnly": false
+      }),
       windows = [];
 
   slate.eachApp(function(app) {
     if (_.contains(args.ignore, app.name())) return;
     app.eachWindow(function(win) {
       if (!win.isResizable()) return;
+      if (!win.isMovable()) return;
+      if (args.currentScreenOnly && slate.screen().id() != win.screen().id()) return;
       if (win.isMinimizedOrHidden()) return;
       if (null == win.title() || win.title() === "") return;
       windows.push(win);
@@ -123,25 +132,30 @@ var collectWindows = function() {
   return windows;
 };
 
-// layout according to golden spiral
+// layout according to golden spiral on focused screen
 var retile = function(windowObject) {
   slate.log("retiling");
 
+  // if no window is in focus, this is null and there's no way to tell which
+  // windows to rearrange.
+  if (slate.screen().rect() == null) return;
+
   // collect windows
   slate.log("retrieving windows...");
-  var windows = collectWindows({"ignore": ["iTerm"]});
+  var windows = collectWindows({"currentScreenOnly": true});
   slate.log("retrieved " + windows.length.toString() + " windows");
 
   // decide on window size for non-main windows (40% of right side)
   slate.log("determining window sizes...");
-  var ss = slate.screen().rect(),
+  var ss = slate.screen().rect();
       sizes = golden({
         'xMin' : ss.x,
         'xMax' : ss.x + ss.width,
         'yMin' : ss.y,
         'yMax' : ss.y + ss.height,
         'n'    : windows.length,
-        'orientation': 'vertical'
+        'orientation': 'vertical',
+        'count': function(i) { return 2; }
       });
   slate.log("determined sizes for " + sizes.length.toString() + " windows");
 
@@ -184,6 +198,11 @@ slate.bind("h:alt;cmd;ctrl",   focus.left);
 slate.bind("l:alt;cmd;ctrl",  focus.right);
 slate.bind("k:alt;cmd;ctrl",    focus.top);
 slate.bind("j:alt;cmd;ctrl", focus.bottom);
+
+// app-specific focus
+slate.bind("b:alt;cmd;ctrl", slate.operation("focus", {"app": BROWSER}));
+slate.bind("t:alt;cmd;ctrl", slate.operation("focus", {"app": TERMINAL}));
+slate.bind("c:alt;cmd;ctrl", slate.operation("focus", {"app": CHAT}));
 
 // golden layout
 slate.bind("g:cmd;alt", retile);
