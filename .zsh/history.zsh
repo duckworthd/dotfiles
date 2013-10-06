@@ -16,8 +16,9 @@ setopt HIST_REDUCE_BLANKS
 # Include more information about when the command was executed, etc
 setopt EXTENDED_HISTORY
 
-# reload history whenever you use it
-setopt SHARE_HISTORY
+# # reload history whenever you press up/down
+# # XXX removed; too distracting
+# setopt SHARE_HISTORY
 
 HISTSIZE=5000
 SAVEHIST=5000
