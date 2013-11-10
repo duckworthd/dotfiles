@@ -62,13 +62,13 @@ wget "http://www.ninjamonkeysoftware.com/slate/versions/slate-latest.tar.gz" -O 
 sudo tar -xzf slate.tar.gz -C "/Applications"
 
 # Install Chrome
-wget "https://dl.google.com/chrome/mac/stable/GGRM/googlechrome.dmg" -o "$HOME/Downloads/chrome.dmg" && open "$HOME/Downloads/chrome.dmg"
+wget "https://dl.google.com/chrome/mac/stable/GGRM/googlechrome.dmg" -O "$HOME/Downloads/chrome.dmg" && open "$HOME/Downloads/chrome.dmg"
 echo "Install Chrome (press ENTER to continue)"
 read TRASH
 
 # Install KeypassX
 # XXX sourceforge doesn't like curl?
-wget "http://sourceforge.net/projects/keepassx/files/KeePassX/0.4.3/KeePassX-0.4.3.dmg/download" -O "$HOME/Downloads/keepassx.dmg" && "open keypassx.dmg"
+wget "http://sourceforge.net/projects/keepassx/files/KeePassX/0.4.3/KeePassX-0.4.3.dmg/download" -O "$HOME/Downloads/keepassx.dmg" && "open $HOME/Downloads/keepassx.dmg"
 echo "Install KeypassX (press ENTER to continue)"
 read TRASH
 
