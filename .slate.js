@@ -191,7 +191,7 @@ slate.bind("3:alt;cmd",  push.bottomLeft);
 slate.bind("4:alt;cmd", push.bottomRight);
 
 // window selector
-slate.bind("tab:cmd", slate.operation("hint"));
+// slate.bind("tab:cmd", slate.operation("hint"));
 
 // focus
 slate.bind("h:alt;cmd;ctrl",   focus.left);
