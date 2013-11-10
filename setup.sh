@@ -24,6 +24,13 @@ for FNAME in $(find $PROJECT_DIR \
   fi
 done
 
+# .vim/bundle isn't tracked by git. install NeoBundle so that the next time vim
+# opens, it'll install all its packages.
+if [ ! -e "$HOME/.vim/bundle/neobundle.vim" ]; then
+  mkdir -p "$HOME/.vim/bundle"
+  git clone "git://github.com/Shougo/neobundle.vim" "$HOME/.vim/bundle/neobundle.vim"
+fi
+
 # install Homebrew
 cd /tmp && ruby -e "$(curl -fsSL "https://raw.github.com/mxcl/homebrew/go")"
 brew update
@@ -56,10 +63,12 @@ brew install ctags
 cd $HOME/Downloads
 wget "http://cachefly.alfredapp.com/Alfred_2.1_218.zip" -O alfred.zip
 sudo unzip alfred.zip -d /Applications
+open "/Applications/Alfred 2.app"
 
 # Install Slate
 wget "http://www.ninjamonkeysoftware.com/slate/versions/slate-latest.tar.gz" -O slate.tar.gz
 sudo tar -xzf slate.tar.gz -C "/Applications"
+open "/Applications/Slate.app"
 
 # Install Chrome
 wget "https://dl.google.com/chrome/mac/stable/GGRM/googlechrome.dmg" -O "$HOME/Downloads/chrome.dmg" && open "$HOME/Downloads/chrome.dmg"
