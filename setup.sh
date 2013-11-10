@@ -38,6 +38,9 @@ read TRASH
 brew install tmux
 brew install reattach-to-user-namespace
 
+# install wget
+brew install wget
+
 # install htop
 brew install htop
 
@@ -51,30 +54,31 @@ brew install ctags
 
 # install Alfred
 cd $HOME/Downloads
-curl "http://cachefly.alfredapp.com/Alfred_2.1_218.zip" > alfred.zip
+wget "http://cachefly.alfredapp.com/Alfred_2.1_218.zip" -O alfred.zip
 sudo unzip alfred.zip -d /Applications
-rm -f alfred.zip
 
 # Install Slate
-curl "http://www.ninjamonkeysoftware.com/slate/versions/slate-latest.tar.gz" | sudo tar -xz -C "/Applications"
+wget "http://www.ninjamonkeysoftware.com/slate/versions/slate-latest.tar.gz" -O slate.tar.gz
+sudo tar -xzf slate.tar.gz -C "/Applications"
 
 # Install Chrome
-curl "https://dl.google.com/chrome/mac/stable/GGRM/googlechrome.dmg" > "$HOME/Downloads/chrome.dmg" && open "$HOME/Downloads/chrome.dmg"
+wget "https://dl.google.com/chrome/mac/stable/GGRM/googlechrome.dmg" -o "$HOME/Downloads/chrome.dmg" && open "$HOME/Downloads/chrome.dmg"
 echo "Install Chrome (press ENTER to continue)"
 read TRASH
 
 # Install KeypassX
-curl "http://downloads.sourceforge.net/keepassx/KeePassX-0.4.3.dmg" > "$HOME/Downloads/keepassx.dmg" && "open keypassx.dmg"
+# XXX sourceforge doesn't like curl?
+wget "http://sourceforge.net/projects/keepassx/files/KeePassX/0.4.3/KeePassX-0.4.3.dmg/download" -O "$HOME/Downloads/keepassx.dmg" && "open keypassx.dmg"
 echo "Install KeypassX (press ENTER to continue)"
 read TRASH
 
 # Install Dropbox
-curl "https://www.dropbox.com/downloading?os=mac" > "$HOME/Downloads/dropbox.dmg" && open "$HOME/Downloads/dropbox.dmg"
+wget "https://d1ilhw0800yew8.cloudfront.net/client/Dropbox%202.4.6.dmg" -O "$HOME/Downloads/dropbox.dmg" && open "$HOME/Downloads/dropbox.dmg"
 echo "Install Dropbox (press ENTER to continue)"
 read TRASH
 
 # Install JVM
-curl 'http://javadl.sun.com/webapps/download/AutoDL?BundleId=81813' > '$HOME/Downloads/jre.dmg' && open '$HOME/Downloads/jre.dmg'
+wget 'http://javadl.sun.com/webapps/download/AutoDL?BundleId=81813' -O "$HOME/Downloads/jre.dmg" && open "$HOME/Downloads/jre.dmg"
 echo "Install Java Runtime Environment (press ENTER to continue)"
 read TRASH
 
