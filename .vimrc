@@ -417,10 +417,11 @@
   " }}}
 
   " Tabular {{{
-    nnoremap <Leader>t= :Tabularize /=<CR>
-    vnoremap <Leader>t= :Tabularize /=<CR>
-    nnoremap <Leader>t: :Tabularize /:<CR>
-    vnoremap <Leader>t: :Tabularize /:<CR>
+    " these patterns only match the first = or : on a line
+    nnoremap <Leader>t= :Tabularize /^[^=]*\zs=<CR>
+    vnoremap <Leader>t= :Tabularize /^[^=]*\zs=<CR>
+    nnoremap <Leader>t: :Tabularize /^[^:]*\zs:<CR>
+    vnoremap <Leader>t: :Tabularize /^[^:]*\zs:<CR>
     nnoremap <Leader>t, :Tabularize /,/r0l1<CR>
     vnoremap <Leader>t, :Tabularize /,/r0l1<CR>
   " }}}
