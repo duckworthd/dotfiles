@@ -53,4 +53,5 @@ show source $PROJECT_DIR/installs/python.sh
 show source $PROJECT_DIR/installs/R.sh
 show source $PROJECT_DIR/installs/scala.sh
 show source $PROJECT_DIR/installs/tmux.sh
+show source $PROJECT_DIR/installs/tree.sh
 show source $PROJECT_DIR/installs/zsh.sh
