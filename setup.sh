@@ -6,6 +6,10 @@ function show() {
   $@
 }
 
+function cmd_exists() {
+  return command -v "$1" >/dev/null 2>&1
+}
+
 # full path to directory containing this file
 PROJECT_DIR=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 
@@ -24,89 +28,29 @@ for FNAME in $(find $PROJECT_DIR \
   fi
 done
 
-# .vim/bundle isn't tracked by git. install NeoBundle so that the next time vim
-# opens, it'll install all its packages.
-if [ ! -e "$HOME/.vim/bundle/neobundle.vim" ]; then
-  mkdir -p "$HOME/.vim/bundle"
-  git clone "git://github.com/Shougo/neobundle.vim" "$HOME/.vim/bundle/neobundle.vim"
-fi
+# install dependencies
+show source $PROJECT_DIR/installs/homebrew.sh
+show source $PROJECT_DIR/installs/wget.sh
+show source $PROJECT_DIR/installs/xcode.sh
 
-# install Homebrew
-cd /tmp && ruby -e "$(curl -fsSL "https://raw.github.com/mxcl/homebrew/go")"
-brew update
+# install desktop apps
+show source $PROJECT_DIR/installs/alfred.sh
+show source $PROJECT_DIR/installs/chrome.sh
+show source $PROJECT_DIR/installs/dropbox.sh
+show source $PROJECT_DIR/installs/evernote.sh
+show source $PROJECT_DIR/installs/hipchat.sh
+show source $PROJECT_DIR/installs/java.sh
+show source $PROJECT_DIR/installs/keepassx.sh
+show source $PROJECT_DIR/installs/macvim.sh
+show source $PROJECT_DIR/installs/slate.sh
 
-# install XCode
-brew install coreutils
-open "https://developer.apple.com/downloads/index.action"
-echo "Download and install XCode (press ENTER when done)"
-read TRASH
-
-# install tmux
-brew install tmux
-brew install reattach-to-user-namespace
-
-# install wget
-brew install wget
-
-# install htop
-brew install htop
-
-# install zsh
-brew install zsh
-chsh -s $(which zsh)
-
-# install MacVim + ctags
-brew install macvim --with-lua --override-system-vim
-brew install ctags
-
-# install Alfred
-cd $HOME/Downloads
-wget "http://cachefly.alfredapp.com/Alfred_2.1_218.zip" -O alfred.zip
-sudo unzip alfred.zip -d /Applications
-open "/Applications/Alfred 2.app"
-
-# Install Slate
-wget "http://www.ninjamonkeysoftware.com/slate/versions/slate-latest.tar.gz" -O slate.tar.gz
-sudo tar -xzf slate.tar.gz -C "/Applications"
-open "/Applications/Slate.app"
-
-# Install Chrome
-wget "https://dl.google.com/chrome/mac/stable/GGRM/googlechrome.dmg" -O "$HOME/Downloads/chrome.dmg" && open "$HOME/Downloads/chrome.dmg"
-echo "Install Chrome (press ENTER to continue)"
-read TRASH
-
-# Install KeypassX
-# XXX sourceforge doesn't like curl?
-wget "http://sourceforge.net/projects/keepassx/files/KeePassX/0.4.3/KeePassX-0.4.3.dmg/download" -O "$HOME/Downloads/keepassx.dmg" && "open $HOME/Downloads/keepassx.dmg"
-echo "Install KeypassX (press ENTER to continue)"
-read TRASH
-
-# Install Dropbox
-wget "https://d1ilhw0800yew8.cloudfront.net/client/Dropbox%202.4.6.dmg" -O "$HOME/Downloads/dropbox.dmg" && open "$HOME/Downloads/dropbox.dmg"
-echo "Install Dropbox (press ENTER to continue)"
-read TRASH
-
-# Install JVM
-wget 'http://javadl.sun.com/webapps/download/AutoDL?BundleId=81813' -O "$HOME/Downloads/jre.dmg" && open "$HOME/Downloads/jre.dmg"
-echo "Install Java Runtime Environment (press ENTER to continue)"
-read TRASH
-
-# Install MySQL
-brew install mysql
-
-# install jq
-brew install jq
-
-# install scala
-brew install scala
-
-# Install R
-brew tap homebrew/science
-brew install R
-
-# Install Python + libraries
-brew install python gfortran freetype libevent
-pip install numpy scipy matplotlib pandas IPython ipdb virtualenv     # scientific
-pip install funcy duxlib configurati virtualenv lxml python-dateutil  # productivity
-pip install sqlrest gevent MySQL-python bottle pyjade                 # web
-pip install nose                                                      # testing
+# install CLI apps
+show source $PROJECT_DIR/installs/ack.sh
+show source $PROJECT_DIR/installs/htop.sh
+show source $PROJECT_DIR/installs/jq.sh
+show source $PROJECT_DIR/installs/mysql.sh  # python.sh depends on this
+show source $PROJECT_DIR/installs/python.sh
+show source $PROJECT_DIR/installs/R.sh
+show source $PROJECT_DIR/installs/scala.sh
+show source $PROJECT_DIR/installs/tmux.sh
+show source $PROJECT_DIR/installs/zsh.sh
