@@ -3,9 +3,6 @@ Install Instructions
 
 1) run setup.sh
 
-    $ ./setup.sh
+    $ sh setup.sh
 
-2) Get a copy of Vim with +python and +ruby (check this with :version). It must
-   be version 7.3.584+.
-
-3) Use and enjoy
+2) follow the popups
