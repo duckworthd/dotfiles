@@ -38,6 +38,7 @@ show source $PROJECT_DIR/installs/alfred.sh
 show source $PROJECT_DIR/installs/chrome.sh
 show source $PROJECT_DIR/installs/dropbox.sh
 show source $PROJECT_DIR/installs/evernote.sh
+show source $PROJECT_DIR/installs/gitx.sh
 show source $PROJECT_DIR/installs/hipchat.sh
 show source $PROJECT_DIR/installs/java.sh
 show source $PROJECT_DIR/installs/keepassx.sh
@@ -45,12 +46,15 @@ show source $PROJECT_DIR/installs/macvim.sh
 show source $PROJECT_DIR/installs/slate.sh
 
 # install CLI apps
+show source $PROJECT_DIR/installs/autojump.sh
 show source $PROJECT_DIR/installs/ack.sh
 show source $PROJECT_DIR/installs/htop.sh
 show source $PROJECT_DIR/installs/jq.sh
-show source $PROJECT_DIR/installs/mysql.sh  # python.sh depends on this
-show source $PROJECT_DIR/installs/python.sh
+show source $PROJECT_DIR/installs/mysql.sh
+show source $PROJECT_DIR/installs/python.sh # depends on mysql.sh
+show source $PROJECT_DIR/installs/httpie.sh # depends on python.sh
 show source $PROJECT_DIR/installs/R.sh
+show source $PROJECT_DIR/installs/s3cmd.sh
 show source $PROJECT_DIR/installs/scala.sh
 show source $PROJECT_DIR/installs/tmux.sh
 show source $PROJECT_DIR/installs/tree.sh
