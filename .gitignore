@@ -8,3 +8,6 @@
 # ignore bash configuration (I rely on .zsh these days)
 .bashrcs/
 .bash_profile
+
+# ignore python compiled stuff
+*.py[co]
