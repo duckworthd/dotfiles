@@ -129,7 +129,6 @@
 
   if has('gui_macvim')
     set macmeta   " lets me use <A-...> in MacVim
-    set guifont=Consolas:h12
   endif
 
   if has('unix') && !has('mac')
