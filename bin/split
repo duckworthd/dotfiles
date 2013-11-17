@@ -1,0 +1,14 @@
+#!/usr/bin/env python
+
+import argparse
+import re
+import sys
+
+
+parser = argparse.ArgumentParser("Split strings on regular expressions")
+parser.add_argument("delimiter", type=re.compile, help="Split incoming lines on this regex")
+args = parser.parse_args()
+
+for line in sys.stdin:
+  for subline in args.delimiter.split(line.strip()):
+    print subline
