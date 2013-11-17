@@ -1,8 +1,9 @@
-export PATH="/usr/local/bin:$PATH"
-export PATH="/usr/local/sbin:$PATH"
-export CFLAGS="$CFLAGS -I/usr/local/include"
-export CPPFLAGS="$CPPFLAGS -I/usr/local/include"
-export LDFLAGS="$LDFLAGS -L/usr/local/lib"
+PREFIX=$(brew --prefix)
+export PATH="$PREFIX/bin:$PATH"
+export PATH="$PREFIX/sbin:$PATH"
+export CFLAGS="$CFLAGS -I$PREFIX/include"
+export CPPFLAGS="$CPPFLAGS -I$PREFIX/include"
+export LDFLAGS="$LDFLAGS -L$PREFIX/lib"
 
 # scala
-export SCALA_HOME=/usr/local/Cellar/scala29/2.9.3/
+export SCALA_HOME="$PREFIX/Cellar/scala29/2.9.3"
