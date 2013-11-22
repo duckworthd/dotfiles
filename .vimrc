@@ -421,8 +421,8 @@
     vnoremap <Leader>t= :Tabularize /^[^=]*\zs=<CR>
     nnoremap <Leader>t: :Tabularize /^[^:]*\zs:<CR>
     vnoremap <Leader>t: :Tabularize /^[^:]*\zs:<CR>
-    nnoremap <Leader>t, :Tabularize /,/r0l1<CR>
-    vnoremap <Leader>t, :Tabularize /,/r0l1<CR>
+    nnoremap <Leader>t, :Tabularize/(\\|)\\|,/l0<CR>
+    vnoremap <Leader>t, :Tabularize/(\\|)\\|,/l0<CR>
   " }}}
 
   " ack.vim {{{
