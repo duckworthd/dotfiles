@@ -26,6 +26,11 @@ def open(path, appname):
   )
   raw_input()
 
+def brew_tap(repo):
+  tapped = run("brew tap", hide="both").stdout.strip().split("\n")
+  if repo not in tapped:
+    run("brew tap {}".format(repo))
+
 def brew_install(names, check=None):
   if isinstance(names, basestring):
     names = [names]
@@ -221,9 +226,10 @@ def python_scientific():
 
   # `pip install scipy` doesn't work with Homebrew due to path issues, so let
   # homebrew handle its installation instead.
-  brew_install("samueljohn/python/numpy", lambda: python_package_exists("numpy"))
-  brew_install("samueljohn/python/scipy", lambda: python_package_exists("scipy"))
-  brew_install("samueljohn/python/matplotlib", lambda: python_package_exists("matplotlib"))
+  brew_tap("samueljohn/python")
+  brew_install("numpy"     ,lambda: python_package_exists("numpy"     ))
+  brew_install("scipy"     ,lambda: python_package_exists("scipy"     ))
+  brew_install("matplotlib",lambda: python_package_exists("matplotlib"))
 
   pip_install([
     "pandas",
@@ -240,6 +246,7 @@ def python_productivity():
   pip_install("python-dateutil", lambda: python_package_exists("dateutil"))
   pip_install([
     "configurati",
+    "dataset",
     "duxlib",
     "funcy",
     "gevent",
@@ -270,14 +277,16 @@ def python_amazon():
     "boto",
     "awscli",
   ])
+  pip_install("gsutil", lambda: command_exists("gsutil"))
 
 @task("homebrew")
 def coreutils():
   brew_install("coreutils", lambda: command_exists("gdircolors"))
 
-@task("homebrew")
+@task("homebrew", "xquartz")
 def R():
-  brew_install("homebrew/science/R", lambda: command_exists("R"))
+  brew_tap("homebrew/science")
+  brew_install("R", lambda: command_exists("R"))
 
 @task("homebrew")
 def s3cmd():
@@ -348,6 +357,12 @@ def dotfiles():
     target = os.path.join(HOME, os.path.split(source)[1])
     if not os.path.exists(target):
       run('ln -s "{}" "{}"'.format(source, target))
+
+@task
+def xquartz():
+  if os.path.exists("/Applications/Utilities/XQuartz.app"):
+    return
+  open(download("http://xquartz.macosforge.org/downloads/SL/XQuartz-2.7.5.dmg", "XQuartz"))
 
 
 ### AGGREGATE TASKS ###
