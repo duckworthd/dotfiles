@@ -210,6 +210,10 @@ def mysql():
     run('launchctl load {dest}'.format(dest))
 
 @task("homebrew")
+def parallel():
+  brew_install("parallel")
+
+@task("homebrew")
 def python():
   if os.path.exists("$(brew --prefix)/bin/python"):
     return
@@ -384,6 +388,7 @@ def common():
   jq()
   keepassx()
   macvim()
+  parallel()
   python()
   python_scientific()
   python_productivity()
