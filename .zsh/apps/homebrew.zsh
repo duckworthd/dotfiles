@@ -7,3 +7,6 @@ export LDFLAGS="$LDFLAGS -L$PREFIX/lib"
 
 # scala
 export SCALA_HOME="$PREFIX/Cellar/scala29/2.9.3"
+
+# vim
+export VIM="$HOME/.vim"
