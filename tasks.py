@@ -15,8 +15,11 @@ def download(url, save_to="{}/Downloads".format(os.environ["HOME"])):
   """Download a file to disk"""
   filename = os.path.split(url)[1]
   path     = os.path.join(save_to, filename)
-  run('wget --quiet "{}" -O "{}"'.format(url, path))
-  return path
+  try:
+    run('wget --quiet "{}" -O "{}"'.format(url, path))
+    return path
+  except Exception as e:
+    raise Exception("Unable to fetch {}".format(url))
 
 def open(path, appname):
   """Open a file using the `open` command"""
@@ -112,7 +115,7 @@ def ack():
 def alfred():
   if os.path.exists("/Applications/Alfred 2.app"):
     return
-  unzip(download("http://cachefly.alfredapp.com/Alfred_2.1_218.zip"))
+  unzip(download("http://cachefly.alfredapp.com/Alfred_2.2_243b.zip"))
 
 @task("homebrew")
 def autojump():
