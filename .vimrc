@@ -1,6 +1,11 @@
 " Plugins {{{
   set nocompatible
 
+  " MacVim uses b:did_ftplugin as an ifdef guard over its scripts in
+  " /usr/local/Cellar/macvim/<version>/MacVim.app/Contents/Resources/vim/runtime
+  " By setting b:did_ftplugin=1, I can prevent these scripts from ever executing.
+  let b:did_ftplugin=1
+
   " Load everything in ~/.vim/bundles
   set runtimepath+=~/.vim/bundle/neobundle.vim
   call neobundle#rc(expand('~/.vim/bundle/'))
@@ -33,6 +38,9 @@
 
   " align text by "=" or ":" or whatever else
   NeoBundle 'godlygeek/tabular'
+
+  " LESS syntax (CSS extension)
+  NeoBundle 'groenewege/vim-less'
 
   " snippets for neosnippet
   NeoBundle 'honza/vim-snippets'
@@ -99,6 +107,9 @@
   " " automatically open/close parentheses
   " NeoBundle 'vim-scripts/Auto-Pairs'
 
+  " kill buffers without messing up window layout
+  NeoBundle 'vim-scripts/bufkill.vim'
+
   " pig syntax
   NeoBundle 'vim-scripts/pig.vim'
 
@@ -112,7 +123,7 @@
   NeoBundle 'xolox/vim-misc'
 
   " NeoBundle 'hattya/python_fold.vim'             " slow slow slow
-  " NeoBundle 'pangloss/vim-javascript'            " slow slow slow
+  NeoBundle 'pangloss/vim-javascript'            " slow slow slow
   " NeoBundle 'Raimondi/delimitMate'               " gets in the way
   " NeoBundle 'sontek/rope-vim'                    " slow slow slow
   " NeoBundle 'majutsushi/tagbar'                  " doesn't work when I need it
@@ -150,6 +161,7 @@
   set switchbuf=usetab      " when using :bn and such, iterate across tabs too
   set mouse=a               " enable mouse usage on some terminals
   set virtualedit=block     " lets you move the cursor past the end of the line when selecting blocks of text
+  set lazyredraw            " don't update display while executing a macro
 " }}}
 
 " Tabs {{{
@@ -207,15 +219,15 @@
   " vnoremap X   "_X
 
   " Switching splits
-  noremap <C-j> <C-W>j
-  noremap <C-k> <C-W>k
-  noremap <C-l> <C-W>l
-  noremap <C-h> <C-W>h
+  nnoremap <C-j> <C-W>j
+  nnoremap <C-k> <C-W>k
+  nnoremap <C-l> <C-W>l
+  nnoremap <C-h> <C-W>h
 
-  noremap <C-Up>    <C-W>k
-  noremap <C-Down>  <C-W>j
-  noremap <C-Left>  <C-W>h
-  noremap <C-Right> <C-W>l
+  nnoremap <C-Up>    <C-W>k
+  nnoremap <C-Down>  <C-W>j
+  nnoremap <C-Left>  <C-W>h
+  nnoremap <C-Right> <C-W>l
 
   " up/down within a single wrapped line
   nnoremap <Up>   gk
@@ -289,6 +301,13 @@
 
   " delete surrounding function
   nnoremap <leader>dsf m`F(Bdwxf)x``
+
+  " Disable 'open documentation' shortcut
+  nnoremap K <Nop>
+  vnoremap K <Nop>
+
+  " delete all trailing whitespace
+  nnoremap <leader>dw :%s/\v\s+$//g<CR><C-o>
 "}}}
 
 " UI {{{
@@ -311,13 +330,21 @@
   set showcmd         " show partial command in lower right
   set wrap            " wrap lines
 
-  set list            " enable the following
-  set listchars=tab:\ \   " tabs look like spaces
-  set listchars+=trail:\~  " ~ for extra whitespace
-  set listchars+=extends:>    " character to show at end when wrapping
-  set listchars+=precedes:<   " character to show at beginning when wrapping
+  set list                  " enable the following
+  set listchars=tab:\ \     " tabs look like spaces
+  set listchars+=trail:\~   " ~ for extra whitespace
+  set listchars+=extends:>  " character to show at end when wrapping
+  set listchars+=precedes:< " character to show at beginning when wrapping
 
   set completeopt=menuone,longest " popup menu for completions, insert longest match first
+
+  " color trailing whitespace red
+  augroup whitespace
+    autocmd!
+    highlight ExtraWhitespace ctermfg=red guifg=red
+    autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+    autocmd BufWinLeave * call clearmatches()
+  augroup END
 "}}}
 
 " Status Line {{{
@@ -369,9 +396,12 @@
       " 0: use pwd
       " 1: use directory of current file
       " 2: use nearest ancestor with .git, .svn. or whatever
+
     noremap <leader>cp :CtrlPMixed<CR>
+    noremap <leader>cb :CtrlPBuffer<CR>
 
     let g:ctrlp_follow_symlinks = 1   " follow symlinks
+    let g:ctrlp_clear_cache_on_exit = 0 " keep caches across sessions
   " }}}
 
   " python-mode {{{
@@ -421,8 +451,8 @@
     vnoremap <Leader>t= :Tabularize /^[^=]*\zs=<CR>
     nnoremap <Leader>t: :Tabularize /^[^:]*\zs:<CR>
     vnoremap <Leader>t: :Tabularize /^[^:]*\zs:<CR>
-    nnoremap <Leader>t, :Tabularize/(\\|)\\|,/l0<CR>
-    vnoremap <Leader>t, :Tabularize/(\\|)\\|,/l0<CR>
+    nnoremap <Leader>t, :Tabularize/(\\|,/l0l0r0r1r0r1r0r1r0r1r0r1<CR>
+    vnoremap <Leader>t, :Tabularize/(\\|,/l0l0r0r1r0r1r0r1r0r1r0r1<CR>
   " }}}
 
   " ack.vim {{{
