@@ -101,7 +101,7 @@ def python_package_exists(package):
 @task
 def homebrew():
   if not command_exists("brew"):
-    run('ruby -e "$(curl -fsSL "https://raw.github.com/mxcl/homebrew/go")"')
+    run('ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"')
     run("brew update")
 
 @task("homebrew")
