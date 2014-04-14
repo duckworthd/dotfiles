@@ -11,12 +11,12 @@ def run(*args, **kwargs):
     print "$ {}".format(args[0])
   return invoke.run(*args, **kwargs)
 
-def download(url, save_to="{}/Downloads".format(os.environ["HOME"])):
+def download(url, save_to="{}/Downloads".format(os.environ["HOME"]), filename=None):
   """Download a file to disk"""
-  filename = os.path.split(url)[1]
+  filename = filename or os.path.split(url)[1]
   path     = os.path.join(save_to, filename)
   try:
-    run('wget --quiet "{}" -O "{}"'.format(url, path))
+    run('wget --progress=bar "{}" -O "{}"'.format(url, path))
     return path
   except Exception as e:
     raise Exception("Unable to fetch {}".format(url))
@@ -148,7 +148,7 @@ def dropbox():
 def evernote():
   if os.path.exists("/Applications/Evernote.app"):
     return
-  open(download("https://evernote.com/download/get.php?file=EvernoteMac"), "Evernote")
+  open(download("https://evernote.com/download/get.php?file=EvernoteMac", filename="Evernote.dmg"), "Evernote")
 
 @task("wget")
 def gitx():
