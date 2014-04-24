@@ -34,7 +34,7 @@ def brew_tap(repo):
   if repo not in tapped:
     run("brew tap {}".format(repo))
 
-def brew_install(names, check=None):
+def brew_install(names, check=None, cask=False):
   if isinstance(names, basestring):
     names = [names]
 
@@ -52,7 +52,7 @@ def brew_install(names, check=None):
 
   names = names_
   if len(names) > 0:
-    run("brew install {}".format(" ".join(names)))
+    run("brew {} install {}".format("cask" if cask else "", " ".join(names)))
     return True
   else:
     return False
@@ -106,6 +106,24 @@ def homebrew():
   if not command_exists("brew"):
     run('ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"')
     run("brew update")
+
+@task("homebrew")
+def brew_cask():
+  if not command_exists("brew cask"):
+    brew_tap("phinze/homebrew-cask")
+    brew_install("brew-cask")
+    run("brew cask")
+
+@task("brew_cask")
+def virtualbox():
+  if os.path.exists("/Applications/VirtualBox.app"):
+    return
+  brew_install("virtualbox", check=lambda: True, cask=True)
+
+@task("virtualbox")
+def docker():
+  brew_install("boot2docker")
+  brew_install("docker")
 
 @task("homebrew")
 def ack():
@@ -188,7 +206,7 @@ def keepassx():
     return
   open(download("http://sourceforge.net/projects/keepassx/files/KeePassX/0.4.3/KeePassX-0.4.3.dmg/download"), "KeePassX")
 
-@task("homebrew")
+@task("homebrew", "xcode", "xcode_license")
 def macvim():
   if command_exists("mvim"):
     return
@@ -325,6 +343,7 @@ def tunnelblick():
     return
   open(download("https://sourceforge.net/projects/tunnelblick/files/All%20files/Tunnelblick_3.3.dmg/download"), "Tunnelblick")
 
+@task
 def xcode():
   if command_exists("gcc"):
     return
@@ -332,6 +351,10 @@ def xcode():
   print (
     "Download and install XCode and Command Line Tools (press ENTER when done)"
   )
+
+@task("xcode")
+def xcode_license():
+  run("sudo xcodebuild -license")
 
 @task("homebrew", "dotfiles")
 def zsh():
@@ -400,7 +423,6 @@ def common():
   slate()
   tmux()
   tree()
-  xcode()
   zsh()
   dotfiles()
 
