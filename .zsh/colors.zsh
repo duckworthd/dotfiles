@@ -29,9 +29,11 @@ elif hash gdircolors 2>/dev/null; then
 fi
 
 # Coloring by filetype (for ls).
-# Append user's ~/.dir_colors if it exists.
-if [ -e ~/.dir_colors ] || [ -e /etc/DIR_COLORS ]; then
+# Append user's ~/.dir_colors if it exists and DIRCOLORS is defined
+if ( [ -e ~/.dir_colors ] || [ -e /etc/DIR_COLORS ] ) && [ ! -z "$DIRCOLORS" ] ; then
   GLOBAL=$([ -e /etc/DIR_COLORS ] && echo /etc/DIR_COLORS)
   LOCAL=$([ -e ~/.dir_colors ] && echo ~/.dir_colors)
   eval "$($DIRCOLORS -b <(cat $GLOBAL $LOCAL))"
+else
+  echo "Not setting DIRCOLORS..."
 fi
