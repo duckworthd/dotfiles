@@ -21,9 +21,6 @@
   " status bar
   NeoBundle 'bling/vim-airline'
 
-  " extension for status bar
-  NeoBundle 'bling/vim-bufferline'
-
   " color scheme
   NeoBundle 'cseelus/sleepwalker-vim'
 
@@ -104,6 +101,9 @@
   " delete surrounding parentheses, etc
   NeoBundle 'tpope/vim-surround'
 
+  " markdown syntax (default is broken)
+  NeoBundle 'tpope/vim-markdown'
+
   " " automatically open/close parentheses
   " NeoBundle 'vim-scripts/Auto-Pairs'
 
@@ -130,6 +130,7 @@
   " NeoBundle 'jcf/vim-latex'                      " messes with my shortcuts
   " NeoBundle 'xolox/vim-shell'                    " never use it
   " NeoBundle 'Valloric/YouCompleteMe'             " crashes
+  " NeoBundle 'bling/vim-bufferline'               " too many buffers open at a time
 " }}}
 
 " Environment {{{
@@ -392,16 +393,32 @@
   " }}}
 
   " CtrlP {{{
-    let g:ctrlp_working_path_mode = 2
-      " 0: use pwd
-      " 1: use directory of current file
-      " 2: use nearest ancestor with .git, .svn. or whatever
+    let g:ctrlp_working_path_mode = 'ra'
+      " c - the directory of the current file.
+      " a - like "c", but only applies when the current working directory outside of
+      "     CtrlP isn't a direct ancestor of the directory of the current file.
+      " r - the nearest ancestor that contains one of these directories or files:
+      "     .git .hg .svn .bzr _darcs
+      " w - begin finding a root from the current working directory outside of CtrlP
+      "     instead of from the directory of the current file (default). Only applies
+      "     when "r" is also present.
+      " 0 or <empty> - disable this feature.
+      "
+      " Note #1: if "a" or "c" is included with "r", use the behavior of "a" or "c" (as
+      " a fallback) when a root can't be found.
 
     noremap <leader>cp :CtrlPMixed<CR>
     noremap <leader>cb :CtrlPBuffer<CR>
 
     let g:ctrlp_follow_symlinks = 1   " follow symlinks
     let g:ctrlp_clear_cache_on_exit = 0 " keep caches across sessions
+
+    let g:ctrlp_custom_ignore = {
+      \ 'dir'  : '\v[\/](env|target|dist|.+[.]egg-info)$',
+      \ 'file' : '',
+      \ 'link' : '',
+      \ }
+
   " }}}
 
   " python-mode {{{
@@ -560,7 +577,7 @@
   " }}}
 
   " html {{{
-    augroup yaml
+    augroup html
       autocmd!
       autocmd FileType html :setlocal foldmethod=indent
     augroup END
