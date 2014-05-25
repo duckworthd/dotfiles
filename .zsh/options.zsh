@@ -9,3 +9,7 @@ setopt AUTO_PUSHD
 
 # Enable parameter expansion, command substitution, and arithmetic expansion in the prompt
 setopt PROMPT_SUBST
+
+# if a glob pattern doesn't match any files, just remove it from the argument
+# list (instead of erroring out).
+setopt NULL_GLOB
