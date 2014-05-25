@@ -1,11 +1,6 @@
 " Plugins {{{
   set nocompatible
 
-  " MacVim uses b:did_ftplugin as an ifdef guard over its scripts in
-  " /usr/local/Cellar/macvim/<version>/MacVim.app/Contents/Resources/vim/runtime
-  " By setting b:did_ftplugin=1, I can prevent these scripts from ever executing.
-  let b:did_ftplugin=1
-
   " Load everything in ~/.vim/bundles
   set runtimepath+=~/.vim/bundle/neobundle.vim
   call neobundle#rc(expand('~/.vim/bundle/'))
@@ -427,6 +422,8 @@
     let g:pymode_indent = 0         " don't step on my indentation
     let g:pymode_options = 0        " don't set wrap, textwidth
     let g:pymode_folding = 1        " do control indentation
+
+    let g:pymode_virtualenv = 0     " don't detect virtualenvs automatically
   " }}}
 
   " vim-javascript {{{
@@ -514,6 +511,11 @@
 
   " vim-multiple-cursors {{{
     let g:multi_cursor_quit_key='<C-c>'
+  " }}}
+
+  " eclim {{{
+    " compatibility with neocomplete
+    let g:EclimCompletionMethod = 'omnifunc'
   " }}}
 " }}}
 
