@@ -5,6 +5,10 @@
 # managed by Vim Addon Manager (VAM)
 .vim/bundle
 
+# managed by EMACS's package.el
+.emacs.d/elpa
+.emacs.d/ido.last
+
 # ignore bash configuration (I rely on .zsh these days)
 .bashrcs/
 .bash_profile
