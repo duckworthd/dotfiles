@@ -1,6 +1,6 @@
 ///////////////////////////// Imports //////////////////////////////////////////
-slate.source("~/.slate.d/configure.js");
-slate.source("~/.slate.d/golden.js");
+// slate.source("~/.slate.d/configure.js");
+// slate.source("~/.slate.d/golden.js");
 
 ///////////////////////////// Environment //////////////////////////////////////
 slate.configAll({

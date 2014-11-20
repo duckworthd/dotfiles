@@ -3,15 +3,11 @@
 .svn
 
 # managed by Vim Addon Manager (VAM)
-.vim/bundle
+dotfiles/.vim/bundle
 
 # managed by EMACS's package.el
-.emacs.d/elpa
-.emacs.d/ido.last
-
-# ignore bash configuration (I rely on .zsh these days)
-.bashrcs/
-.bash_profile
+dotfiles/.emacs.d/elpa
+dotfiles/.emacs.d/ido.last
 
 # ignore python compiled stuff
 *.py[co]

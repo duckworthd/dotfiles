@@ -1,0 +1,13 @@
+############################# Behavior #########################################
+
+############################# Key Bindings #####################################
+
+############################# Status Line ######################################
+
+# use whatever shell you use outside of screen
+shell -${SHELL}
+caption always "%n(%t) : %C"
+defscrollback 1024
+startup_message off
+hardstatus on
+hardstatus alwayslastline

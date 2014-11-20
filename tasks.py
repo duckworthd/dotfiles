@@ -1,38 +1,40 @@
 import os
 
 from invoke import task
-from provisioning import apps, core, homebrew
+from provisioning.apps import *
+from provisioning.core import *
+from provisioning.homebrew import *
 
 
 @task(default=True)
 def common():
-  core.homebrew()
-  core.brew_cask()
-  core.dotfiles()
+  homebrew()
+  brew_cask()
+  dotfiles()
 
   # CLI utils
-  homebrew.ack()
-  homebrew.autojump()
-  homebrew.coreutils()
-  homebrew.ctags()
-  homebrew.htop()
-  homebrew.httpie()
-  homebrew.jq()
-  homebrew.parallel()
-  homebrew.python()
-  homebrew.python_productivity()
-  homebrew.python_scientific()
-  homebrew.tmux()
-  homebrew.tree()
-  homebrew.zsh()
+  ack()
+  autojump()
+  coreutils()
+  ctags()
+  htop()
+  httpie()
+  jq()
+  parallel()
+  python()
+  python_productivity()
+  python_scientific()
+  tmux()
+  tree()
+  zsh()
 
   # Applications
-  apps.alfred()
-  apps.chrome()
-  apps.dropbox()
-  apps.evernote()
-  apps.gitx()
-  apps.iterm2()
-  apps.java()
-  apps.keepassx()
-  apps.macvim()
+  alfred()
+  chrome()
+  dropbox()
+  evernote()
+  gitx()
+  iterm2()
+  java()
+  keepassx()
+  macvim()
