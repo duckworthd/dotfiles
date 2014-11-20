@@ -38,6 +38,9 @@
     ;; Control git from emacs
     magit
 
+    ;; Major mode for markdown
+    markdown-mode
+
     ;; Color theme based on Sublime Text's monokai-theme
     monokai-theme
 
@@ -105,7 +108,7 @@
 ;; ====
 ;;
 ;; vi-like functionality.
-(evil-mode 1) ; enable evil mode
+(evil-mode 0) ; disable evil mode
 
 ;; helm
 ;; ====
@@ -147,6 +150,14 @@
 ;;
 ;; Control git from within emacs.
 ;;   <M-x> magit-status
+
+;; markdown-mode
+;; =============
+;;
+;; Syntax comprehension for MARKDOWN format. See for usage,
+;;   http://jblevins.org/projects/markdown-mode/
+(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '(      "\\.md\\'" . markdown-mode))
 
 ;; monokai-theme
 ;; =============

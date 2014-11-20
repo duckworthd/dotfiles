@@ -2,6 +2,8 @@
 ;; Internal Settings
 ;; ===========================================================================
 
+(defconst tmp-dir (format "/tmp/emacs/%s/" (user-uid)))
+
 (setq-default inhibit-startup-screen t                        ; Skip the startup screens
               initial-scratch-message nil
               blink-cursor-alist '((t . hollow))              ; Cursor blinks solid and hollow
@@ -21,9 +23,9 @@
               delete-old-versions t
               kept-new-versions 4
               kept-old-versions 0
-              backup-directory-alist '((".*" . "/tmp/.saves/"))
-              auto-save-list-file-prefix nil
-              auto-save-file-name-transforms '((".*" "/tmp/.saves/" t))
+              backup-directory-alist `((".*" . , tmp-dir))    ; save backups + autosave in tmp-dir
+              auto-save-file-name-transforms `((".*", tmp-dir t))
+              auto-save-list-file-prefix tmp-dir
               font-lock-use-fonts '(or (mono) (grayscale))    ; Maximal syntax highlighting
               font-lock-use-colors '(color)
               font-lock-maximum-decoration t
