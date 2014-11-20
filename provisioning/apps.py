@@ -51,11 +51,12 @@ def macvim():
   HOME = os.environ["HOME"]
   brew_install("macvim", flags=["--with-lua", "--override-system-vim"])
   run('mkdir -p {}/.vim/bundle'.format(HOME))
-  run(
-      ('git clone "git://github.com/Shougo/neobundle.vim" '
-       '"{}/.vim/bundle/neobundle.vim"').format(HOME)
-    )
-  print "Type ':NeoBundleInstall' the next time you open vim"
+  if not os.path.exists("{}/.vim/bundle/neobundle.vim".format(HOME)):
+    run(
+        ('git clone "git://github.com/Shougo/neobundle.vim" '
+         '"{}/.vim/bundle/neobundle.vim"').format(HOME)
+      )
+    print "Type ':NeoBundleInstall' the next time you open vim"
 
 @task("brew_cask")
 def mjolnir():
