@@ -3,7 +3,7 @@
 
   " Load everything in ~/.vim/bundles
   set runtimepath+=~/.vim/bundle/neobundle.vim
-  call neobundle#rc(expand('~/.vim/bundle/'))
+  call neobundle#begin(expand('~/.vim/bundle/'))
 
   " let NeoBundle manage itself
   NeoBundleFetch 'Shougo/NeoBundle.vim'
@@ -122,6 +122,11 @@
   " NeoBundle 'Valloric/YouCompleteMe'             " crashes
   " NeoBundle 'bling/vim-bufferline'               " too many buffers open at a time
   " NeoBundle 'vim-scripts/Auto-Pairs'             " irritating ot use
+
+  call neobundle#end()
+
+  " Prompt user if there are uninstalled bundles
+  NeoBundleCheck
 " }}}
 
 " Environment {{{
@@ -375,8 +380,18 @@
     let g:easytags_on_cursorhold = 0
       " If you stop typing for a bit, :UpdateTags runs
     let g:easytags_autorecurse = 0
-      " :UpdateTags updates everything in the same directory as
-      " the current file.
+      " Scan files in child directories relative to the file being examined
+    let g:easytags_auto_update = 0
+      " Disable auto updating while keeping auto highlighting
+    let g:easytags_events = ['BufWritePost']
+      " Automatically update tags on save
+
+    if !has('win32') && !has('win64')
+      silent execute '!mkdir -p /tmp/easytags'
+      let g:easytags_by_filetype = '/tmp/easytags'
+        " Indepent tag files for each file type, all stored in this folder
+    endif
+
     nnoremap <leader>ut :UpdateTags<CR>
       " Force tag update for all files under the source tree of the
       " currently open file.
@@ -517,6 +532,7 @@
     " compatibility with neocomplete
     let g:EclimCompletionMethod = 'omnifunc'
   " }}}
+
   " vim-pandoc {{{
     let g:pandoc#syntax#conceal#use = 0   " disable replacing raw text with pretty versions
   " }}}
