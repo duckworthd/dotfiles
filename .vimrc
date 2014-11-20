@@ -34,9 +34,6 @@
   " LESS syntax (CSS extension)
   NeoBundle 'groenewege/vim-less'
 
-  " snippets for neosnippet
-  NeoBundle 'honza/vim-snippets'
-
   " golang syntax
   NeoBundle 'jnwhiteh/vim-golang'
 
@@ -51,9 +48,6 @@
 
   " quick character search
   NeoBundle 'Lokaltog/vim-easymotion'
-
-  "  HTML completion
-  "NeoBundle 'mattn/emmet-vim'
 
   " ack for searching
   NeoBundle 'mileszs/ack.vim'
@@ -84,7 +78,7 @@
 
   " snippet completion
   NeoBundle 'Shougo/neosnippet'
-  " NeoBundle 'sickill/vim-pasta'
+  NeoBundle 'Shougo/neosnippet-snippets'
 
   " visual undo tree
   NeoBundle 'sjl/gundo.vim'
@@ -99,8 +93,9 @@
   " markdown syntax (default is broken)
   NeoBundle 'tpope/vim-markdown'
 
-  " " automatically open/close parentheses
-  " NeoBundle 'vim-scripts/Auto-Pairs'
+  " syntax highlighting for markdown + latex
+  NeoBundle 'vim-pandoc/vim-pandoc'
+  NeoBundle 'vim-pandoc/vim-pandoc-syntax'
 
   " kill buffers without messing up window layout
   NeoBundle 'vim-scripts/bufkill.vim'
@@ -126,6 +121,7 @@
   " NeoBundle 'xolox/vim-shell'                    " never use it
   " NeoBundle 'Valloric/YouCompleteMe'             " crashes
   " NeoBundle 'bling/vim-bufferline'               " too many buffers open at a time
+  " NeoBundle 'vim-scripts/Auto-Pairs'             " irritating ot use
 " }}}
 
 " Environment {{{
@@ -307,7 +303,11 @@
 "}}}
 
 " UI {{{
-  color ir_black
+  if has("gui_running")
+    colorscheme solarized
+  else
+    colorscheme ir_black
+  endif
   if $TERM == "xterm-256color" " enable 256 colors
     set t_Co=256
   endif
@@ -374,7 +374,7 @@
       " Where easytags saves its tag info
     let g:easytags_on_cursorhold = 0
       " If you stop typing for a bit, :UpdateTags runs
-    let g:easytags_autorecurse = 1
+    let g:easytags_autorecurse = 0
       " :UpdateTags updates everything in the same directory as
       " the current file.
     nnoremap <leader>ut :UpdateTags<CR>
@@ -517,6 +517,9 @@
     " compatibility with neocomplete
     let g:EclimCompletionMethod = 'omnifunc'
   " }}}
+  " vim-pandoc {{{
+    let g:pandoc#syntax#conceal#use = 0   " disable replacing raw text with pretty versions
+  " }}}
 " }}}
 
 " Languages {{{
@@ -582,6 +585,13 @@
     augroup html
       autocmd!
       autocmd FileType html :setlocal foldmethod=indent
+    augroup END
+  " }}}
+  "
+  " cpp {{{
+    augroup cpp
+      autocmd!
+      autocmd FileType cpp :setlocal foldmethod=syntax
     augroup END
   " }}}
 " }}}
