@@ -36,6 +36,11 @@ def java():
   brew_install("java", cask=True)
 
 @task("brew_cask")
+def iterm2():
+  if application_exists("iTerm"): return
+  brew_install("iterm2", cask=True)
+
+@task("brew_cask")
 def keepassx():
   brew_tap("caskroom/versions")
   brew_install("keepassx0", cask=True)
