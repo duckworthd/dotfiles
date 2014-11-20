@@ -34,7 +34,7 @@ def wget():
 
 @task("homebrew")
 def htop():
-  brew_install("htop")
+  brew_install("htop-osx")
 
 @task("python")
 def httpie():
@@ -89,8 +89,8 @@ def python_productivity():
   brew_install("libevent")
   brew_install( "libyaml")
   brew_install( "libxml2")
-  pip_install(         "PyYAML", lambda: python_package_exists("yaml"))
-  pip_install("python-dateutil", lambda: python_package_exists("dateutil"))
+  pip_install(         "PyYAML", check=lambda: python_package_exists("yaml"))
+  pip_install("python-dateutil", check=lambda: python_package_exists("dateutil"))
   pip_install([
     "configurati",
     "duxlib",
@@ -103,7 +103,7 @@ def python_productivity():
 
 @task("python", "mysql")
 def python_web():
-  pip_install("MySQL-python", lambda: python_package_exists("MySQLdb"))
+  pip_install("MySQL-python", check=lambda: python_package_exists("MySQLdb"))
   pip_install([
     "sqlrest",
     "bottle",
@@ -123,11 +123,11 @@ def python_amazon():
     "boto",
     "awscli",
   ])
-  pip_install("gsutil", lambda: command_exists("gsutil"))
+  pip_install("gsutil", check=lambda: command_exists("gsutil"))
 
 @task("homebrew")
 def coreutils():
-  brew_install("coreutils", lambda: command_exists("gdircolors"))
+  brew_install("coreutils")
 
 @task("homebrew")
 def s3cmd():
@@ -139,7 +139,7 @@ def scala():
 
 @task("homebrew", "dotfiles")
 def tmux():
-  brew_install("tmux", lambda: command_exists("tmux", "-V"))
+  brew_install("tmux")
   brew_install("reattach-to-user-namespace")
 
 @task("homebrew")
