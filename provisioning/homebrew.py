@@ -5,15 +5,6 @@ from .utils import *
 
 
 @task("homebrew")
-def ctags():
-  brew_install("ctags")
-
-@task("virtualbox")
-def docker():
-  brew_install("boot2docker")
-  brew_install("docker")
-
-@task("homebrew")
 def ack():
   brew_install("ack")
 
@@ -29,8 +20,17 @@ def autojump():
     )
 
 @task("homebrew")
-def wget():
-  brew_install("wget")
+def coreutils():
+  brew_install("coreutils")
+
+@task("homebrew")
+def ctags():
+  brew_install("ctags")
+
+@task("virtualbox")
+def docker():
+  brew_install("boot2docker")
+  brew_install("docker")
 
 @task("homebrew")
 def htop():
@@ -89,8 +89,8 @@ def python_productivity():
   brew_install("libevent")
   brew_install( "libyaml")
   brew_install( "libxml2")
-  pip_install(         "PyYAML", check=lambda: python_package_exists("yaml"))
-  pip_install("python-dateutil", check=lambda: python_package_exists("dateutil"))
+  pip_install(         "PyYAML")
+  pip_install("python-dateutil")
   pip_install([
     "configurati",
     "duxlib",
@@ -103,7 +103,7 @@ def python_productivity():
 
 @task("python", "mysql")
 def python_web():
-  pip_install("MySQL-python", check=lambda: python_package_exists("MySQLdb"))
+  pip_install("MySQL-python")
   pip_install([
     "sqlrest",
     "bottle",
@@ -123,11 +123,7 @@ def python_amazon():
     "boto",
     "awscli",
   ])
-  pip_install("gsutil", check=lambda: command_exists("gsutil"))
-
-@task("homebrew")
-def coreutils():
-  brew_install("coreutils")
+  pip_install("gsutil")
 
 @task("homebrew")
 def s3cmd():
@@ -145,6 +141,10 @@ def tmux():
 @task("homebrew")
 def tree():
   brew_install("tree")
+
+@task("homebrew")
+def wget():
+  brew_install("wget")
 
 @task("homebrew", "dotfiles")
 def zsh():

@@ -60,21 +60,18 @@ def command_exists(cmd, args="--version"):
   except invoke.exceptions.Failure:
     return False
 
-def pip_install(names, check=None):
+def pip_install(names):
   if isinstance(names, basestring):
     names = [names]
-
-  names_ = []
+  installed = pip_installed()
+  names     = [n for n in names if n not in installed]
   for name in names:
-    if check is None:
-      check_ = lambda: python_package_exists(name)
-    else:
-      check_ = check
+    run('pip install "{}"'.format(name))
+  return len(names) > 0
 
-    if check_(): pass
-    else       : run('pip install "{}"'.format(name))
-
-  return len(names_) > 0
+def pip_installed():
+  installed = run("pip freeze", hide='both').stdout.strip().split("\n")
+  return [p.split("==")[0] for p in installed]
 
 def platform():
   return os.uname()[0]
