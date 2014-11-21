@@ -16,17 +16,11 @@
   " status bar
   NeoBundle 'bling/vim-airline'
 
-  " color scheme
-  NeoBundle 'cseelus/sleepwalker-vim'
-
   " scala syntax
   NeoBundle 'derekwyatt/vim-scala'
 
   " jade syntax
   NeoBundle 'digitaltoad/vim-jade'
-
-  " all the colorschemes!
-  NeoBundle 'flazz/vim-colorschemes'
 
   " align text by "=" or ":" or whatever else
   NeoBundle 'godlygeek/tabular'
@@ -79,6 +73,9 @@
   " snippet completion
   NeoBundle 'Shougo/neosnippet'
   NeoBundle 'Shougo/neosnippet-snippets'
+
+  " monokai colorscheme
+  NeoBundle 'sickill/vim-monokai'
 
   " visual undo tree
   NeoBundle 'sjl/gundo.vim'
@@ -311,12 +308,13 @@
   if has("gui_running")
     colorscheme solarized
   else
-    colorscheme ir_black
+    colorscheme monokai
   endif
-  if $TERM == "xterm-256color" " enable 256 colors
-    set t_Co=256
+  if $TERM =~ "-256color"
+    set t_Co=256      " enable 256 colors
+    set t_ut=         " something for playing properly with tmux/screen?
   endif
-  set background=dark " dark background (automatically set by sleepwalker)
+  " set background=dark " dark background (automatically set by sleepwalker)
   set cursorline      " Hightlight current line
   set ruler           " Show line ruler
   set number          " line numbers
@@ -472,6 +470,21 @@
 
   " vim-indent-guides {{{
     let g:indent_guides_enable_on_vim_startup = 1
+
+    function! IndentGuidesFor256Color()
+      if $TERM =~ "-256color" && g:colors_name == "monokai"
+        " 256 colors doesn't play nicely with vim-indent-guides. Set its colors
+        " explicitly.
+        let g:indent_guides_auto_colors = 0
+        highlight IndentGuidesOdd  guibg=darkgrey ctermbg=236
+        highlight IndentGuidesEven guibg=darkgrey ctermbg=237
+      endif
+    endfunction
+
+    augroup indent-guides
+      autocmd!
+      autocmd VimEnter,Colorscheme * :call IndentGuidesFor256Color()
+    augroup END
   " }}}
 
   " Tabular {{{
@@ -572,7 +585,7 @@
       autocmd FileType vim :setlocal foldmethod=marker
     augroup END
   " }}}
-  "
+
   " giant files {{{
     let g:LargeFile=1024 * 1024 * 10  " bigger than 10MB? disable some options
     function! DisableBigFileOptions(f)
@@ -603,7 +616,7 @@
       autocmd FileType html :setlocal foldmethod=indent
     augroup END
   " }}}
-  "
+
   " cpp {{{
     augroup cpp
       autocmd!
