@@ -1,4 +1,5 @@
 import os
+import sys
 
 from invoke import task
 
@@ -29,7 +30,7 @@ def homebrew():
       'You cannot install Homebrew on a non-OSX system. Any provisioning '
       'requiring Homebrew will fail.'
     )
-  run('ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"')
+  run('ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"')
   run("brew update")
 
 @task("homebrew")
@@ -48,3 +49,6 @@ def xcode():
 @task("xcode")
 def xcode_license():
   run("sudo xcodebuild -license")
+
+def platform():
+  return sys.platform.capitalize()
