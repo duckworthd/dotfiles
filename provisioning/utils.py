@@ -3,6 +3,8 @@ import os
 import invoke
 from invoke import task
 
+from .colors import *
+
 __all__ = [
     'application_exists',
     'brew_install',
@@ -34,10 +36,10 @@ def brew_install(names, cask=False, flags=[]):
         'brew',
         'cask' if cask else '',
         'install',
-        u" ".join(names),
-        u" ".join(flags),
+        strjoin(names),
+        strjoin(flags),
       ]
-    run(u" ".join(cmd))
+    run(strjoin(cmd))
     return True
   else:
     return False
@@ -85,5 +87,8 @@ def python_package_exists(package):
 
 def run(*args, **kwargs):
   if 'hide' not in kwargs:
-    print "$ {}".format(args[0])
+    print OKBLUE + "$ {}".format(args[0]) + ENDC
   return invoke.run(*args, **kwargs)
+
+def strjoin(strs, joiner=u" "):
+  return joiner.join(s for s in strs if s.strip())
