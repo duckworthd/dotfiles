@@ -111,11 +111,8 @@ myKeys = \conf -> mkKeymap conf $
   [ ("M-<Space>",       sendMessage NextLayout)
   , ("M-S-<Space>",     sendMessage FirstLayout)
 
-  , ("M--",             sendMessage (IncMasterN (-1)))
-  , ("M-=",             sendMessage (IncMasterN 1))
-
-  , ("M-S--",           sendMessage Shrink)
-  , ("M-S-=",           sendMessage Expand)
+  , ("M--",             sendMessage Shrink)
+  , ("M-=",             sendMessage Expand)
 
   , ("M-b",             sendMessage ToggleStruts)
 
