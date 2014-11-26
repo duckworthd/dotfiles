@@ -2,12 +2,15 @@
 .dropbox
 .svn
 
-# managed by Vim Addon Manager (VAM)
-dotfiles/vim/bundle
+# managed by vim's neobundle.vim
+dotfiles/vim/bundle/*
 
 # managed by EMACS's package.el
 dotfiles/emacs.d/elpa
 dotfiles/emacs.d/ido.last
+
+# xmonad's temporary files
+dotfiles/xmonad/*
 
 # ignore python compiled stuff
 *.py[co]

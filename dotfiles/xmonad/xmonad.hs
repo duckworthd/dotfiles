@@ -126,7 +126,7 @@ myKeys = \conf -> mkKeymap conf $
   ++
   [ ("M-<Return>",      spawn $ XMonad.terminal conf)
                                 -- colors chosen to match Ubuntu 12.04
-  , ("M-S-<Return>",    spawn $ "dmenu -b -i -l 5")
+  , ("M-S-<Return>",    spawn $ "dmenu_run -i -l 5")
   ]
 
   -- XMonad system
@@ -137,13 +137,16 @@ myKeys = \conf -> mkKeymap conf $
   ]
 
   -- Shift monitors
-    -- mod-{y/u,o/i}: Switch to physical/Xinerama screens 1, 2
+    -- mod-{y,o}: Switch to physical/Xinerama screens 1, 2
     -- mod-shift-{y/u,o/i}: Move window to screen 1, 2
   ++
-  [ (m ++ key, screenWorkspace sc >>= flip whenJust (windows . f))
-  | (key, sc) <- zip ["y", "u", "o", "i"] [0, 0, 1, 1]
-  , (m, f) <- [("M-", W.view), ("M-S-", W.shift)]
+  [ ("M-y",             screenWorkspace 0 >>= flip whenJust (windows . W.view))
+  , ("M-o",             screenWorkspace 1 >>= flip whenJust (windows . W.view))
+
+  , ("M-S-y",           screenWorkspace 0 >>= flip whenJust (windows . W.shift))
+  , ("M-S-o",           screenWorkspace 1 >>= flip whenJust (windows . W.shift))
   ]
+
   -- alt-tab for monitors and workspaces, via CycleWS
   ++
   [ ("M-<Tab>",         nextScreen)
