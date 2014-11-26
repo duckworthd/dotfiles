@@ -22,10 +22,10 @@ export CLICOLOR=1
 export TERM=xterm-256color
 
 # use `dircolors` or `gdircolors` to set LS_COLORS
-if hash dircolors 2>/dev/null; then
-  DIRCOLORS=dircolors
-elif hash gdircolors 2>/dev/null; then
+if command_exists gdircolors; then
   DIRCOLORS=gdircolors
+elif command_exists dircolors; then
+  DIRCOLORS=dircolors
 fi
 
 # Coloring by filetype (for ls).
@@ -34,6 +34,15 @@ if ( [ -e ~/.dir_colors ] || [ -e /etc/DIR_COLORS ] ) && [ ! -z "$DIRCOLORS" ] ;
   GLOBAL=$([ -e /etc/DIR_COLORS ] && echo /etc/DIR_COLORS)
   LOCAL=$([ -e ~/.dir_colors ] && echo ~/.dir_colors)
   eval "$($DIRCOLORS -b <(cat $GLOBAL $LOCAL))"
+
+  unalias ls 2> /dev/null
+  if [[ "$(uname)" = "Darwin" && "$DIRCOLORS" = "dircolors" ]]; then
+    # BSD-style ls
+    alias ls="ls -G"
+  else
+    # GNU-style ls
+    alias ls="ls --color=auto"
+  fi
 else
   echo "Not setting DIRCOLORS..."
 fi
