@@ -39,7 +39,7 @@ if ( [ -e ~/.dir_colors ] || [ -e /etc/DIR_COLORS ] ) && [ ! -z "$DIRCOLORS" ] ;
   if [[ "$(uname)" = "Darwin" && "$DIRCOLORS" = "dircolors" ]]; then
     # BSD-style ls
     alias ls="ls -G"
-  else
+  elif [[ "$(uname)" = "Linux" && -n "$DIRCOLORS" ]]; then
     # GNU-style ls
     alias ls="ls --color=auto"
   fi
