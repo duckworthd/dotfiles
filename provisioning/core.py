@@ -24,13 +24,13 @@ def dotfiles():
 
 @task()
 def homebrew():
-  if command_exists("brew"): return
   if platform() != "Darwin":
     raise Exception(
       'You cannot install Homebrew on a non-OSX system. Any provisioning '
       'requiring Homebrew will fail.'
     )
-  run('ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"')
+  if not command_exists("brew"):
+    run('ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"')
   run("brew update")
 
 @task("homebrew")

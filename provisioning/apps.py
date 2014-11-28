@@ -45,7 +45,7 @@ def keepassx():
   brew_tap("caskroom/versions")
   brew_install("keepassx0", cask=True)
 
-@task("homebrew", "xcode", "ctags")
+@task("homebrew", "xcode", "ctags", "dotfiles")
 def macvim():
   if command_exists("mvim"): return
   HOME = os.environ["HOME"]
@@ -58,7 +58,7 @@ def macvim():
       )
     print "Type ':NeoBundleInstall' the next time you open vim"
 
-@task("brew_cask")
+@task("brew_cask", "dotfiles")
 def mjolnir():
   if application_exists("Mjolnir"): return
   brew_install("mjolnir", cask=True)
@@ -77,7 +77,7 @@ def R():
   brew_tap("homebrew/science")
   brew_install("R")
 
-@task("brew_cask")
+@task("brew_cask", "dotfiles")
 def seil():
   if application_exists("Utilities/XQuartz"): return
   brew_install("seil", cask=True)

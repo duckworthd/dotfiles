@@ -159,4 +159,3 @@ def zsh():
   if command_exists("zsh"): return
   brew_install("zsh")
   run('chsh -s $(which zsh)')
-
