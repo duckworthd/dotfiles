@@ -1,4 +1,4 @@
-if command_exists setxkbmap; then
+if [[ "$(uname)" = "Linux" ]] && command_exists setxkbmap; then
   # turn <Caps Lock> becomes <Esc>
   setxkbmap \
     -option \
