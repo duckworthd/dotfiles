@@ -1,13 +1,29 @@
+--------------------------------------------------------------------------------
+-- Add non-standard homebrew directories to lua's path
+--
+-- This is critical to ensure that lua can import the extensions installed by
+-- luarocks.
+--------------------------------------------------------------------------------
+require "os"
+
+local homebrew = os.getenv("HOME") .. "/homebrew"
+package.path  = package.path  .. ";" .. homebrew .. "/share/lua/5.2/?.lua"
+package.cpath = package.cpath .. ";" .. homebrew .. "/lib/lua/5.2/?.so"
+
+--------------------------------------------------------------------------------
+-- mjolnir extensions
+--------------------------------------------------------------------------------
 local application = require "mjolnir.application"
 local hotkey      = require "mjolnir.hotkey"
 local window      = require "mjolnir.window"
 local fnutils     = require "mjolnir.fnutils"
 local tiling      = require "mjolnir.tiling"
 
+local mash = {"cmd", "alt", "ctrl"}
+
 --------------------------------------------------------------------------------
 -- tiling window layout
 --------------------------------------------------------------------------------
-local mash = {"cmd", "alt", "ctrl"}
 
 local function maximize(window)
   frame   = window:screen():frame()
