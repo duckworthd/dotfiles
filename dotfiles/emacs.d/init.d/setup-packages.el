@@ -10,21 +10,6 @@
     ;; Auto-completion framework that can work with many backends.
     company
 
-    ;; Extensible vi layer
-    evil
-
-    ;; Motions for selecting and editing text objects
-    evil-args
-
-    ;; Emulate surround-mode
-    evil-surround
-
-    ;; Depending on which vi mode the cursor is in, change how the cursor appears
-    evil-terminal-cursor-changer
-
-    ;; Command-T inspired fuzzy file search
-    ;; fiplr
-
     ;; Incremental completion (e.g. for finding buffers, files, etc)
     helm
     helm-company
@@ -34,6 +19,9 @@
 
     ;; Visually highlight indentation to make alignment easier
     indent-guide
+
+    ;; Python autcompletion
+    jedi
 
     ;; Control git from emacs
     magit
@@ -104,12 +92,6 @@
 ;; If you start typing when some text is selected, overwrite it
 (delete-selection-mode t)
 
-;; evil
-;; ====
-;;
-;; vi-like functionality.
-(evil-mode 0) ; disable evil mode
-
 ;; helm
 ;; ====
 ;;
@@ -118,6 +100,19 @@
   '(progn
      (define-key   company-mode-map (kbd "C-:") 'helm-company)
      (define-key company-active-map (kbd "C-:") 'helm-company)))
+(helm-mode 1)
+
+;; replace standard keybindings with helm variants
+(global-set-key (kbd "M-x")     'helm-M-x)
+(global-set-key (kbd "M-y")     'helm-show-kill-ring)
+(global-set-key (kbd "C-x b")   'helm-mini)
+(global-set-key (kbd "C-x C-f") 'helm-find-files)
+
+;; already set,
+;; C-x c /            Use `find`
+;; C-x c a            Same as "apropos"
+;; C-x c M-s o        Same as "occur"
+;; C-x c C-c SPC      See "Mark Ring"
 
 ;; highlight-symbol-mode
 ;; =====================
@@ -137,6 +132,13 @@
 ;;
 ;; Show vertical lines to highlight indentation
 (indent-guide-global-mode)
+
+;; jedi
+;; ====
+;;
+;; Python autocomplete
+(add-hook 'python-mode-hook 'jedi:setup)
+(setq jedi:complete-on-dot t)
 
 ;; linum
 ;; =====
@@ -182,6 +184,15 @@
 ;;
 ;; Treat CamelCaseWords  as individual words
 (global-subword-mode t)
+
+;; undo-tree
+;; =========
+;;
+;; Visualize "undo ring"
+;; C-x u      Visualize undo tree
+;; C-_        undo
+;; M-_        redo
+(global-undo-tree-mode)
 
 ;; windmove
 ;; ========
