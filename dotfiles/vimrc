@@ -37,8 +37,8 @@
   " file search
   NeoBundle 'kien/ctrlp.vim'
 
-  " python folding
-  NeoBundle 'klen/python-mode'
+  " " python folding
+  " NeoBundle 'klen/python-mode'
 
   " quick character search
   NeoBundle 'Lokaltog/vim-easymotion'
@@ -109,7 +109,6 @@
   " dependency...
   NeoBundle 'xolox/vim-misc'
 
-  " NeoBundle 'hattya/python_fold.vim'             " slow slow slow
   NeoBundle 'pangloss/vim-javascript'            " slow slow slow
   " NeoBundle 'Raimondi/delimitMate'               " gets in the way
   " NeoBundle 'sontek/rope-vim'                    " slow slow slow
@@ -381,8 +380,8 @@
       " Scan files in child directories relative to the file being examined
     let g:easytags_auto_update = 0
       " Disable auto updating while keeping auto highlighting
-    let g:easytags_events = ['BufWritePost']
-      " Automatically update tags on save
+    let g:easytags_events = []
+      " Don't update tags automatically
 
     if !has('win32') && !has('win64')
       silent execute '!mkdir -p /tmp/easytags'
