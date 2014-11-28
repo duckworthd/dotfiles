@@ -10,6 +10,7 @@ __all__ = [
     'brew_install',
     'brew_tap',
     'command_exists',
+    'luarocks_install',
     'pip_install',
     'python_package_exists',
     'run',
@@ -62,6 +63,13 @@ def command_exists(cmd, args="--version"):
   except invoke.exceptions.Failure:
     return False
 
+def luarocks_install(name):
+  try:
+    run('luarocks install "{}"'.format(name))
+    return True
+  except invoke.exceptions.Failure:
+    return False
+
 def pip_install(names):
   if isinstance(names, basestring):
     names = [names]
@@ -86,8 +94,7 @@ def python_package_exists(package):
     return False
 
 def run(*args, **kwargs):
-  if 'hide' not in kwargs:
-    print OKBLUE + "$ {}".format(args[0]) + ENDC
+  print OKBLUE + "$ {}".format(args[0]) + ENDC
   return invoke.run(*args, **kwargs)
 
 def strjoin(strs, joiner=u" "):

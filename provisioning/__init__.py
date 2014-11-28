@@ -1,3 +1,3 @@
-import apps
-import core
-import homebrew
+from apps import *
+from core import *
+from homebrew import *

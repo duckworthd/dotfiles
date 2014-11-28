@@ -46,6 +46,14 @@ def jq():
   brew_install("jq")
 
 @task("homebrew")
+def lua():
+  brew_install("lua")
+
+@task("lua")
+def luarocks():
+  brew_install("luarocks")
+
+@task("homebrew")
 def mysql():
   HOME = os.environ["HOME"]
   brew_install("mysql")

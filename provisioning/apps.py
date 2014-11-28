@@ -28,7 +28,7 @@ def evernote():
 @task("brew_cask")
 def gitx():
   if application_exists("GitX"): return
-  brew_install("gitx", cask=True)
+  brew_install("rowanj-gitx", cask=True)
 
 @task("brew_cask")
 def java():
@@ -45,7 +45,7 @@ def keepassx():
   brew_tap("caskroom/versions")
   brew_install("keepassx0", cask=True)
 
-@task("homebrew", "xcode", "xcode_license", "ctags")
+@task("homebrew", "xcode", "ctags")
 def macvim():
   if command_exists("mvim"): return
   HOME = os.environ["HOME"]
@@ -63,10 +63,24 @@ def mjolnir():
   if application_exists("Mjolnir"): return
   brew_install("mjolnir", cask=True)
 
+  # extensions I use in mjolnir's config
+  extensions = [
+    'application',
+    'hotkey',
+    'tiling',
+  ]
+  for ext in extensions:
+    luarocks_install("mjolnir.{}".format(ext))
+
 @task("homebrew", "xquartz")
 def R():
   brew_tap("homebrew/science")
   brew_install("R")
+
+@task("brew_cask")
+def seil():
+  if application_exists("Utilities/XQuartz"): return
+  brew_install("seil", cask=True)
 
 @task("homebrew", "dotfiles")
 def slate():

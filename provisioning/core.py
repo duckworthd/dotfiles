@@ -6,7 +6,7 @@ from invoke import task
 from .utils import *
 
 
-@task
+@task()
 def dotfiles():
   """symlink dotfiles to $HOME"""
   DOTFILE_ROOT = os.path.abspath(os.path.join(
@@ -22,7 +22,7 @@ def dotfiles():
     if not os.path.exists(target):
       run('ln -s "{}" "{}"'.format(source, target))
 
-@task
+@task()
 def homebrew():
   if command_exists("brew"): return
   if platform() != "Darwin":
@@ -38,7 +38,7 @@ def brew_cask():
   if command_exists("brew cask"): return
   brew_install("caskroom/cask/brew-cask")
 
-@task
+@task()
 def xcode():
   if application_exists("Xcode"): return
   run('open "https://developer.apple.com/downloads/index.action"')
