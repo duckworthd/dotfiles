@@ -11,6 +11,11 @@ def alfred():
   brew_install("alfred", cask=True)
 
 @task("brew_cask")
+def amethyst():
+  if application_exists("Amethyst"): return
+  brew_install("amethyst", cask=True)
+
+@task("brew_cask")
 def chrome():
   if application_exists("Google Chrome"): return
   brew_install("google-chrome", cask=True)

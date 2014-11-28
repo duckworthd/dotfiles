@@ -30,6 +30,7 @@ def common():
 
   # Applications
   alfred()
+  amethyst()
   chrome()
   dropbox()
   evernote()
