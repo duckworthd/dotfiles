@@ -171,7 +171,7 @@
 ;; =====================
 ;;
 ;; Replace lambda with the lambda symbol, etc
-(prettify-symbols-mode 1)
+(pretty-symbols-mode 1)
 
 ;; show-paren-mode
 ;; ================
