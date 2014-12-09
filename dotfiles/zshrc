@@ -1,28 +1,22 @@
-source ~/.zsh/functions.zsh
+# directories in which zsh config files are expected to live.
+PATHS=(
+    "$HOME/.zsh"
+    "$HOME/.zsh-local"
+  )
 
-source ~/.zsh/keys.zsh
-source ~/.zsh/aliases.zsh
-source ~/.zsh/colors.zsh
-source ~/.zsh/completion.zsh
-source ~/.zsh/edit-command-line.zsh
-source ~/.zsh/environment.zsh
-source ~/.zsh/history.zsh
-source ~/.zsh/options.zsh
-source ~/.zsh/prompt.zsh
+# Find all .zsh files.
+SOURCES=$(find -L $ZSH_PATHS[@]   -iname '*.zsh')
 
-# app-specific settings
-for rc in $(find ~/.zsh/apps/ -iname '*.zsh'); do
+# Sort files by filename (not path, filename!). This is the order they will be
+# loaded in.
+SOURCES_BY_FILENAME=$(
+    echo "$SOURCES" |
+    awk -F '/' '{print $NF "\t" $0}' |
+    sort -k 1 |
+    cut -d$'\t' -f2
+  )
+
+# load each file in order
+for rc in $(echo "$SOURCES_BY_FILENAME"); do
   source $rc
 done
-
-# plugins for zsh
-for rc in $(find ~/.zsh/plugins/ -iname '*.zsh'); do
-  source $rc
-done
-
-# machine-local settings
-if [ -e ~/.zsh-local ]; then
-  for rc in $(find ~/.zsh-local/ -iname '*.zsh'); do
-    source $rc
-  done
-fi

@@ -6,10 +6,7 @@
 dotfiles/vim/bundle/*
 
 # managed by EMACS's package.el
-dotfiles/emacs.d/.python-environments
-dotfiles/emacs.d/ac-comphist.dat
-dotfiles/emacs.d/elpa
-dotfiles/emacs.d/ido.last
+dotfiles/emacs.d/*
 
 # xmonad's temporary files
 dotfiles/xmonad/*

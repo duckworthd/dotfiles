@@ -33,6 +33,10 @@ import XMonad.Actions.OnScreen
 -- * for alt-tab functionality between screens and workspaces
 import XMonad.Actions.CycleWS
 
+-- * for xmobar & stalonetray
+import XMonad.Hooks.DynamicLog
+import XMonad.Util.Run(spawnPipe)
+
 
 -- TODO(aarongable):
 -- Use LayoutCombinators to add jump-to-layout shortcuts
@@ -42,17 +46,24 @@ import XMonad.Actions.CycleWS
 
 
 -- | Main config
-main = xmonad $ defaultConfig
-  { terminal            = myTerminal
-  , modMask             = mod4Mask
-  , focusFollowsMouse   = False
-  , workspaces          = myWorkspaces
-  , layoutHook          = myLayoutHook
-  , manageHook          = myManageHook
-  , keys                = myKeys
-  , normalBorderColor   = myInactiveBorderColor
-  , focusedBorderColor  = myActiveBorderColor
-  }
+main = do
+  xmobar      <- spawnPipe "xmobar"
+  stalonetray <- spawn     "stalonetray"
+  xmonad $ defaultConfig
+    { terminal            = myTerminal
+    , modMask             = mod4Mask
+    , focusFollowsMouse   = False
+    , workspaces          = myWorkspaces
+    , layoutHook          = myLayoutHook
+    , manageHook          = myManageHook
+    , keys                = myKeys
+    , normalBorderColor   = myInactiveBorderColor
+    , focusedBorderColor  = myActiveBorderColor
+    , logHook = dynamicLogWithPP xmobarPP
+      { ppOutput = hPutStrLn xmobar
+      , ppTitle = xmobarColor "green" "" . shorten 50
+      }
+    }
 
 
 -- | Terminal
@@ -78,7 +89,8 @@ myLayoutHook = windowNavigation $ avoidStrutsOn []
 
 -- | Management
 myManageHook = composeAll
-    [ className =? "Xmessage" --> doFloat
+    [ className =? "Xmessage"     --> doFloat
+    , resource  =? "stalonetray"  --> doIgnore
     , manageDocks
     ]
 
@@ -160,7 +172,7 @@ myKeys = \conf -> mkKeymap conf $
 
 
 -- | Colors
-myActiveBorderColor = "red"
+myActiveBorderColor   = "red"
 myInactiveBorderColor = "black"
 
 
@@ -189,8 +201,8 @@ myShifter k = windows $ W.shift (keyWs k)
 keyWs k = snd . head $ filter ((==k) . fst) myWsMap
   where
     myWsMap = zip myWsKeys myWorkspaces
+
 -- Maps input keys to corresponding number or function workspaces
 numKeyWs k = keyWs $ myNumKeys !! modIndex k
 funKeyWs k = keyWs $ myFunKeys !! modIndex k
-modIndex k = M.fromJust (L.elemIndex k myWsKeys) `mod` 10 
-
+modIndex k = M.fromJust (L.elemIndex k myWsKeys) `mod` 10
