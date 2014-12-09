@@ -11,7 +11,7 @@ PS1+="${PR_GREEN}%m${RESET}"
 
 # current directory
 PS1+=":"
-PS1+="${PR_WHITE}%~${RESET}"
+PS1+="${PR_WHITE}%5(c:.../:)%4c${RESET}"
 
 # new line
 PS1+="
