@@ -28,6 +28,9 @@
   " LESS syntax (CSS extension)
   NeoBundle 'groenewege/vim-less'
 
+  " Snippets for use with ultisnips
+  NeoBundle 'honza/vim-snippets'
+
   " golang syntax
   NeoBundle 'jnwhiteh/vim-golang'
 
@@ -36,9 +39,6 @@
 
   " file search
   NeoBundle 'kien/ctrlp.vim'
-
-  " " python folding
-  " NeoBundle 'klen/python-mode'
 
   " quick character search
   NeoBundle 'Lokaltog/vim-easymotion'
@@ -70,12 +70,11 @@
       \    },
       \ }
 
-  " snippet completion
-  NeoBundle 'Shougo/neosnippet'
-  NeoBundle 'Shougo/neosnippet-snippets'
-
   " monokai colorscheme
   NeoBundle 'sickill/vim-monokai'
+  "
+  " snippets engine
+  NeoBundle 'SirVer/ultisnips'
 
   " visual undo tree
   NeoBundle 'sjl/gundo.vim'
@@ -89,6 +88,14 @@
 
   " markdown syntax (default is broken)
   NeoBundle 'tpope/vim-markdown'
+
+  " Context-aware completion backend.
+  NeoBundle 'Valloric/YouCompleteMe', {
+      \ 'build' : {
+      \     'mac'  : './install.sh --clang-completer',
+      \     'unix' : './install.sh --clang-completer',
+      \    },
+      \ }
 
   " syntax highlighting for markdown + latex
   NeoBundle 'vim-pandoc/vim-pandoc'
@@ -115,7 +122,7 @@
   " NeoBundle 'majutsushi/tagbar'                  " doesn't work when I need it
   " NeoBundle 'jcf/vim-latex'                      " messes with my shortcuts
   " NeoBundle 'xolox/vim-shell'                    " never use it
-  " NeoBundle 'Valloric/YouCompleteMe'             " crashes
+
   " NeoBundle 'bling/vim-bufferline'               " too many buffers open at a time
   " NeoBundle 'vim-scripts/Auto-Pairs'             " irritating ot use
 
@@ -123,6 +130,12 @@
 
   " Prompt user if there are uninstalled bundles
   NeoBundleCheck
+" }}}
+
+" Machine-local vimrc {{{
+  if filereadable(expand("~/.vimrc-local"))
+    source ~/.vimrc-local
+  endif
 " }}}
 
 " Environment {{{
@@ -448,25 +461,6 @@
     let g:EasyMotion_leader_key = '<Space>'
   " }}}
 
-  " neocomplete {{{
-    let g:neocomplete#enable_at_startup = 1   " start neocomplete on startup
-
-    " <CR>: close popup and save indent.
-    inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-    function! s:my_cr_function()
-      return pumvisible() ? neocomplete#close_popup() : "\<CR>"
-    endfunction
-
-    " <TAB>: completion? see neosnippet.vim
-
-    " <C-h>, <BS>: close popup and delete backword char.
-    inoremap <expr><C-h>  neocomplete#smart_close_popup()."\<C-h>"
-    inoremap <expr><BS>   neocomplete#smart_close_popup()."\<C-h>"
-
-    " Close popup by <Space>.
-    inoremap <expr><Space> pumvisible() ? neocomplete#close_popup()."\<Space>" : "\<Space>"
-  " }}}
-
   " vim-indent-guides {{{
     let g:indent_guides_enable_on_vim_startup = 1
 
@@ -511,29 +505,6 @@
   " unite.vim {{{
     " start unite with search for files and buffers
     nnoremap <leader>un :Unite -start-insert file_rec/async buffer<CR>
-  " }}}
-
-  " neosnippet.vim {{{
-    " <C-k> to insert snippet
-    imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-    smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-    xmap <C-k>     <Plug>(neosnippet_expand_target)
-
-    " <Tab> completion
-    imap <expr><TAB>  pumvisible() ?
-        \  "\<C-n>"
-        \: neosnippet#expandable_or_jumpable() ?
-          \  "\<Plug>(neosnippet_expand_or_jump)"
-          \: "\<TAB>"
-    smap <expr><TAB>  pumvisible() ?
-        \  "\<C-n>"
-        \: neosnippet#expandable_or_jumpable() ?
-          \  "\<Plug>(neosnippet_expand_or_jump)"
-          \: "\<TAB>"
-
-    " use honzo/vim-snippet's snippets instead of the builtins
-    let g:neosnippet#enable_snipmate_compatibility = 1
-    let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
   " }}}
 
   " vim-multiple-cursors {{{
