@@ -2,6 +2,7 @@
 ;; Define and install required packages
 ;; ============================================================================
 
+
 (defvar package-list
   '(
     ;; Jump to anywhere in a window/frame by pressing <C-c> <Space>
@@ -9,6 +10,9 @@
 
     ;; Auto-completion framework that can work with many backends.
     company
+
+    ;; Select words, sentences, within-quotes, etc
+    expand-region
 
     ;; Incremental completion (e.g. for finding buffers, files, etc)
     helm
@@ -92,8 +96,15 @@
 ;; If you start typing when some text is selected, overwrite it
 (delete-selection-mode t)
 
-;; helm
-;; ====
+;; expand-region
+;; =============
+;;
+;; Select progressively more wide semantic regions
+(global-set-key (kbd "C-c =") 'er/expand-region)
+(global-set-key (kbd "C-c -") 'er/contract-region)
+
+;; helm-mode
+;; =========
 ;;
 ;; Incremental name completion for buffers et al.
 (eval-after-load 'company
@@ -107,12 +118,9 @@
 (global-set-key (kbd "M-y")     'helm-show-kill-ring)
 (global-set-key (kbd "C-x b")   'helm-mini)
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
-
-;; already set,
-;; C-x c /            Use `find`
-;; C-x c a            Same as "apropos"
-;; C-x c M-s o        Same as "occur"
-;; C-x c C-c SPC      See "Mark Ring"
+(global-set-key (kbd "C-c o")   'helm-occur)
+(global-set-key (kbd "C-h SPC") 'helm-all-mark-rings)
+(global-set-key (kbd "C-c /")   'helm-find-files-up-one-level)
 
 ;; highlight-symbol-mode
 ;; =====================
@@ -193,6 +201,13 @@
 ;; C-_        undo
 ;; M-_        redo
 (global-undo-tree-mode)
+
+(require 'setup-environment) ;; for `tmp-dir` variable
+(let* ((undo-root (file-name-as-directory tmp-dir))
+       (undo-path (concat undo-root "undo")))
+  (setq-default
+    undo-tree-auto-save-history        t
+    undo-tree-history-directory-alist `((".*" . ,undo-path))))
 
 ;; windmove
 ;; ========
