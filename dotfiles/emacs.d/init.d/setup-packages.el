@@ -202,7 +202,7 @@
 ;; M-_        redo
 (global-undo-tree-mode)
 
-(require 'setup-environment) ;; for `tmp-dir` variable
+(require 'setup-variables) ;; for `tmp-dir` variable
 (let* ((undo-root (file-name-as-directory tmp-dir))
        (undo-path (concat undo-root "undo")))
   (setq-default
