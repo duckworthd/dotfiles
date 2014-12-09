@@ -1,5 +1,5 @@
 # Path
-PATH="/bin"
+PATH+=":/bin"
 PATH+=":/sbin"
 PATH+=":/usr/bin"
 PATH+=":/usr/sbin"
