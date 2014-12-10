@@ -86,9 +86,6 @@
   " delete surrounding parentheses, etc
   NeoBundle 'tpope/vim-surround'
 
-  " markdown syntax (default is broken)
-  NeoBundle 'tpope/vim-markdown'
-
   " Context-aware completion backend.
   NeoBundle 'Valloric/YouCompleteMe', {
       \ 'build' : {
