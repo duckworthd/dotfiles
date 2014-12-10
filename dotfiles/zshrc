@@ -1,11 +1,11 @@
 # directories in which zsh config files are expected to live.
-PATHS=(
+ZSH_PATHS=(
     "$HOME/.zsh"
     "$HOME/.zsh-local"
   )
 
 # Find all .zsh files.
-SOURCES=$(find -L $ZSH_PATHS[@]   -iname '*.zsh')
+SOURCES=$(find -L $ZSH_PATHS[@] -iname '*.zsh' -type f)
 
 # Sort files by filename (not path, filename!). This is the order they will be
 # loaded in.
