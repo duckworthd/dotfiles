@@ -2,7 +2,7 @@
   set nocompatible
 
   " Load everything in ~/.vim/bundles
-  set runtimepath+=~/.vim/bundle/neobundle.vim
+  set runtimepath+=~/.vim/bundle/NeoBundle.vim
   call neobundle#begin(expand('~/.vim/bundle/'))
 
   " let NeoBundle manage itself
