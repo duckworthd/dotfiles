@@ -210,8 +210,14 @@
 ;; prettify-symbols-mode
 ;; =====================
 ;;
-;; Replace lambda with the lambda symbol, etc
-(pretty-symbols-mode 1)
+;; Replace lambda with the lambda symbol, etc. Note that this was called
+;; "pretty-symbols-mode" before emacs 24.4, so this command will fail on older
+;; builds.
+(if (version< emacs-version "24.4")
+    (global-pretty-symbols-mode 1)
+  (global-prettify-symbols-mode 1))
+
+
 
 ;; show-paren-mode
 ;; ================
