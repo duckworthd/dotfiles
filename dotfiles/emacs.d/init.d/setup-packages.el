@@ -11,11 +11,16 @@
     ;; Auto-completion framework that can work with many backends.
     company
 
+    ;; interface between irony-mode and company-mode
+    company-irony
+
     ;; Select words, sentences, within-quotes, etc
     expand-region
 
     ;; Incremental completion (e.g. for finding buffers, files, etc)
     helm
+
+    ;; interface between helm and company-mode
     helm-company
 
     ;; Highlight the symbol under the cursor
@@ -23,6 +28,9 @@
 
     ;; Visually highlight indentation to make alignment easier
     indent-guide
+
+    ;; C/C++ completion via libclang
+    irony
 
     ;; Python autcompletion
     jedi
@@ -75,7 +83,7 @@
 ;; ace-jump-mode
 ;; =============
 ;;
-;; <C-c> <Space>: quickly jump within a window with 
+;; <C-c> <Space>: quickly jump within a window with
 (define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
 
 ;; auto-fill-mode
@@ -86,9 +94,33 @@
 
 ;; company
 ;; =======
-;;
 ;; Tab-completion with lots of backends
-(global-company-mode)
+;;
+;; M-[np]
+;;   next/previous selection
+;; <CR>
+;;   select highlighted option
+;; <SPC>
+;;   complete common part
+(add-hook 'after-init-hook 'global-company-mode)
+
+;; irony-company
+;; =============
+;;
+;; Add irony-mode as a backend to company-mode
+(eval-after-load 'company '(add-to-list 'company-backends 'company-irony))
+
+;; Start completion after `std::` and the like
+(add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
+
+;; irony-mode
+;; ==========
+;;
+;; C/C++ autocomplete
+(add-hook 'c++-mode-hook  'irony-mode)
+(add-hook 'c-mode-hook    'irony-mode)
+(add-hook 'objc-mode-hook 'irony-mode)
+
 
 ;; delete-selection-mode
 ;; =====================
