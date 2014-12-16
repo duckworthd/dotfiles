@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Check if a bash command exists. Output stored in "$?".
+function command_exists() {
+  hash "$1" &> /dev/null;
+}
+
+# Load resources
+xrdb -merge .Xresources
+
+# System Tray
+if command_exists stalonetray; then
+  stalonetray &
+fi
+
+# For managing network connections in System Tray
+if commands_exists nm-applet; then
+   nm-applet --sm-disable &
+fi
+
+# start xmonad
+if command_exists xmonad; then
+  exec xmonad
+fi

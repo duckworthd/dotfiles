@@ -32,24 +32,17 @@ import qualified XMonad.Util.ExtensibleState as XS
 import XMonad.Actions.OnScreen
 -- * for alt-tab functionality between screens and workspaces
 import XMonad.Actions.CycleWS
-
 -- * for xmobar & stalonetray
 import XMonad.Hooks.DynamicLog
 import XMonad.Util.Run(spawnPipe)
 
 
--- TODO(aarongable):
--- Use LayoutCombinators to add jump-to-layout shortcuts
--- Use Submap for more intuitive and sometimes vimlike keys
--- Set workspace-specific layouts
--- Set a good startupHook
+-- | start xmonad + xmobar
+main = xmonad =<< xmobar myConfig
 
 
 -- | Main config
-main = do
-  xmobar      <- spawnPipe "xmobar"
-  stalonetray <- spawn     "stalonetray"
-  xmonad $ defaultConfig
+myConfig = defaultConfig
     { terminal            = myTerminal
     , modMask             = mod4Mask
     , focusFollowsMouse   = False
@@ -59,10 +52,6 @@ main = do
     , keys                = myKeys
     , normalBorderColor   = myInactiveBorderColor
     , focusedBorderColor  = myActiveBorderColor
-    , logHook = dynamicLogWithPP xmobarPP
-      { ppOutput = hPutStrLn xmobar
-      , ppTitle = xmobarColor "green" "" . shorten 50
-      }
     }
 
 
@@ -73,6 +62,7 @@ myTerminal = "gnome-terminal"
 -- | Workspaces
 myWorkspaces = nums ++ map ("F"++) nums
     where nums = map show [1..10]
+
 -- workspace switching keys
 myWsKeys = myNumKeys ++ myFunKeys
 myNumKeys = map show [1..9] ++ ["0"]
@@ -123,9 +113,11 @@ myKeys = \conf -> mkKeymap conf $
   [ ("M-<Space>",       sendMessage NextLayout)
   , ("M-S-<Space>",     sendMessage FirstLayout)
 
+  -- shrink/grow size of main panel
   , ("M--",             sendMessage Shrink)
   , ("M-=",             sendMessage Expand)
 
+  -- toggle spacing for xmobar
   , ("M-b",             sendMessage ToggleStruts)
 
   , ("M-<Scroll_lock>", XS.modify wsTogglePairState)
@@ -134,7 +126,6 @@ myKeys = \conf -> mkKeymap conf $
   -- Applications
   ++
   [ ("M-<Return>",      spawn $ XMonad.terminal conf)
-                                -- colors chosen to match Ubuntu 12.04
   , ("M-S-<Return>",    spawn $ "dmenu_run -i -l 5")
   ]
 
@@ -177,6 +168,7 @@ myInactiveBorderColor = "black"
 
 
 -- | Helper functions
+--
 -- let bools be stored in persistent storage
 data WsPairState = WsPairState Bool deriving (Typeable, Read, Show)
 instance ExtensionClass WsPairState where
