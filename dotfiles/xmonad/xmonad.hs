@@ -38,22 +38,48 @@ import XMonad.Util.Run(spawnPipe)
 
 
 -- | start xmonad + xmobar
-main = xmonad =<< xmobar myConfig
+main = do
+    xmobar <- spawnPipe "xmobar"
+    xmonad $ myConfig xmobar
 
 
 -- | Main config
-myConfig = defaultConfig
+myConfig logHandle = defaultConfig
     { terminal            = myTerminal
     , modMask             = mod4Mask
     , focusFollowsMouse   = False
     , workspaces          = myWorkspaces
     , layoutHook          = myLayoutHook
     , manageHook          = myManageHook
+    , logHook             = myLogHook logHandle
     , keys                = myKeys
     , normalBorderColor   = myInactiveBorderColor
     , focusedBorderColor  = myActiveBorderColor
     }
 
+-- | Logging
+myLogHook logHandle = dynamicLogWithPP $ xmobarPP
+  { ppOutput  = hPutStrLn logHandle
+  , ppCurrent = currentStyle      -- currently selected screen
+  , ppVisible = visibleStyle      -- visible but currently unselected screen
+  , ppTitle   = titleStyle        -- currently selected app name
+  , ppSep     = sepStyle          -- separator between fields
+  , ppLayout  = (\layout -> case layout of
+      "ResizableTall"         -> "[ | ]"
+      "Mirror ResizableTall"  -> "[———]"
+      "ThreeCol"              -> "[| |]"
+      "Spiral"                -> "[ o ]"
+      "Tabbed Simplest"       -> "[   ]"
+      other                   -> other
+    )
+  }
+  where
+    currentStyle = xmobarColor "#70db70" "" . wrap "[" "]"
+    visibleStyle = xmobarColor "#6666ff" "" . wrap "[" "]"
+    titleStyle   = xmobarColor "cyan" "" . shorten 100 . filterCurly
+    filterCurly  = filter (not . isCurly)
+    sepStyle     = xmobarColor "#474747" "" " »»» "
+    isCurly x    = x == '{' || x == '}'
 
 -- | Terminal
 myTerminal = "gnome-terminal"
@@ -71,8 +97,8 @@ myFunKeys = map (\n -> "<F"++n++">") (map show [1..10])
 
 -- | Layouts
 -- windowNavigation for M-[hjkl] movement
--- avoidStrutsOn [] to get toggleStruts, but hiding panels by default
-myLayoutHook = windowNavigation $ avoidStrutsOn []
+-- avoidStruts hides spacing for xmobar & friends. Use ToggleStrut (M-b) to show.
+myLayoutHook = windowNavigation $ avoidStruts
   ( two ||| Mirror two ||| ThreeCol 1 (3/100) (1/3) ||| spiral (1) ||| simpleTabbed )
     where two = ResizableTall 1 (3/100) (1/2) []
 
@@ -118,7 +144,7 @@ myKeys = \conf -> mkKeymap conf $
   , ("M-=",             sendMessage Expand)
 
   -- toggle spacing for xmobar
-  , ("M-b",             sendMessage ToggleStruts)
+  , ("M-b",             sendMessage $ ToggleStrut U)
 
   , ("M-<Scroll_lock>", XS.modify wsTogglePairState)
   ]
