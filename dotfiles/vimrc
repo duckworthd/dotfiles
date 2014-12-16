@@ -186,7 +186,7 @@
 
   " Create a directory (and all its parents) if it's missing, otherwise do
   " nothing.
-  function CreateDirectoryIfMissing(path)
+  function! CreateDirectoryIfMissing(path)
     if !isdirectory(expand(a:path))
       call mkdir(expand(a:path), 'p')
     endif
@@ -529,7 +529,7 @@
     " <CR> to expand snippets. For compatibility with YouCompleteMe.
     let g:UltiSnipsExpandTrigger = "<nop>"
     let g:ulti_expand_or_jump_res = 0
-    function ExpandSnippetOrCarriageReturn()
+    function! ExpandSnippetOrCarriageReturn()
         let snippet = UltiSnips#ExpandSnippetOrJump()
         if g:ulti_expand_or_jump_res > 0
             return snippet
@@ -538,6 +538,12 @@
         endif
     endfunction
     inoremap <expr><CR> pumvisible() ? "<C-R>=ExpandSnippetOrCarriageReturn()<CR>" : "\<CR>"
+  " }}}
+
+  " YouCompleteMe {{{
+    nnoremap <Leader>jd :YcmCompleter GoTo<CR>
+
+    let g:ycm_min_num_of_chars_for_completion = 3
   " }}}
 " }}}
 
