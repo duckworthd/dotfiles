@@ -214,7 +214,7 @@
 ;; "pretty-symbols-mode" before emacs 24.4, so this command will fail on older
 ;; builds.
 (if (version< emacs-version "24.4")
-    (global-pretty-symbols-mode 1)
+    nil
   (global-prettify-symbols-mode 1))
 
 
