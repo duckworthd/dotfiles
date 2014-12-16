@@ -2,7 +2,7 @@
   set nocompatible
 
   " Load everything in ~/.vim/bundles
-  set runtimepath+=~/.vim/bundle/neobundle.vim
+  set runtimepath+=~/.vim/bundle/NeoBundle.vim
   call neobundle#begin(expand('~/.vim/bundle/'))
 
   " let NeoBundle manage itself
@@ -15,12 +15,6 @@
 
   " status bar
   NeoBundle 'bling/vim-airline'
-
-  " scala syntax
-  NeoBundle 'derekwyatt/vim-scala'
-
-  " jade syntax
-  NeoBundle 'digitaltoad/vim-jade'
 
   " align text by "=" or ":" or whatever else
   NeoBundle 'godlygeek/tabular'
@@ -49,6 +43,9 @@
   " show indents
   NeoBundle 'nathanaelkane/vim-indent-guides'
 
+  " Better C++ syntax highlighting
+  NeoBundle 'octol/vim-cpp-enhanced-highlight'
+
   " file navigation
   NeoBundle 'scrooloose/nerdtree'
 
@@ -61,6 +58,7 @@
   " file/buffer/everything fuzzy search
   NeoBundle 'Shougo/unite.vim'
 
+  " necessary for asynchronous computation
   NeoBundle 'Shougo/vimproc.vim', {
       \ 'build' : {
       \     'windows' : 'make -f make_mingw32.mak',
@@ -79,23 +77,24 @@
   " visual undo tree
   NeoBundle 'sjl/gundo.vim'
 
-  " change multiple variable with the same name at once
-  NeoBundle 'terryma/vim-multiple-cursors'
-  NeoBundle 'tomtom/tlib_vim'
+  " git integration
+  NeoBundle 'tpope/vim-fugitive'
 
   " delete surrounding parentheses, etc
   NeoBundle 'tpope/vim-surround'
 
-  " markdown syntax (default is broken)
-  NeoBundle 'tpope/vim-markdown'
-
   " Context-aware completion backend.
-  NeoBundle 'Valloric/YouCompleteMe', {
-      \ 'build' : {
-      \     'mac'  : './install.sh --clang-completer',
-      \     'unix' : './install.sh --clang-completer',
-      \    },
-      \ }
+  if filereadable(expand('~/.at_google'))
+    " Google's version of YouCompleteMe conflicts with the public version. Don't
+    " enable it if this vimrc is read from a Google machine.
+  else
+    NeoBundle 'Valloric/YouCompleteMe', {
+        \ 'build' : {
+        \     'mac'  : './install.sh --clang-completer',
+        \     'unix' : './install.sh --clang-completer',
+        \    },
+        \ }
+  endif
 
   " syntax highlighting for markdown + latex
   NeoBundle 'vim-pandoc/vim-pandoc'
@@ -168,6 +167,8 @@
   set mouse=a               " enable mouse usage on some terminals
   set virtualedit=block     " lets you move the cursor past the end of the line when selecting blocks of text
   set lazyredraw            " don't update display while executing a macro
+  set formatoptions+=j      " when joining lines prefixed with comment
+                            " characters, remove them before joining
 " }}}
 
 " Tabs {{{
@@ -183,16 +184,24 @@
   " no location history is kept, so if 2 files share the same name the last
   " one you edited will overwrite the other
 
+  " Create a directory (and all its parents) if it's missing, otherwise do
+  " nothing.
+  function CreateDirectoryIfMissing(path)
+    if !isdirectory(expand(a:path))
+      call mkdir(expand(a:path), 'p')
+    endif
+  endfunction
+
   set backup                          " enable backups
-  let s:etcdir=$HOME.'/.vimetc/'
-  let &backupdir=s:etcdir.'backup/'   " backup directory
-  let &directory=s:etcdir.'swap/'     " swap file directory (crash recovery)
-  let &viewdir=s:etcdir.'views/'      " view directory (where you last were)
-  if !has('win32') && !has('win64')
-    silent execute '!mkdir -p ' . s:etcdir
-    silent execute '!mkdir -p ' . &backupdir
-    silent execute '!mkdir -p ' . &directory
-    silent execute '!mkdir -p ' . &viewdir
+  let s:etcdir=$HOME.'/.vimetc'
+  let &backupdir=s:etcdir.'/backup'   " backup directory
+  let &directory=s:etcdir.'/swap'     " swap file directory (crash recovery)
+  let &viewdir=s:etcdir.'/views'      " view directory (where you last were)
+  if exists("*mkdir")
+    call CreateDirectoryIfMissing(s:etcdir  )
+    call CreateDirectoryIfMissing(&backupdir)
+    call CreateDirectoryIfMissing(&directory)
+    call CreateDirectoryIfMissing(&viewdir  )
     " autocmd BufWinLeave * silent! mkview
     "   "save view for files matching '*' when leaving a buffer
     " autocmd BufWinEnter * silent! loadview
@@ -206,8 +215,8 @@
 " Undo History {{{
   if !has('win32') && !has('win64') && v:version >= 703
     set undofile        " Save undo's after file closes
-    let &undodir=s:etcdir.'undo/' " where to save undo histories
-    silent execute '!mkdir -p ' . &undodir
+    let &undodir=s:etcdir.'/undo' " where to save undo histories
+    call CreateDirectoryIfMissing(&undodir)
     set undolevels=1000     " How many undos
     set undoreload=10000    " number of lines to save for undo
   end
@@ -319,6 +328,7 @@
 " UI {{{
   if has("gui_running")
     colorscheme solarized
+    set background=dark
   else
     colorscheme monokai
   endif
@@ -385,7 +395,7 @@
     endif
 
     let g:easytags_cmd  = s:ctags_loc
-    let g:easytags_file = s:etcdir.'tags'
+    let g:easytags_file = s:etcdir.'/tags'
       " Where easytags saves its tag info
     let g:easytags_on_cursorhold = 0
       " If you stop typing for a bit, :UpdateTags runs
@@ -397,7 +407,7 @@
       " Don't update tags automatically
 
     if !has('win32') && !has('win64')
-      silent execute '!mkdir -p /tmp/easytags'
+      call CreateDirectoryIfMissing('/tmp/easytags')
       let g:easytags_by_filetype = '/tmp/easytags'
         " Indepent tag files for each file type, all stored in this folder
     endif
@@ -511,13 +521,23 @@
     let g:multi_cursor_quit_key='<C-c>'
   " }}}
 
-  " eclim {{{
-    " compatibility with neocomplete
-    let g:EclimCompletionMethod = 'omnifunc'
+  " vim-pandoc {{{
+    let g:pandoc#syntax#conceal#use = 1   " disable replacing raw text with pretty versions
   " }}}
 
-  " vim-pandoc {{{
-    let g:pandoc#syntax#conceal#use = 0   " disable replacing raw text with pretty versions
+  " UltiSnips {{{
+    " <CR> to expand snippets. For compatibility with YouCompleteMe.
+    let g:UltiSnipsExpandTrigger = "<nop>"
+    let g:ulti_expand_or_jump_res = 0
+    function ExpandSnippetOrCarriageReturn()
+        let snippet = UltiSnips#ExpandSnippetOrJump()
+        if g:ulti_expand_or_jump_res > 0
+            return snippet
+        else
+            return "\<CR>"
+        endif
+    endfunction
+    inoremap <expr><CR> pumvisible() ? "<C-R>=ExpandSnippetOrCarriageReturn()<CR>" : "\<CR>"
   " }}}
 " }}}
 
