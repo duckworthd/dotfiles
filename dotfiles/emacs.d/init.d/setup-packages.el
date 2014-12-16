@@ -17,6 +17,9 @@
     ;; Select words, sentences, within-quotes, etc
     expand-region
 
+    ;; For haskell editing
+    haskell-mode
+
     ;; Incremental completion (e.g. for finding buffers, files, etc)
     helm
 
