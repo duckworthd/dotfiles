@@ -9,5 +9,5 @@ Config
                 ]
   , sepChar = "%"
   , alignSep = "}{"
-  , template = "%StdinReader% }{ <fc=#ee9a00>%date%</fc> <fc=#474747>»»»</fc> %whoami%<fc=#717171>@</fc>%hostname%"
+  , template = "<fc=#ee9a00>%date%</fc> <fc=#474747>»»»</fc> %StdinReader%"
   }

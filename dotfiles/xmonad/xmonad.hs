@@ -75,7 +75,7 @@ myLogHook logHandle = dynamicLogWithPP $ xmobarPP
   }
   where
     currentStyle = xmobarColor "#70db70" "" . wrap "[" "]"
-    visibleStyle = xmobarColor "#6666ff" "" . wrap "[" "]"
+    visibleStyle = xmobarColor "#274d27" "" . wrap "[" "]"
     titleStyle   = xmobarColor "cyan" "" . shorten 100 . filterCurly
     filterCurly  = filter (not . isCurly)
     sepStyle     = xmobarColor "#474747" "" " »»» "
@@ -118,14 +118,20 @@ myKeys = \conf -> mkKeymap conf $
   , ("M-j",             sendMessage $ Go D)
   , ("M-k",             sendMessage $ Go U)
   , ("M-l",             sendMessage $ Go R)
+
   , ("M-m",             windows W.focusMaster)
+  , ("M-n",             windows W.focusDown)
+  , ("M-p",             windows W.focusUp)
 
   -- Window Movement
   , ("M-S-h",           sendMessage $ Swap L)
   , ("M-S-j",           sendMessage $ Swap D)
   , ("M-S-k",           sendMessage $ Swap U)
   , ("M-S-l",           sendMessage $ Swap R)
+
   , ("M-S-m",           windows W.swapMaster)
+  , ("M-S-n",           windows W.swapDown)
+  , ("M-S-p",           windows W.swapUp)
 
   -- Drop floating window back into tiling
   , ("M-t",             withFocused $ windows . W.sink)
