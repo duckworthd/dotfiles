@@ -1,4 +1,15 @@
 #!/bin/bash
+#
+# The ~/.xsessionrc file is used to configure the _login_ shell. This is the
+# shell X windows starts to control the system GUI (e.g. Gnome, KDE, ...).
+# Anything put here is executed once at login time.
+#
+# This script is loaded when `startx` is called. The X session ends as soon as
+# this script does, so the final command must be something like,
+
+#   $ exec gnome-session
+#   $ exec startkde
+#   $ exec xmonad
 
 # Check if a bash command exists. Output stored in "$?".
 function command_exists() {
@@ -16,6 +27,20 @@ fi
 # For managing network connections in System Tray
 if commands_exists nm-applet; then
    nm-applet --sm-disable &
+fi
+
+# Gnome typically has 2 panels
+# - one on top containing the application menu clock, and system tray
+# - one on the bottom containing nothing important
+# Let's remove the bottom one. If you're using the ~/.xmobarrc from this
+# repository, then you'll see that on the bottom instead.
+if command_exists dconf; then
+  PANEL_CONF_KEY="/org/gnome/gnome-panel/layout/toplevel-id-list"
+  EXPECTED_PANEL_CONF="['top-panel-0']"
+  ACTUAL_PANEL_CONF==$(dconf read "$PANEL_CONF_KEY")
+  if [[ $? -eq 0 ]] && [[ "$ACTUAL_PANEL_CONF" != "$EXPECTED_PANEL_CONF" ]]; then
+    dconf write "$PANEL_CONF_KEY" "$EXPECTED_PANEL_CONF"
+  fi
 fi
 
 # start xmonad

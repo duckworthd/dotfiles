@@ -2,6 +2,7 @@ Config
   { font = "-*-Fixed-Bold-R-Normal-*-13-*-*-*-*-*-*-*"
   , bgColor = "black"
   , fgColor = "grey"
+  , position = Bottom
   , commands = [  Run Com "hostname" [] "" 36000
                 , Run Com "whoami"   [] "" 36000
                 , Run Date "%a %b %_d %Y %H:%M:%S" "date" 10
