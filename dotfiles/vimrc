@@ -624,9 +624,16 @@
   " }}}
 
   " python {{{
-  augroup python
-    autocmd!
-    autocmd FileType python :setlocal foldmethod=indent tabstop=2 shiftwidth=2 softtabstop=2
-  augroup END
+    augroup python
+      autocmd!
+      autocmd FileType python :setlocal foldmethod=indent tabstop=2 shiftwidth=2 softtabstop=2
+    augroup END
+  " }}}
+
+  " golang {{{
+    augroup golang
+      autocmd!
+      autocmd FileType go :setlocal foldmethod=indent tabstop=4 shiftwidth=4 softtabstop=4
+    augroup END
   " }}}
 " }}}
