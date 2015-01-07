@@ -104,11 +104,23 @@ myLayoutHook = windowNavigation $ avoidStruts
 
 
 -- | Management
+-- Special window management policies for specific applications. To discover
+-- the name of a window, you can use,
+--   $ xprop | grep 'WM_CLASS'
+-- then set,
+--   className =? "[FIRST OUTPUT HERE]"
+-- using its output.
+--
+-- You can also move floating windows arround by holding Meta and long clicking.
 myManageHook = composeAll
     [ className =? "Xmessage"     --> doFloat
-    , resource  =? "stalonetray"  --> doIgnore
+    , resource  =? "stalonetray"  --> doFloat
+    , role      =? "pop-up"       --> doFloat   -- Google Hangouts extension for Chrome
+    , className =? "Keepassx"     --> doFloat
     , manageDocks
     ]
+  where
+    role = stringProperty "WM_WINDOW_ROLE"
 
 
 -- | Keyboard shortcuts
@@ -150,7 +162,7 @@ myKeys = \conf -> mkKeymap conf $
   , ("M-=",             sendMessage Expand)
 
   -- toggle spacing for xmobar
-  , ("M-b",             sendMessage $ ToggleStrut U)
+  , ("M-b",             sendMessage $ ToggleStruts)
 
   , ("M-<Scroll_lock>", XS.modify wsTogglePairState)
   ]
