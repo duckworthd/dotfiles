@@ -4,6 +4,7 @@
 
 # managed by vim's neobundle.vim
 dotfiles/vim/bundle/*
+dotfiles/vim/.netrw*
 
 # managed by EMACS's package.el
 dotfiles/emacs.d/*
