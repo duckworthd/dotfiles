@@ -16,6 +16,9 @@
   " status bar
   NeoBundle 'bling/vim-airline'
 
+  " golang support
+  NeoBundle 'faith/vim-go'
+
   " align text by "=" or ":" or whatever else
   NeoBundle 'godlygeek/tabular'
 
@@ -24,9 +27,6 @@
 
   " Snippets for use with ultisnips
   NeoBundle 'honza/vim-snippets'
-
-  " golang syntax
-  NeoBundle 'jnwhiteh/vim-golang'
 
   " julia syntax
   NeoBundle 'JuliaLang/julia-vim'
@@ -544,6 +544,9 @@
     nnoremap <Leader>jd :YcmCompleter GoTo<CR>
 
     let g:ycm_min_num_of_chars_for_completion = 3
+
+    " Don't let YCM disable Syntastic
+    let g:ycm_show_diagnostics_ui = 0
   " }}}
 " }}}
 
