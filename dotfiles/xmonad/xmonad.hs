@@ -55,6 +55,8 @@ myConfig logHandle = defaultConfig
     , keys                = myKeys
     , normalBorderColor   = myInactiveBorderColor
     , focusedBorderColor  = myActiveBorderColor
+    , borderWidth         = 5
+
     }
 
 -- | Logging
@@ -207,7 +209,7 @@ myKeys = \conf -> mkKeymap conf $
 
 
 -- | Colors
-myActiveBorderColor   = "red"
+myActiveBorderColor   = "#00ff35"    -- bright, bright green
 myInactiveBorderColor = "black"
 
 
