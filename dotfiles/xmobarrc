@@ -11,4 +11,5 @@ Config
   , sepChar = "%"
   , alignSep = "}{"
   , template = "<fc=#ee9a00>%date%</fc> <fc=#474747>»»»</fc> %StdinReader%"
+  , lowerOnStart = False
   }
