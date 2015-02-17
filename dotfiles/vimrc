@@ -337,19 +337,19 @@
     set t_ut=         " something for playing properly with tmux/screen?
   endif
   " set background=dark " dark background (automatically set by sleepwalker)
-  set cursorline      " Hightlight current line
-  set ruler           " Show line ruler
-  set number          " line numbers
-  set hlsearch        " highlight search matches
-  set incsearch       " search before pressing <CR>
-  set ignorecase      " ignore case in search...
-  set smartcase       " ...unless one of the characters is upper case
-  set wildmenu        " see options listed in minibuffer
-  set scrolloff=3     " minimum number of lines below cursor
-  set foldenable      " auto fold code
-  " set foldmethod=expr " fold based on language-specific expr
-  set showcmd         " show partial command in lower right
-  set wrap            " wrap lines
+  set cursorline          " Hightlight current line
+  set ruler               " Show line ruler
+  set number              " line numbers
+  set hlsearch            " highlight search matches
+  set incsearch           " search before pressing <CR>
+  set ignorecase          " ignore case in search...
+  set smartcase           " ...unless one of the characters is upper case
+  set wildmenu            " see options listed in minibuffer
+  set scrolloff=3         " minimum number of lines below cursor
+  set foldenable          " auto fold code
+  set foldmethod=indent   " fold based on indentation. 'syntax' is too slow on large files
+  set showcmd             " show partial command in lower right
+  set wrap                " wrap lines
 
   set list                  " enable the following
   set listchars=tab:\ \     " tabs look like spaces
@@ -566,14 +566,13 @@
     augroup javascript
       autocmd!
       autocmd FileType javascript :call JavaScriptFold()
-      autocmd FileType javascript :setlocal foldenable foldmethod=syntax
     augroup END
   " }}}
 
   " Pig {{{
     augroup pig
       autocmd!
-      autocmd BufNewFile,BufRead *{.pig,.pig.substituted,.pig.expanded} :setlocal filetype=pig syntax=pig foldmethod=indent
+      autocmd BufNewFile,BufRead *{.pig,.pig.substituted,.pig.expanded} :setlocal filetype=pig syntax=pig
         " whenever you open/read a .pig file, use pig syntax
     augroup END
   " }}}
@@ -602,38 +601,17 @@
     augroup END
   " }}}
 
-  " yaml {{{
-    augroup yaml
-      autocmd!
-      autocmd FileType yaml :setlocal foldmethod=indent
-    augroup END
-  " }}}
-
-  " html {{{
-    augroup html
-      autocmd!
-      autocmd FileType html :setlocal foldmethod=indent
-    augroup END
-  " }}}
-
-  " cpp {{{
-    augroup cpp
-      autocmd!
-      autocmd FileType cpp :setlocal foldmethod=syntax
-    augroup END
-  " }}}
-
   " python {{{
     augroup python
       autocmd!
-      autocmd FileType python :setlocal foldmethod=indent tabstop=2 shiftwidth=2 softtabstop=2
+      autocmd FileType python :setlocal tabstop=2 shiftwidth=2 softtabstop=2
     augroup END
   " }}}
 
   " golang {{{
     augroup golang
       autocmd!
-      autocmd FileType go :setlocal foldmethod=indent tabstop=4 shiftwidth=4 softtabstop=4
+      autocmd FileType go :setlocal tabstop=4 shiftwidth=4 softtabstop=4 foldnestmax=1
     augroup END
   " }}}
 " }}}
