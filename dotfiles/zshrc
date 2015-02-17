@@ -1,6 +1,7 @@
 # directories in which zsh config files are expected to live.
 ZSH_PATHS=(
-    "$HOME/.zsh"
+    "$HOME/.zsh/apps"
+    "$HOME/.zsh/core"
     "$HOME/.zsh-local"
   )
 
