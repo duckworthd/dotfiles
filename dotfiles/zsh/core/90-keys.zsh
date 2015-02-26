@@ -13,3 +13,7 @@ bindkey "^W"  backward-kill-word                   # delete previous word
 # Prefix search with up and down arrows
 bindkey "^[[A" history-beginning-search-backward
 bindkey "^[[B" history-beginning-search-forward
+
+# By default, ZSH takes 0.4 seconds to switch from INSERT to NORMAL vim modes.
+# This lowers that to 0.01 seconds. May mess with programs that expect more.
+export KEYTIMEOUT=1
