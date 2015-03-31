@@ -17,7 +17,7 @@
   NeoBundle 'bling/vim-airline'
 
   " golang support
-  NeoBundle 'faith/vim-go'
+  NeoBundle 'fatih/vim-go'
 
   " align text by "=" or ":" or whatever else
   NeoBundle 'godlygeek/tabular'
