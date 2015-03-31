@@ -68,14 +68,14 @@
       \    },
       \ }
 
-  " monokai colorscheme
-  NeoBundle 'sickill/vim-monokai'
-  "
   " snippets engine
   NeoBundle 'SirVer/ultisnips'
 
   " visual undo tree
   NeoBundle 'sjl/gundo.vim'
+
+  " molokai colorscheme
+  NeoBundle 'tomasr/molokai'
 
   " git integration
   NeoBundle 'tpope/vim-fugitive'
@@ -330,7 +330,7 @@
     colorscheme solarized
     set background=dark
   else
-    colorscheme monokai
+    colorscheme molokai
   endif
   if $TERM =~ "-256color"
     set t_Co=256      " enable 256 colors
@@ -522,7 +522,7 @@
   " }}}
 
   " vim-pandoc {{{
-    let g:pandoc#syntax#conceal#use = 1   " disable replacing raw text with pretty versions
+    let g:pandoc#syntax#conceal#use = 0   " disable replacing raw text with pretty versions
   " }}}
 
   " UltiSnips {{{
