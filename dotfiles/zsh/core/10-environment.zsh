@@ -16,8 +16,14 @@ export CLICOLOR=1
 export LSCOLORS=Gxfxcxdxbxegedabagacad
 
 # default pager, editor
-export PAGER='less'
+export PAGER='less -R'
 export EDITOR='vim'
 
 # UTF8 in terminal
 export LANG=en_US.UTF-8
+
+# These characters, in addition to alphanumerics, are considered part of a
+# "word". For example, since "-" is in this list, pressing <C-w> will delete
+# all of "file-name", instead of just "name". Remove a character from this list
+# if you want it to be considered a word separator.
+export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'

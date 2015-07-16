@@ -2,7 +2,10 @@
 # $ cat > /dev/null
 # And press it
 
-bindkey -v   # Default to standard emacs bindings, regardless of editor string
+# Use emacs keybindings
+bindkey -e
+
+# Additional bindings I like
 bindkey "^K"  kill-whole-line                      # ctrl-k
 bindkey "^R"  history-incremental-search-backward  # ctrl-r
 bindkey "^A"  beginning-of-line                    # ctrl-a
