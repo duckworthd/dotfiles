@@ -41,14 +41,14 @@
     ;; Control git from emacs
     magit
 
-    ;; Major mode for markdown
-    markdown-mode
-
-    ;; Color theme based on Sublime Text's monokai-theme
+        ;; Color theme based on Sublime Text's monokai-theme
     monokai-theme
 
     ;; NerdTree-like directory navigator
     neotree
+
+    ;; Pandoc-friendly markdown syntax
+    pandoc-mode
 
     ;; Represent undo history as a tree
     undo-tree
@@ -196,19 +196,17 @@
 ;; Control git from within emacs.
 ;;   <M-x> magit-status
 
-;; markdown-mode
-;; =============
-;;
-;; Syntax comprehension for MARKDOWN format. See for usage,
-;;   http://jblevins.org/projects/markdown-mode/
-(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
-(add-to-list 'auto-mode-alist '(      "\\.md\\'" . markdown-mode))
-
 ;; monokai-theme
 ;; =============
 ;;
 ;; Prettiness for everyone!
 (load-theme 'monokai t)
+
+;; pandoc-mode
+;; ===========
+;;
+;; Enable pandoc-mode when loading a markdown file
+(add-hook 'markdown-mode-hook 'pandoc-mode)
 
 ;; prettify-symbols-mode
 ;; =====================
