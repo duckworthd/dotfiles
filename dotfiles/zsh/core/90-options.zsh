@@ -13,3 +13,6 @@ setopt PROMPT_SUBST
 # if a glob pattern doesn't match any files, just remove it from the argument
 # list (instead of erroring out).
 setopt NULL_GLOB
+
+# Insert first autocomplete autoption in tab-completion, even if there are multiple options.
+setopt MENU_COMPLETE
