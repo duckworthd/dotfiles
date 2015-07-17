@@ -220,8 +220,6 @@
     nil
   (global-prettify-symbols-mode 1))
 
-
-
 ;; show-paren-mode
 ;; ================
 ;;
@@ -233,6 +231,18 @@
 ;;
 ;; Treat CamelCaseWords  as individual words
 (global-subword-mode t)
+
+;; tramp-mode
+;; ==========
+;;
+;; Remote connection to a running emacs instance over ssh.
+
+;; Use ssh (not scp) as the default protocol for making connections.
+(setq tramp-default-mode "ssh")
+
+;; Use bash, not the default shell, with tramp. This avoids errors caused by
+;; fancy command line prompts zsh may use.
+(eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
 
 ;; undo-tree
 ;; =========
