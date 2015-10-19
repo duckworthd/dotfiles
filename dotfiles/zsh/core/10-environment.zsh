@@ -26,4 +26,4 @@ export LANG=en_US.UTF-8
 # "word". For example, since "-" is in this list, pressing <C-w> will delete
 # all of "file-name", instead of just "name". Remove a character from this list
 # if you want it to be considered a word separator.
-export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
+export WORDCHARS='*?_-.[]~&;!#$%^(){}<>'
