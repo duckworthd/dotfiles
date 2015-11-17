@@ -2,7 +2,7 @@
 PS1=""
 
 # the time
-PS1+="[${PR_WHITE}%D{%H:%M:%S}${RESET}]"
+PS1+="${PR_RED}[${RESET}${PR_BOLD_WHITE}%D{%H:%M:%S}${RESET}${PR_RED}]${RESET}"
 PS1+=" "
 
 # username @ computer_name
@@ -11,8 +11,8 @@ PS1+="@"
 PS1+="${PR_GREEN}%m${RESET}"
 
 # current directory
-PS1+=":"
-PS1+="${PR_WHITE}%5(c:.../:)%4c${RESET}"
+PS1+="${PR_RED} | ${RESET}"
+PS1+="${PR_WHITE}%~${RESET}"
 
 # new line
 PS1+="
