@@ -18,10 +18,12 @@ PS1+="${PR_WHITE}%~${RESET}"
 PS1+="
 > "
 
-############################# RIGHT SIDE #######################################
 export PS1
+############################# RIGHT SIDE #######################################
 
 RPS1=""
+
+export RPS1
 
 # The right side of the prompt indicates if we're in INSERT or NORMAL vi-mode
 function zle-line-init zle-keymap-select {
