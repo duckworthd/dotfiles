@@ -41,14 +41,14 @@
     ;; Control git from emacs
     magit
 
-    ;; Major mode for markdown
-    markdown-mode
-
-    ;; Color theme based on Sublime Text's monokai-theme
+        ;; Color theme based on Sublime Text's monokai-theme
     monokai-theme
 
     ;; NerdTree-like directory navigator
     neotree
+
+    ;; Pandoc-friendly markdown syntax
+    pandoc-mode
 
     ;; Represent undo history as a tree
     undo-tree
@@ -199,19 +199,17 @@
 ;; Control git from within emacs.
 ;;   <M-x> magit-status
 
-;; markdown-mode
-;; =============
-;;
-;; Syntax comprehension for MARKDOWN format. See for usage,
-;;   http://jblevins.org/projects/markdown-mode/
-(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
-(add-to-list 'auto-mode-alist '(      "\\.md\\'" . markdown-mode))
-
 ;; monokai-theme
 ;; =============
 ;;
 ;; Prettiness for everyone!
 (load-theme 'monokai t)
+
+;; pandoc-mode
+;; ===========
+;;
+;; Enable pandoc-mode when loading a markdown file
+(add-hook 'markdown-mode-hook 'pandoc-mode)
 
 ;; prettify-symbols-mode
 ;; =====================
@@ -222,8 +220,6 @@
 (if (version< emacs-version "24.4")
     nil
   (global-prettify-symbols-mode 1))
-
-
 
 ;; show-paren-mode
 ;; ================
@@ -236,6 +232,18 @@
 ;;
 ;; Treat CamelCaseWords  as individual words
 (global-subword-mode t)
+
+;; tramp-mode
+;; ==========
+;;
+;; Remote connection to a running emacs instance over ssh.
+
+;; Use ssh (not scp) as the default protocol for making connections.
+(setq tramp-default-mode "ssh")
+
+;; Use bash, not the default shell, with tramp. This avoids errors caused by
+;; fancy command line prompts zsh may use.
+(eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
 
 ;; undo-tree
 ;; =========
