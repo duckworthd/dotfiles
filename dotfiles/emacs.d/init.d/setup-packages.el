@@ -53,6 +53,9 @@
     ;; Represent undo history as a tree
     undo-tree
 
+    ;; surround.vim, but for emacs
+    wrap-region
+
     ;; Snippets for quickly filling in boilerplate
     yasnippet
    )
@@ -256,6 +259,12 @@
 ;; Use <Shift+Arrow> to navigate between windows
 (when (fboundp 'windmove-default-keybindings)
     (windmove-default-keybindings))
+
+;; wrap-region
+;; ===========
+;;
+;; Select text, then type ", ", (, {, [
+(wrap-region-mode t)
 
 
 ;; ----------------------------------------------------------------------------
