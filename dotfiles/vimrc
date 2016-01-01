@@ -32,7 +32,7 @@
   NeoBundle 'JuliaLang/julia-vim'
 
   " file search
-  NeoBundle 'kien/ctrlp.vim'
+  NeoBundle 'ctrlpvim/ctrlp.vim'
 
   " quick character search
   NeoBundle 'Lokaltog/vim-easymotion'
