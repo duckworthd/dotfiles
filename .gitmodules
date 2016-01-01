@@ -4,3 +4,6 @@
 [submodule "dotfiles/zsh/plugins/zsh-syntax-highlighting"]
 	path = dotfiles/zsh/plugins/zsh-syntax-highlighting
 	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
+[submodule "dotfiles/tmux/plugins/tpm"]
+	path = dotfiles/tmux/plugins/tpm
+	url = https://github.com/tmux-plugins/tpm.git
