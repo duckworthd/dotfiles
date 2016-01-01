@@ -89,11 +89,13 @@
     " enable it if this vimrc is read from a Google machine.
   else
     NeoBundle 'Valloric/YouCompleteMe', {
-        \ 'build' : {
-        \     'mac'  : './install.sh --clang-completer',
-        \     'unix' : './install.sh --clang-completer',
-        \    },
-        \ }
+         \ 'build'      : {
+            \ 'mac'     : './install.py',
+            \ 'unix'    : './install.py',
+            \ 'windows' : 'install.py',
+            \ 'cygwin'  : './install.py'
+            \ }
+         \ }
   endif
 
   " syntax highlighting for markdown + latex
@@ -526,7 +528,8 @@
   " }}}
 
   " UltiSnips {{{
-    " <CR> to expand snippets. For compatibility with YouCompleteMe.
+    " <CR> to expand snippets. For compatibility with YouCompleteMe. Use C-j
+    " and C-k to jump between fields within a snippet.
     let g:UltiSnipsExpandTrigger = "<nop>"
     let g:ulti_expand_or_jump_res = 0
     function! ExpandSnippetOrCarriageReturn()
@@ -541,6 +544,7 @@
   " }}}
 
   " YouCompleteMe {{{
+    " Use Tab and S-Tab to go up/down options list.
     nnoremap <Leader>jd :YcmCompleter GoTo<CR>
 
     let g:ycm_min_num_of_chars_for_completion = 3
