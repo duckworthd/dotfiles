@@ -276,8 +276,7 @@
   endfunction
 
   " clear highlighted search term
-  nnoremap <silent> <Esc> :nohlsearch<CR>
-  nnoremap <silent> <C-c> :nohlsearch<CR>
+  nnoremap <silent> <C-S-c> :nohlsearch<CR>
 
   " quicker scroll up/down
   noremap <C-e> 3<C-e>
