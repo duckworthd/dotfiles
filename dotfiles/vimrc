@@ -111,6 +111,9 @@
   " matlab syntax
   NeoBundle 'vim-scripts/MatlabFilesEdition'
 
+  " swap windows with <leader>ww
+  NeoBundle 'wesQ3/vim-windowswap'
+
   " ctags integration
   NeoBundle 'xolox/vim-easytags'
 
