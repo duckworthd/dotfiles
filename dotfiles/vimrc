@@ -441,11 +441,12 @@
       " Note #1: if "a" or "c" is included with "r", use the behavior of "a" or "c" (as
       " a fallback) when a root can't be found.
 
-    noremap <leader>cp :CtrlPMixed<CR>
+    noremap <leader>cp :CtrlP<CR>
     noremap <leader>cb :CtrlPBuffer<CR>
 
-    let g:ctrlp_follow_symlinks = 1   " follow symlinks
+    let g:ctrlp_follow_symlinks = 1     " follow symlinks
     let g:ctrlp_clear_cache_on_exit = 0 " keep caches across sessions
+    let g:ctrlp_lazy_update = 25        " Don't update until 25 ms of no typing
 
     let g:ctrlp_custom_ignore = {
       \ 'dir'  : '\v[\/](env|target|dist|.+[.]egg-info)$',
