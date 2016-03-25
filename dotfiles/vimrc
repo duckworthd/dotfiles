@@ -342,6 +342,7 @@
   endif
   " set background=dark " dark background (automatically set by sleepwalker)
   set cursorline          " Hightlight current line
+  set cursorcolumn        " Hightlight current column
   set ruler               " Show line ruler
   set number              " line numbers
   set hlsearch            " highlight search matches
