@@ -2,11 +2,11 @@
   set nocompatible
 
   " Load everything in ~/.vim/bundles
-  set runtimepath+=~/.vim/bundle/NeoBundle.vim
+  set runtimepath+=~/.vim/bundle/neobundle.vim
   call neobundle#begin(expand('~/.vim/bundle/'))
 
   " let NeoBundle manage itself
-  NeoBundleFetch 'Shougo/NeoBundle.vim'
+  NeoBundleFetch 'Shougo/neobundle.vim'
 
   NeoBundle 'MarcWeber/vim-addon-mw-utils'
 
