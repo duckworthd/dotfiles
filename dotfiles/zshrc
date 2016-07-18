@@ -2,8 +2,11 @@
 ZSH_PATHS=(
     "$HOME/.zsh/apps"
     "$HOME/.zsh/core"
-    "$HOME/.zsh-local"
   )
+
+if [[ -e "$HOME/.zsh-local" ]]; then
+  ZSH_PATHS+=("$HOME/.zsh-local")
+fi
 
 # Find all .zsh files.
 SOURCES=$(find -L $ZSH_PATHS[@] -iname '*.zsh' -type f)
