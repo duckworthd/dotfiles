@@ -2,7 +2,10 @@
 .dropbox
 .svn
 
-# managed by vim's neobundle.vim
+# default directory for virtualenv
+env
+
+# managed by vim's Vundle.vim
 dotfiles/vim/bundle/*
 dotfiles/vim/.netrw*
 
