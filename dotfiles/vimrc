@@ -2,10 +2,10 @@
   set nocompatible
 
   " Load everything in ~/.vim/bundles
-  set runtimepath+=~/.vim/bundle/Vundle.vim
+  set runtimepath+=~/.vim/bundle/vundle.vim
   call vundle#begin(expand('~/.vim/bundle/'))
 
-  " let Vundle manage itself
+  " let NeoBundle manage itself
   Plugin 'VundleVim/Vundle.vim'
 
   Plugin 'MarcWeber/vim-addon-mw-utils'
@@ -71,6 +71,9 @@
   " visual undo tree
   Plugin 'sjl/gundo.vim'
 
+  " Simple Python folding
+  Plugin 'tmhedberg/SimpylFold'
+
   " molokai colorscheme
   Plugin 'tomasr/molokai'
 
@@ -101,9 +104,6 @@
 
   " kill buffers without messing up window layout
   Plugin 'vim-scripts/bufkill.vim'
-
-  " pig syntax
-  Plugin 'vim-scripts/pig.vim'
 
   " matlab syntax
   Plugin 'vim-scripts/MatlabFilesEdition'
