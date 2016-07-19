@@ -2,64 +2,61 @@
   set nocompatible
 
   " Load everything in ~/.vim/bundles
-  set runtimepath+=~/.vim/bundle/neobundle.vim
-  call neobundle#begin(expand('~/.vim/bundle/'))
+  set runtimepath+=~/.vim/bundle/Vundle.vim
+  call vundle#begin(expand('~/.vim/bundle/'))
 
-  " let NeoBundle manage itself
-  NeoBundleFetch 'Shougo/neobundle.vim'
+  " let Vundle manage itself
+  Plugin 'VundleVim/Vundle.vim'
 
-  NeoBundle 'MarcWeber/vim-addon-mw-utils'
+  Plugin 'MarcWeber/vim-addon-mw-utils'
 
   " solarized color scheme
-  NeoBundle 'altercation/vim-colors-solarized'
+  Plugin 'altercation/vim-colors-solarized'
 
   " status bar
-  NeoBundle 'bling/vim-airline'
+  Plugin 'bling/vim-airline'
 
   " golang support
-  NeoBundle 'fatih/vim-go'
+  Plugin 'fatih/vim-go'
 
   " align text by "=" or ":" or whatever else
-  NeoBundle 'godlygeek/tabular'
+  Plugin 'godlygeek/tabular'
 
   " LESS syntax (CSS extension)
-  NeoBundle 'groenewege/vim-less'
+  Plugin 'groenewege/vim-less'
 
   " Snippets for use with ultisnips
-  NeoBundle 'honza/vim-snippets'
-
-  " julia syntax
-  NeoBundle 'JuliaLang/julia-vim'
+  Plugin 'honza/vim-snippets'
 
   " file search
-  NeoBundle 'ctrlpvim/ctrlp.vim'
+  Plugin 'ctrlpvim/ctrlp.vim'
 
   " quick character search
-  NeoBundle 'Lokaltog/vim-easymotion'
+  Plugin 'Lokaltog/vim-easymotion'
 
   " ack for searching
-  NeoBundle 'mileszs/ack.vim'
+  Plugin 'mileszs/ack.vim'
 
   " show indents
-  NeoBundle 'nathanaelkane/vim-indent-guides'
+  Plugin 'nathanaelkane/vim-indent-guides'
 
   " Better C++ syntax highlighting
-  NeoBundle 'octol/vim-cpp-enhanced-highlight'
+  Plugin 'octol/vim-cpp-enhanced-highlight'
 
   " file navigation
-  NeoBundle 'scrooloose/nerdtree'
+  Plugin 'scrooloose/nerdtree'
 
   " syntax checking on lots of languages
-  NeoBundle 'scrooloose/syntastic'
+  Plugin 'scrooloose/syntastic'
 
   " tab completion
-  NeoBundle 'Shougo/neocomplete.vim'
+  Plugin 'Shougo/neocomplete.vim'
 
   " file/buffer/everything fuzzy search
-  NeoBundle 'Shougo/unite.vim'
+  Plugin 'Shougo/unite.vim'
 
   " necessary for asynchronous computation
-  NeoBundle 'Shougo/vimproc.vim', {
+  Plugin 'Shougo/vimproc.vim', {
       \ 'build' : {
       \     'windows' : 'make -f make_mingw32.mak',
       \     'cygwin' : 'make -f make_cygwin.mak',
@@ -69,26 +66,26 @@
       \ }
 
   " snippets engine
-  NeoBundle 'SirVer/ultisnips'
+  Plugin 'SirVer/ultisnips'
 
   " visual undo tree
-  NeoBundle 'sjl/gundo.vim'
+  Plugin 'sjl/gundo.vim'
 
   " molokai colorscheme
-  NeoBundle 'tomasr/molokai'
+  Plugin 'tomasr/molokai'
 
   " git integration
-  NeoBundle 'tpope/vim-fugitive'
+  Plugin 'tpope/vim-fugitive'
 
   " delete surrounding parentheses, etc
-  NeoBundle 'tpope/vim-surround'
+  Plugin 'tpope/vim-surround'
 
   " Context-aware completion backend.
   if filereadable(expand('~/.at_google'))
     " Google's version of YouCompleteMe conflicts with the public version. Don't
     " enable it if this vimrc is read from a Google machine.
   else
-    NeoBundle 'Valloric/YouCompleteMe', {
+    Plugin 'Valloric/YouCompleteMe', {
          \ 'build'      : {
             \ 'mac'     : './install.py',
             \ 'unix'    : './install.py',
@@ -99,41 +96,28 @@
   endif
 
   " syntax highlighting for markdown + latex
-  NeoBundle 'vim-pandoc/vim-pandoc'
-  NeoBundle 'vim-pandoc/vim-pandoc-syntax'
+  Plugin 'vim-pandoc/vim-pandoc'
+  Plugin 'vim-pandoc/vim-pandoc-syntax'
 
   " kill buffers without messing up window layout
-  NeoBundle 'vim-scripts/bufkill.vim'
+  Plugin 'vim-scripts/bufkill.vim'
 
   " pig syntax
-  NeoBundle 'vim-scripts/pig.vim'
+  Plugin 'vim-scripts/pig.vim'
 
   " matlab syntax
-  NeoBundle 'vim-scripts/MatlabFilesEdition'
+  Plugin 'vim-scripts/MatlabFilesEdition'
 
   " swap windows with <leader>ww
-  NeoBundle 'wesQ3/vim-windowswap'
+  Plugin 'wesQ3/vim-windowswap'
 
   " ctags integration
-  NeoBundle 'xolox/vim-easytags'
+  Plugin 'xolox/vim-easytags'
 
   " dependency...
-  NeoBundle 'xolox/vim-misc'
+  Plugin 'xolox/vim-misc'
 
-  NeoBundle 'pangloss/vim-javascript'            " slow slow slow
-  " NeoBundle 'Raimondi/delimitMate'               " gets in the way
-  " NeoBundle 'sontek/rope-vim'                    " slow slow slow
-  " NeoBundle 'majutsushi/tagbar'                  " doesn't work when I need it
-  " NeoBundle 'jcf/vim-latex'                      " messes with my shortcuts
-  " NeoBundle 'xolox/vim-shell'                    " never use it
-
-  " NeoBundle 'bling/vim-bufferline'               " too many buffers open at a time
-  " NeoBundle 'vim-scripts/Auto-Pairs'             " irritating ot use
-
-  call neobundle#end()
-
-  " Prompt user if there are uninstalled bundles
-  NeoBundleCheck
+  call vundle#end()
 " }}}
 
 " Machine-local vimrc {{{
