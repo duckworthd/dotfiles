@@ -2,7 +2,7 @@
   set nocompatible
 
   " Load everything in ~/.vim/bundles
-  set runtimepath+=~/.vim/bundle/vundle.vim
+  set runtimepath+=~/.vim/bundle/Vundle.vim
   call vundle#begin(expand('~/.vim/bundle/'))
 
   " let NeoBundle manage itself
@@ -314,12 +314,19 @@
 "}}}
 
 " UI {{{
+  function! HasColorScheme(name)
+    " Returns true if a colorscheme is available.
+    let l:pat = 'colors/'.a:name.'.vim'
+    return !empty(globpath(&rtp, l:pat))
+  endfunction
+
   if has("gui_running")
     colorscheme solarized
     set background=dark
-  else
+  elseif HasColorScheme("molokai")
     colorscheme molokai
   endif
+
   if $TERM =~ "-256color"
     set t_Co=256      " enable 256 colors
     set t_ut=         " something for playing properly with tmux/screen?
