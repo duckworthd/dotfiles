@@ -472,7 +472,7 @@
     let g:indent_guides_enable_on_vim_startup = 1
 
     function! IndentGuidesFor256Color()
-      if $TERM =~ "-256color" && g:colors_name == "monokai"
+      if $TERM =~ "-256color" && exists("g:colors_name") && g:colors_name == "monokai"
         " 256 colors doesn't play nicely with vim-indent-guides. Set its colors
         " explicitly.
         let g:indent_guides_auto_colors = 0
