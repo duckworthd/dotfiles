@@ -27,3 +27,6 @@ export LANG=en_US.UTF-8
 # all of "file-name", instead of just "name". Remove a character from this list
 # if you want it to be considered a word separator.
 export WORDCHARS='*?_-.[]~&;!#$%^(){}<>'
+
+# Disable nasty stuff like "C-s" from enabling terminal scroll lock.
+stty -ixon -ixoff 2>/dev/null # really, no flow control.
