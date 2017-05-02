@@ -1,9 +1,10 @@
 # Path
+PATH+=":$HOME/bin"
+PATH+=":$HOME/homebrew/bin"
 PATH+=":/bin"
 PATH+=":/sbin"
 PATH+=":/usr/bin"
 PATH+=":/usr/sbin"
-PATH+=":$HOME/bin"
 PATH+=":/opt/local/Library/Frameworks/Python.framework/Versions/2.7/bin"
 PATH+=":/usr/local/bin"
 PATH+=":/usr/X11/bin"
