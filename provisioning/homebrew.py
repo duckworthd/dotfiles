@@ -1,16 +1,22 @@
 import os
 
 from invoke import task
+from .core import dotfiles, homebrew
 from .utils import *
 
 
-@task("homebrew")
-def ack():
-  brew_install("ack")
 
-@task("homebrew")
-def autojump():
-  if brew_install("autojump"):
+@task(homebrew)
+def python(ctx):
+  brew_install(ctx, "python")
+
+@task(homebrew)
+def ack(ctx):
+  brew_install(ctx, "ack")
+
+@task(homebrew)
+def autojump(ctx):
+  if brew_install(ctx, "autojump"):
     print (
       """
       The following needs to be added to your .bash_profile or .zshrc,
@@ -19,143 +25,77 @@ def autojump():
       """
     )
 
-@task("homebrew")
-def coreutils():
-  brew_install("coreutils")
+@task(homebrew)
+def coreutils(ctx):
+  brew_install(ctx, "coreutils")
 
-@task("homebrew")
-def ctags():
-  brew_install("ctags")
+@task(homebrew)
+def ctags(ctx):
+  brew_install(ctx, "ctags")
 
-@task("virtualbox")
-def docker():
-  brew_install("boot2docker")
-  brew_install("docker")
+@task(homebrew)
+def htop(ctx):
+  brew_install(ctx, "htop-osx")
 
-@task("homebrew")
-def htop():
-  brew_install("htop-osx")
+@task(python)
+def httpie(ctx):
+  if command_exists(ctx, "http"): return
+  pip_install(ctx, "httpie")
 
-@task("python")
-def httpie():
-  if command_exists("http"): return
-  pip_install("httpie")
+@task(homebrew)
+def jq(ctx):
+  brew_install(ctx, "jq")
 
-@task("homebrew")
-def jq():
-  brew_install("jq")
+@task(homebrew)
+def lua(ctx):
+  brew_install(ctx, "lua")
 
-@task("homebrew")
-def lua():
-  brew_install("lua")
+@task(lua)
+def luarocks(ctx):
+  brew_install(ctx, "luarocks")
 
-@task("lua")
-def luarocks():
-  brew_install("luarocks")
+@task(homebrew)
+def parallel(ctx):
+  brew_install(ctx, "parallel")
 
-@task("homebrew")
-def mysql():
-  HOME = os.environ["HOME"]
-  brew_install("mysql")
-
-  # register mysql with Launch Control to start on system startup
-  source = '/usr/local/opt/mysql/homebrew.mxcl.mysql.plist'
-  dest   = '{}/Library/LaunchAgents/homebrew.mxcl.mysql.plist'.format(HOME)
-  if not os.path.exists(dest):
-    run('ln -sfv {source} {dest}'.format(source=source, dest=dest))
-  if 'homebrew.mxcl.mysql' not in run("launchctl list", hide="out").stdout:
-    run('launchctl load {dest}'.format(dest))
-
-@task("homebrew")
-def parallel():
-  brew_install("parallel")
-
-@task("homebrew")
-def python():
-  brew_install("python")
-
-@task("python")
-def python_scientific():
+@task(python)
+def python_scientific(ctx):
   # scipy
-  brew_install("gcc")
+  brew_install(ctx, "gcc")
 
   # matplotlib
-  brew_install("freetype")
-  pip_install("pyparsing")
+  brew_install(ctx, "freetype")
+  pip_install(ctx, "pyparsing")
 
   # `pip install scipy` doesn't work with Homebrew due to path issues, so let
   # homebrew handle its installation instead.
-  brew_tap("samueljohn/python")
-  brew_install("numpy")
-  brew_install("scipy")
-  brew_install("matplotlib")
+  brew_tap("homebrew/python")
+  brew_install(ctx, "numpy")
+  brew_install(ctx, "scipy")
+  brew_install(ctx, "matplotlib")
 
-  pip_install(["pandas", "ipython", "ipdb"])
+  pip_install(ctx, ["pandas", "ipython", "ipdb"])
 
-@task("python")
-def python_productivity():
-  brew_install("libevent")
-  brew_install( "libyaml")
-  brew_install( "libxml2")
-  pip_install(         "PyYAML")
-  pip_install("python-dateutil")
-  pip_install([
-    "configurati",
-    "duxlib",
-    "funcy",
-    "gevent",
-    "invoke",
-    "lxml",
-    "virtualenv",
-  ])
 
-@task("python", "mysql")
-def python_web():
-  pip_install("MySQL-python")
-  pip_install([
-    "sqlrest",
-    "bottle",
-    "pyjade",
-    "jinja2",
-  ])
+@task(homebrew, dotfiles)
+def tmux(ctx):
+  brew_install(ctx, "tmux")
+  brew_install(ctx, "reattach-to-user-namespace")
 
-@task("python")
-def python_testing():
-  pip_install([
-    "nose",
-  ])
+@task(homebrew)
+def tree(ctx):
+  brew_install(ctx, "tree")
 
-@task("python")
-def python_amazon():
-  pip_install([
-    "boto",
-    "awscli",
-  ])
-  pip_install("gsutil")
+@task(homebrew)
+def wget(ctx):
+  brew_install(ctx, "wget")
 
-@task("homebrew")
-def s3cmd():
-  brew_install("s3cmd")
+@task(homebrew, dotfiles)
+def zsh(ctx):
+  if "zsh" in brew_installed(ctx): return
+  brew_install(ctx, "zsh")
 
-@task("homebrew")
-def scala():
-  brew_install("scala")
+  # "chsh -s" complains unless the path of the shell is in /etc/shells. Add it here.
+  print_run(ctx, 'sudo sh -c "echo $(which zsh) >> /etc/shells"')
 
-@task("homebrew", "dotfiles")
-def tmux():
-  brew_install("tmux")
-  brew_install("reattach-to-user-namespace")
-
-@task("homebrew")
-def tree():
-  brew_install("tree")
-
-@task("homebrew")
-def wget():
-  brew_install("wget")
-
-@task("homebrew", "dotfiles")
-def zsh():
-  if command_exists("zsh"): return
-  brew_install("zsh")
-  run('chsh -s $(which zsh)')
+  print_run(ctx, 'chsh -s $(which zsh)')

@@ -6,36 +6,33 @@ from provisioning.core import *
 from provisioning.homebrew import *
 
 
-@task(default=True)
-def common():
-  homebrew()
-  brew_cask()
-  dotfiles()
+@task
+def all(ctx):
+  if platform() == "Darwin":
+    homebrew(ctx)
+    dotfiles(ctx)
 
-  # CLI utils
-  ack()
-  autojump()
-  coreutils()
-  ctags()
-  htop()
-  httpie()
-  jq()
-  parallel()
-  python()
-  python_productivity()
-  python_scientific()
-  tmux()
-  tree()
-  zsh()
+    # CLI utils
+    ack(ctx)
+    autojump(ctx)
+    coreutils(ctx)
+    ctags(ctx)
+    htop(ctx)
+    httpie(ctx)
+    jq(ctx)
+    parallel(ctx)
+    python(ctx)
+    tmux(ctx)
+    tree(ctx)
+    zsh(ctx)
 
-  # Applications
-  alfred()
-  amethyst()
-  chrome()
-  dropbox()
-  evernote()
-  gitx()
-  iterm2()
-  java()
-  keepassx()
-  macvim()
+    # Applications
+    alfred(ctx)
+    chrome(ctx)
+    dropbox(ctx)
+    iterm2(ctx)
+    keepassx(ctx)
+    macvim(ctx)
+
+  if platform() == "Linux":
+    dotfiles(ctx)
