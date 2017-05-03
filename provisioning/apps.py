@@ -27,6 +27,10 @@ def iterm2(ctx):
   brew_install(ctx, "iterm2", cask=True)
 
 @task(homebrew)
+def mosh(ctx):
+  brew_install(ctx, "mosh", cask=True)
+
+@task(homebrew)
 def keepassx(ctx):
   if application_exists(ctx, "KeePassX"): return
   brew_install(ctx, "keepassx", cask=True)
@@ -66,3 +70,8 @@ def R(ctx):
 def vlc(ctx):
   if application_exists(ctx, "VLC"): return
   brew_install(ctx, "vlc", cask=True)
+
+@task(homebrew)
+def spotify(ctx):
+  if application_exists(ctx, "Spotify"): return
+  brew_install(ctx, "spotify", cask=True)
