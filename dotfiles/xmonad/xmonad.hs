@@ -200,11 +200,18 @@ myKeys = \conf -> mkKeymap conf $
   , ("M-`",             toggleWS)
   ]
 
-  -- Unified workspace shifting
+  -- Unified workspace shifting.
+  -- mod-#      : Switch to workspace.
+  -- mod-shift-#: Move current pane to workspace.
   ++
   [ (m ++ k,            f k)
   | k <- myWsKeys
   , (m, f) <- [("M-", myViewer), ("M-S-", myShifter)]
+  ]
+
+  -- Lock screen.
+  ++
+  [ ("M-<Esc>",         spawn "gnome-screensaver-command --lock")
   ]
 
 
