@@ -542,10 +542,21 @@
     " Use Tab and S-Tab to go up/down options list.
     nnoremap <Leader>jd :YcmCompleter GoTo<CR>
 
-    let g:ycm_min_num_of_chars_for_completion = 3
+    " A large number, effectively disabling YCM by default.
+    let g:ycm_min_num_of_chars_for_completion = 100000
 
     " Don't let YCM disable Syntastic
     let g:ycm_show_diagnostics_ui = 0
+
+    " Only enable YCM for specific languages.
+    let ycm_enabled = 3
+    augroup ycm
+      autocmd!
+      autocmd FileType cpp        let g:ycm_min_num_of_chars_for_completion = ycm_enabled
+      autocmd FileType javascript let g:ycm_min_num_of_chars_for_completion = ycm_enabled
+      autocmd FileType python     let g:ycm_min_num_of_chars_for_completion = ycm_enabled
+      autocmd FileType vim        let g:ycm_min_num_of_chars_for_completion = ycm_enabled
+    augroup END
   " }}}
 " }}}
 
