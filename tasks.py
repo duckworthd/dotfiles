@@ -1,38 +1,56 @@
-import os
-
 from invoke import task
-from provisioning.apps import *
-from provisioning.core import *
-from provisioning.homebrew import *
+from provisioning.utils import platform
 
 
-@task
-def all(ctx):
-  if platform() == "Darwin":
-    homebrew(ctx)
-    dotfiles(ctx)
+if platform() == "Darwin":
+  from provisioning.apps import *
+  from provisioning.core import *
+  from provisioning.homebrew import *
+
+  @task(
+    # Core
+    homebrew,
+    dotfiles,
 
     # CLI utils
-    ack(ctx)
-    autojump(ctx)
-    coreutils(ctx)
-    ctags(ctx)
-    htop(ctx)
-    httpie(ctx)
-    jq(ctx)
-    parallel(ctx)
-    python(ctx)
-    tmux(ctx)
-    tree(ctx)
-    zsh(ctx)
+    ack,
+    autojump,
+    coreutils,
+    ctags,
+    htop,
+    httpie,
+    jq,
+    parallel,
+    python,
+    tmux,
+    tree,
+    zsh,
 
     # Applications
-    alfred(ctx)
-    chrome(ctx)
-    dropbox(ctx)
-    iterm2(ctx)
-    keepassx(ctx)
-    macvim(ctx)
+    alfred,
+    chrome,
+    dropbox,
+    iterm2,
+    keepassx,
+    macvim,
+  )
+  def all(ctx):
+    pass
 
-  if platform() == "Linux":
-    dotfiles(ctx)
+elif platform() == "Linux": 
+  from provisioning.apt import *
+  from provisioning.core import dotfiles
+
+  @task(
+    dotfiles,
+    vim,
+    xclip,
+    zsh,
+    xmonad,
+  )
+  def all(ctx):
+    "Install all recommended packages."
+    pass
+
+else:
+  raise Exception("Unknown platform: " + platform(ctx))

@@ -39,7 +39,7 @@ def keepassx(ctx):
 def macvim(ctx):
   if command_exists(ctx, "mvim"): return
   HOME = os.environ["HOME"]
-  brew_install(ctx, "macvim", flags=["--with-lua", "--with-python3", "--with-override-system-vim"]) 
+  brew_install(ctx, "macvim", flags=["--with-lua", "--with-python3", "--with-override-system-vim"])
   print "Type ':PluginInstall' the next time you open vim"
 
 @task(homebrew, dotfiles)

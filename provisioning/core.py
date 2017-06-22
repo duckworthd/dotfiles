@@ -26,6 +26,7 @@ def dotfiles(ctx):
 
 @task
 def homebrew(ctx):
+  """Install homebrew, a package manager for OSX."""
   if platform(ctx) != "Darwin":
     raise Exception(
       'You cannot install Homebrew on a non-OSX system. Any provisioning '
@@ -37,6 +38,7 @@ def homebrew(ctx):
 
 @task
 def xcode(ctx):
+  """Install xcode, build tools for OSX."""
   if platform(ctx) != "Darwin":
     raise Exception('You cannot install XCode on a non-OSX system.')
   if application_exists(ctx, "Xcode"): 
@@ -48,7 +50,5 @@ def xcode(ctx):
 
 @task(xcode)
 def xcode_license(ctx):
+  """Sign the xcode license."""
   print_run(ctx, "sudo xcodebuild -license")
-
-def platform(ctx):
-  return sys.platform.capitalize()

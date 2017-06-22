@@ -1,3 +1,4 @@
+import getpass
 import os
 
 import invoke
@@ -7,14 +8,17 @@ from .colors import *
 
 __all__ = [
     'application_exists',
+    'apt_install',
     'brew_install',
     'brew_installed',
     'brew_tap',
     'command_exists',
     'luarocks_install',
     'pip_install',
+    'platform',
     'python_package_exists',
     'print_run',
+    'sudo_print_run',
   ]
 
 def application_exists(ctx, appname):
@@ -92,7 +96,7 @@ def pip_installed(ctx):
   installed = print_run(ctx, "pip freeze", hide='both').stdout.strip().split("\n")
   return [p.split("==")[0] for p in installed]
 
-def platform(ctx):
+def platform():
   return os.uname()[0]
 
 def python_package_exists(ctx, package):
@@ -101,9 +105,32 @@ def python_package_exists(ctx, package):
   except invoke.exceptions.Failure:
     return False
 
-def print_run(ctx, *args, **kwargs):
-  print OKBLUE + "$ {}".format(args[0]) + ENDC
-  return ctx.run(*args, **kwargs)
+def print_run(ctx, cmd, *args, **kwargs):
+  print OKBLUE + "$ {}".format(cmd) + ENDC
+  return ctx.run(cmd, *args, **kwargs)
+
+def sudo_print_run(ctx, cmd, *args, **kwargs):
+  print OKRED + "$ sudo {}".format(cmd) + ENDC
+  if ctx.config.sudo.password is None:
+    ctx.config.sudo.password = getpass.getpass("Sudo password?: ")
+  return ctx.sudo(cmd, *args, **kwargs)
 
 def strjoin(strs, joiner=u" "):
   return joiner.join(s for s in strs if s.strip())
+
+def apt_install(ctx, names):
+  if isinstance(names, basestring):
+    names = [names]
+
+  if len(names) > 0:
+    cmd = [
+        'apt-get',
+        'install',
+        '--yes',
+        strjoin(names),
+      ]
+    cmd = strjoin(cmd)
+
+    return (0 == (sudo_print_run(ctx, cmd, hide="out")).exited)
+  else:
+    return False
