@@ -63,7 +63,23 @@ def vim(ctx):
   print_run(ctx, "vim -c ':PluginInstall' -c 'qa!'", hide="both")
 
   # Build YouCompleteMe, a semantic autocompletion plugin.
-  print_run(ctx, "$HOME/.vim/bundle/YouCompleteMe/install.py --clang-completer", hide="out")
+  import re
+  import lsb_release
+
+  # Parse "16.04" from "Ubuntu 16.04.01 LTS".
+  release_name = lsb_release.get_lsb_information()["DESCRIPTION"]
+  release_full_version = re.search("^Ubuntu ([0-9.]+).*$", release_name).group(1)
+  release_version = re.search("^(\d+[.]\d+).*$", release_full_version)
+
+  if release_version >= "16.04":
+    print_run(ctx, "$HOME/.vim/bundle/YouCompleteMe/install.py --clang-completer", hide="out")
+  else:
+    # Install YouCompleteMe without C/C++ support. For Ubuntu versions previous
+    # to 16.04, libclang-3.9 isn't available in apt-get. This needs to be
+    # installed manually and set to the 'CC' environment variable to enable
+    # --clang-completer.
+    print_run(ctx, "$HOME/.vim/bundle/YouCompleteMe/install.py", hide="out")
+
 
 
 @task(dotfiles)
