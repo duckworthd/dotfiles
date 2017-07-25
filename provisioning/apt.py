@@ -103,10 +103,7 @@ def tmux(ctx):
   # Extract its contents.
   print_run(ctx, "tar zxf {} --directory /tmp".format(tar_path), hide="out")
 
-  current_dir = os.getcwd()
-  try:
-    os.chdir("/tmp/tmux-2.5")
-
+  with chdir("/tmp/tmux-2.5"):
     # Build it.
     print_run(ctx, "./configure", hide="out")
     print_run(ctx, "make", hide="out")
@@ -116,5 +113,17 @@ def tmux(ctx):
     if not os.path.exists(destination_dir):
       os.makedirs(destination_dir)
     print_run(ctx, "cp ./tmux {}/tmux".format(destination_dir), hide="out")
-  finally:
-    os.chdir(current_dir)
+
+
+@task
+def keepass2(ctx):
+  """Install Keepass2, a password storage app."""
+  apt_install(ctx, "keepass2")
+
+
+@task
+def dropbox(ctx):
+  """Install Dropbox, a file syncing service."""
+  with chdir("/tmp"):
+    print_run(ctx, 'wget https://linux.dropbox.com/packages/ubuntu/dropbox_2015.10.28_amd64.deb', hide="out")
+    sudo_print_run(ctx, 'dpkg --install dropbox_2015.10.28_amd64.deb', hide="out")

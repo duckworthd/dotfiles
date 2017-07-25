@@ -1,3 +1,4 @@
+import contextlib
 import getpass
 import os
 
@@ -12,6 +13,7 @@ __all__ = [
     'brew_install',
     'brew_installed',
     'brew_tap',
+    'chdir',
     'command_exists',
     'luarocks_install',
     'pip_install',
@@ -134,3 +136,11 @@ def apt_install(ctx, names):
     return (0 == (sudo_print_run(ctx, cmd, hide="out")).exited)
   else:
     return False
+
+
+@contextlib.contextmanager
+def chdir(target_dir):
+  original_dir = os.getcwd()
+  os.chdir(target_dir)
+  yield
+  os.chdir(original_dir)
