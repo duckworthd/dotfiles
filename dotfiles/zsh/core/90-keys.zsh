@@ -2,8 +2,8 @@
 # $ cat > /dev/null
 # And press it
 
-# Use emacs keybindings
-bindkey -e
+# Use vim keybindings
+bindkey -v
 
 # Additional bindings I like
 bindkey "^K"  kill-whole-line                      # ctrl-k

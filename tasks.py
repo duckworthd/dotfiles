@@ -37,7 +37,7 @@ if platform() == "Darwin":
   def all(ctx):
     pass
 
-elif platform() == "Linux": 
+elif platform() == "Linux":
   from provisioning.apt import *
   from provisioning.core import dotfiles
 
@@ -47,6 +47,8 @@ elif platform() == "Linux":
     xclip,
     zsh,
     xmonad,
+    terminator,
+    tmux,
   )
   def all(ctx):
     "Install all recommended packages."

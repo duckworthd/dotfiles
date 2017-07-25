@@ -1,3 +1,5 @@
+import os
+
 from invoke import task
 from .core import dotfiles
 from .utils import *
@@ -86,3 +88,58 @@ def vim(ctx):
 def xmonad(ctx):
   "Install xmonad, an alternative window manager to gnome."
   apt_install(ctx, ["xmonad", "xmobar", "stalonetray", "suckless-tools"])
+
+
+@task
+def terminator(ctx):
+  "Install Terminator, a terminal emulator."
+  apt_install(ctx, "terminator")
+
+
+@task
+def requests(ctx):
+  pip_install(ctx, "requests")
+
+
+@task(requests)
+def tmux(ctx):
+  """Install tmux, a terminal multiplexer, from source."""
+  import requests
+
+  # install dependencies.
+  apt_install(ctx, ["libevent-dev", "libncurses5-dev"])
+
+  # Downlaod tarball.
+  tar_path = "/tmp/tmux.tar.gz"
+  with open(tar_path, "w") as tarfile:
+    response = requests.get(
+        "https://github.com/tmux/tmux/releases/download/2.5/tmux-2.5.tar.gz")
+    tarfile.write(response.content)
+
+  # Extract its contents.
+  print_run(ctx, "tar zxf {} --directory /tmp".format(tar_path), hide="out")
+
+  with chdir("/tmp/tmux-2.5"):
+    # Build it.
+    print_run(ctx, "./configure", hide="out")
+    print_run(ctx, "make", hide="out")
+
+    # Move it $HOME/bin.
+    destination_dir = os.path.join(os.path.expanduser("~"), "bin")
+    if not os.path.exists(destination_dir):
+      os.makedirs(destination_dir)
+    print_run(ctx, "cp ./tmux {}/tmux".format(destination_dir), hide="out")
+
+
+@task
+def keepass2(ctx):
+  """Install Keepass2, a password storage app."""
+  apt_install(ctx, "keepass2")
+
+
+@task
+def dropbox(ctx):
+  """Install Dropbox, a file syncing service."""
+  with chdir("/tmp"):
+    print_run(ctx, 'wget https://linux.dropbox.com/packages/ubuntu/dropbox_2015.10.28_amd64.deb', hide="out")
+    sudo_print_run(ctx, 'dpkg --install dropbox_2015.10.28_amd64.deb', hide="out")
