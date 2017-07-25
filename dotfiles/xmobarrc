@@ -12,4 +12,7 @@ Config
   , alignSep = "}{"
   , template = "<fc=#ee9a00>%date%</fc> <fc=#474747>»»»</fc> %StdinReader%"
   , lowerOnStart = False
+
+  -- Normally, an open window draws over xmobar. This forces xmobar to always be visible.
+  , overrideRedirect = False
   }
