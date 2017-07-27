@@ -5,7 +5,7 @@ Config
   , position = Bottom
   , commands = [  Run Com "hostname" [] "" 36000
                 , Run Com "whoami"   [] "" 36000
-                , Run Date "%a %b %_d %Y %H:%M:%S" "date" 10
+                , Run Date "%b %_d, %Y (%a) %I:%M %P" "date" 10
                 , Run Network "wlan0" ["-L","0","-H","32","--normal","green","--high","red"] 10
                 , Run Cpu ["-L","3","-H","50","--normal","green","--high","red"] 10
                 , Run Memory ["-t","Mem: <usedratio>%"] 10
