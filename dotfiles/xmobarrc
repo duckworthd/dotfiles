@@ -5,12 +5,16 @@ Config
   , position = Bottom
   , commands = [  Run Com "hostname" [] "" 36000
                 , Run Com "whoami"   [] "" 36000
-                , Run Date "%a %b %_d %Y %H:%M:%S" "date" 10
+                , Run Date "%b %_d, %Y (%a) %I:%M %P" "date" 10
+                , Run Network "wlan0" ["-L","0","-H","32","--normal","green","--high","red"] 10
+                , Run Cpu ["-L","3","-H","50","--normal","green","--high","red"] 10
+                , Run Memory ["-t","Mem: <usedratio>%"] 10
+                , Run Battery ["-t", "Batt: <acstatus> <left>% (<timeleft>)"] 10
                 , Run StdinReader
                 ]
   , sepChar = "%"
   , alignSep = "}{"
-  , template = "<fc=#ee9a00>%date%</fc> <fc=#474747>»»»</fc> %StdinReader%"
+  , template = "%whoami%<fc=#49f5ff>@</fc>%hostname% <fc=#474747>»»»</fc> %battery% <fc=#474747>»»»</fc> %cpu% <fc=#474747>»»»</fc> %memory% <fc=#474747>»»»</fc> %wlan0% <fc=#474747>»»»</fc> %StdinReader% }{ <fc=#ee9a00>%date%</fc> "
   , lowerOnStart = False
 
   -- Normally, an open window draws over xmobar. This forces xmobar to always be visible.
