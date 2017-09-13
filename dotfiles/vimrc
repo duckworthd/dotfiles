@@ -154,10 +154,14 @@
   set fileencoding=utf-8    " default to UTF-8
   set switchbuf=usetab      " when using :bn and such, iterate across tabs too
   set mouse=a               " enable mouse usage on some terminals
-  set virtualedit=block     " lets you move the cursor past the end of the line when selecting blocks of text
+  set virtualedit=block     " lets you move the cursor past the end of the line
+                            " when selecting blocks of text
   set lazyredraw            " don't update display while executing a macro
   set formatoptions+=j      " when joining lines prefixed with comment
                             " characters, remove them before joining
+  set autoread              " if a buffer hasn't been edited and has been
+                            " changed by another program, reload it when
+                            " :checktime is called.
 " }}}
 
 " Tabs {{{
@@ -311,6 +315,9 @@
 
   " delete all trailing whitespace
   nnoremap <leader>dw :%s/\v\s+$//g<CR><C-o>
+
+  " Reload all buffers that have been changed by other programs.
+  noremap <leader>ee :checktime<CR>
 "}}}
 
 " UI {{{
