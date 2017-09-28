@@ -113,7 +113,8 @@ myLayoutHook = windowNavigation $ avoidStruts
 --   className =? "[FIRST OUTPUT HERE]"
 -- using its output.
 --
--- You can also move floating windows arround by holding Meta and long clicking.
+-- You can move floating windows around with Meta + Left Click and resize with
+-- Meta + Right Click.
 myManageHook = composeAll
     [ className =? "Xmessage"     --> doFloat
     , resource  =? "stalonetray"  --> doFloat
