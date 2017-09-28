@@ -119,6 +119,7 @@ myManageHook = composeAll
     , resource  =? "stalonetray"  --> doFloat
     , role      =? "pop-up"       --> doFloat   -- Google Hangouts extension for Chrome
     , className =? "Keepassx"     --> doFloat
+    , className =? "KeePass2"     --> doFloat
     , manageDocks
     ]
   where
@@ -186,11 +187,11 @@ myKeys = \conf -> mkKeymap conf $
     -- mod-{y,o}: Switch to physical/Xinerama screens 1, 2
     -- mod-shift-{y/u,o/i}: Move window to screen 1, 2
   ++
-  [ ("M-y",             screenWorkspace 0 >>= flip whenJust (windows . W.view))
-  , ("M-o",             screenWorkspace 1 >>= flip whenJust (windows . W.view))
+  [ ("M-y",             screenWorkspace 1 >>= flip whenJust (windows . W.view))
+  , ("M-o",             screenWorkspace 0 >>= flip whenJust (windows . W.view))
 
-  , ("M-S-y",           screenWorkspace 0 >>= flip whenJust (windows . W.shift))
-  , ("M-S-o",           screenWorkspace 1 >>= flip whenJust (windows . W.shift))
+  , ("M-S-y",           screenWorkspace 1 >>= flip whenJust (windows . W.shift))
+  , ("M-S-o",           screenWorkspace 0 >>= flip whenJust (windows . W.shift))
   ]
 
   -- alt-tab for monitors and workspaces, via CycleWS
