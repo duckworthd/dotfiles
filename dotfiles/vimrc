@@ -356,7 +356,7 @@
 
   set list                  " enable the following
   set listchars=tab:\ \     " tabs look like spaces
-  set listchars+=trail:\~   " ~ for extra whitespace
+  set listchars+=trail:\•   " • for extra whitespace
   set listchars+=extends:>  " character to show at end when wrapping
   set listchars+=precedes:< " character to show at beginning when wrapping
 
@@ -369,6 +369,15 @@
     autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
     autocmd BufWinLeave * call clearmatches()
   augroup END
+
+  " color cursor row/column white on red.
+  augroup cursorcolor
+    autocmd!
+    highlight CursorLine cterm=NONE ctermbg=DarkRed ctermfg=White guibg=DarkRed guifg=White
+    highlight CursorColumn cterm=NONE ctermbg=DarkRed ctermfg=White guibg=DarkRed guifg=White
+  augroup END
+
+
 "}}}
 
 " Status Line {{{
