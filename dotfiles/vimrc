@@ -28,11 +28,12 @@
   " Snippets for use with ultisnips
   Plugin 'honza/vim-snippets'
 
-  " file search
-  Plugin 'ctrlpvim/ctrlp.vim'
+  " file search.
+  Plugin 'junegunn/fzf'
+  Plugin 'junegunn/fzf.vim'
 
-  " quick character search
-  Plugin 'Lokaltog/vim-easymotion'
+  " async syntax checking
+  Plugin 'w0rp/ale'
 
   " ack for searching
   Plugin 'mileszs/ack.vim'
@@ -45,25 +46,6 @@
 
   " file navigation
   Plugin 'scrooloose/nerdtree'
-
-  " syntax checking on lots of languages
-  Plugin 'scrooloose/syntastic'
-
-  " tab completion
-  Plugin 'Shougo/neocomplete.vim'
-
-  " file/buffer/everything fuzzy search
-  Plugin 'Shougo/unite.vim'
-
-  " necessary for asynchronous computation
-  Plugin 'Shougo/vimproc.vim', {
-      \ 'build' : {
-      \     'windows' : 'make -f make_mingw32.mak',
-      \     'cygwin' : 'make -f make_cygwin.mak',
-      \     'mac' : 'make -f make_mac.mak',
-      \     'unix' : 'make -f make_unix.mak',
-      \    },
-      \ }
 
   " snippets engine
   Plugin 'SirVer/ultisnips'
@@ -103,19 +85,11 @@
   Plugin 'vim-pandoc/vim-pandoc-syntax'
 
   " kill buffers without messing up window layout
+  " :BD (close buffer)
   Plugin 'vim-scripts/bufkill.vim'
 
   " matlab syntax
   Plugin 'vim-scripts/MatlabFilesEdition'
-
-  " swap windows with <leader>ww
-  Plugin 'wesQ3/vim-windowswap'
-
-  " ctags integration
-  Plugin 'xolox/vim-easytags'
-
-  " dependency...
-  Plugin 'xolox/vim-misc'
 
   call vundle#end()
 " }}}
@@ -399,34 +373,18 @@
 
 " Plugins Configuration {{{
 
-  " easytags {{{
-    if has('win32') || has('win64')
-      let s:ctags_loc = $HOME.'/.vim/lib/ctags58/ctags'
-    else
-      let s:ctags_loc = 'ctags'
+  " ale {{{
+    " E111: Error on 2-space tabs
+    " E114: Error on 2-space tabs (comment)
+    " F403: Error on 'from xx import *'
+    let g:ale_python_flake8_options = '--ignore=E111,E114,F403'
+  " }}}
+
+  " ack.vim {{{
+    " Use ag instead of ack if available.
+    if executable('ag')
+      let g:ackprg = 'ag --vimgrep'
     endif
-
-    let g:easytags_cmd  = s:ctags_loc
-    let g:easytags_file = s:etcdir.'/tags'
-      " Where easytags saves its tag info
-    let g:easytags_on_cursorhold = 0
-      " If you stop typing for a bit, :UpdateTags runs
-    let g:easytags_autorecurse = 0
-      " Scan files in child directories relative to the file being examined
-    let g:easytags_auto_update = 0
-      " Disable auto updating while keeping auto highlighting
-    let g:easytags_events = []
-      " Don't update tags automatically
-
-    if !has('win32') && !has('win64')
-      call CreateDirectoryIfMissing('/tmp/easytags')
-      let g:easytags_by_filetype = '/tmp/easytags'
-        " Indepent tag files for each file type, all stored in this folder
-    endif
-
-    nnoremap <leader>ut :UpdateTags<CR>
-      " Force tag update for all files under the source tree of the
-      " currently open file.
   " }}}
 
   " NERDTree {{{
@@ -434,34 +392,14 @@
     let NERDTreeIgnore = ['\.pyc$']
   " }}}
 
-  " CtrlP {{{
-    let g:ctrlp_working_path_mode = 'c'
-      " c - the directory of the current file.
-      " a - like "c", but only applies when the current working directory outside of
-      "     CtrlP isn't a direct ancestor of the directory of the current file.
-      " r - the nearest ancestor that contains one of these directories or files:
-      "     .git .hg .svn .bzr _darcs
-      " w - begin finding a root from the current working directory outside of CtrlP
-      "     instead of from the directory of the current file (default). Only applies
-      "     when "r" is also present.
-      " 0 or <empty> - disable this feature.
-      "
-      " Note #1: if "a" or "c" is included with "r", use the behavior of "a" or "c" (as
-      " a fallback) when a root can't be found.
-
-    noremap <leader>cp :CtrlP<CR>
-    noremap <leader>cb :CtrlPBuffer<CR>
-
-    let g:ctrlp_follow_symlinks = 1     " follow symlinks
-    let g:ctrlp_clear_cache_on_exit = 0 " keep caches across sessions
-    let g:ctrlp_lazy_update = 25        " Don't update until 25 ms of no typing
-
-    let g:ctrlp_custom_ignore = {
-      \ 'dir'  : '\v[\/](env|target|dist|.+[.]egg-info)$',
-      \ 'file' : '',
-      \ 'link' : '',
-      \ }
-
+  " fzf {{{
+    " Inside the fzf pane, you can use
+    " C-t: Open in tab.
+    " C-x: Open in horizontal split.
+    " C-v: Open in vertical split.
+    noremap <leader>cp :Files<CR>
+    noremap <leader>cb :Buffers<CR>
+    noremap <leader>ct :Tags<CR>
   " }}}
 
   " python-mode {{{
@@ -523,11 +461,6 @@
 
   " vim-airline {{{
     let g:airline#extensions#bufferline#enabled = 1   " integrate with vim-bufferline
-  " }}}
-
-  " unite.vim {{{
-    " start unite with search for files and buffers
-    nnoremap <leader>un :Unite -start-insert file_rec/async buffer<CR>
   " }}}
 
   " vim-multiple-cursors {{{
