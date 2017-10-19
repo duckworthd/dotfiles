@@ -49,10 +49,13 @@ elif platform() == "Linux":
     xmonad,
     terminator,
     tmux,
+    ag,
+    fzf,
+    flake8,
   )
   def all(ctx):
     "Install all recommended packages."
     pass
 
 else:
-  raise Exception("Unknown platform: " + platform(ctx))
+  raise Exception("Unknown platform: " + platform())

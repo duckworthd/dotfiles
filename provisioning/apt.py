@@ -1,8 +1,15 @@
 import os
 
+import invoke
 from invoke import task
 from .core import dotfiles
-from .utils import *
+from .colors import ENDC
+from .colors import FAIL
+from .utils import apt_install
+from .utils import chdir
+from .utils import pip_install
+from .utils import print_run
+from .utils import sudo_print_run
 
 
 @task
@@ -70,18 +77,30 @@ def vim(ctx):
 
   # Parse "16.04" from "Ubuntu 16.04.01 LTS".
   release_name = lsb_release.get_lsb_information()["DESCRIPTION"]
-  release_full_version = re.search("^Ubuntu ([0-9.]+).*$", release_name).group(1)
-  release_version = re.search("^(\d+[.]\d+).*$", release_full_version)
+  if 'Ubuntu' in release_name:
+    release_full_version = re.search("^Ubuntu ([0-9.]+).*$", release_name).group(1)
+    release_version = re.search("^(\d+[.]\d+).*$", release_full_version)
+  else:
+    release_version = None
 
-  if release_version >= "16.04":
+  if release_version and release_version >= "16.04":
     print_run(ctx, "$HOME/.vim/bundle/YouCompleteMe/install.py --clang-completer", hide="out")
   else:
-    # Install YouCompleteMe without C/C++ support. For Ubuntu versions previous
-    # to 16.04, libclang-3.9 isn't available in apt-get. This needs to be
-    # installed manually and set to the 'CC' environment variable to enable
-    # --clang-completer.
-    print_run(ctx, "$HOME/.vim/bundle/YouCompleteMe/install.py", hide="out")
-
+    try:
+      # Install YouCompleteMe without C/C++ support. For Ubuntu versions
+      # previous to 16.04, libclang-3.9 isn't available in apt-get. This needs
+      # to be installed manually and set to the 'CC' environment variable to
+      # enable --clang-completer.
+      print_run(ctx, "$HOME/.vim/bundle/YouCompleteMe/install.py", hide="out")
+    except invoke.UnexpectedExit as e:
+      if 'Your C++ compiler does NOT fully support C++11.' in e.result.stderr:
+        error_message = (
+            'Warning!! YouCompleteMe wasn\'t able to find a C++ compiler with '
+            'C++11 support. Upgrade gcc to 5.0 or higher and try again.'
+        )
+        print(FAIL + error_message + ENDC)
+      else:
+        raise e
 
 
 @task(dotfiles)
@@ -104,6 +123,9 @@ def requests(ctx):
 @task(requests)
 def tmux(ctx):
   """Install tmux, a terminal multiplexer, from source."""
+  if os.path.exists(os.path.expanduser("~/bin/tmux")):
+    return
+
   import requests
 
   # install dependencies.
@@ -143,3 +165,38 @@ def dropbox(ctx):
   with chdir("/tmp"):
     print_run(ctx, 'wget https://linux.dropbox.com/packages/ubuntu/dropbox_2015.10.28_amd64.deb', hide="out")
     sudo_print_run(ctx, 'dpkg --install dropbox_2015.10.28_amd64.deb', hide="out")
+
+
+@task(requests)
+def fzf(ctx):
+  """Install fzf, a fuzzy file finder."""
+  if os.path.exists(os.path.expanduser("~/bin/fzf")):
+    return
+
+  import requests
+
+  # Downlaod tarball.
+  tar_path = "/tmp/fzf.tar.gz"
+  with open(tar_path, "w") as tarfile:
+    response = requests.get(
+        "https://github.com/junegunn/fzf-bin/releases/download/0.17.1/fzf-0.17.1-linux_386.tgz")
+    tarfile.write(response.content)
+
+  # Extract its contents.
+  print_run(ctx, "tar zxf {} --directory /tmp".format(tar_path), hide="out")
+
+  # Copy binary to ~/bin.
+  destination_dir = os.path.join(os.path.expanduser("~"), "bin")
+  print_run(ctx, "cp /tmp/fzf {}".format(destination_dir), hide="out")
+
+
+@task(dotfiles)
+def ag(ctx):
+  "Install ag, an improved grep."
+  apt_install(ctx, "silversearcher-ag")
+
+
+@task(dotfiles)
+def flake8(ctx):
+  "Install flake8, a python linter."
+  pip_install(ctx, "flake8")
