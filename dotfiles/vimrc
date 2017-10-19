@@ -1,97 +1,92 @@
 " Plugins {{{
   set nocompatible
 
+  " Download vim-plug if necessary.
+  if empty(glob("~/.vim/autoload/plug.vim"))
+    execute '!mkdir -p ~/.vim/autoload'
+    execute '!curl -fLo ~/.vim/autoload/plug.vim https://raw.github.com/junegunn/vim-plug/master/plug.vim'
+  endif
+
   " Load everything in ~/.vim/bundles
-  set runtimepath+=~/.vim/bundle/Vundle.vim
-  call vundle#begin(expand('~/.vim/bundle/'))
+  call plug#begin('~/.vim/bundle')
 
-  " let NeoBundle manage itself
-  Plugin 'VundleVim/Vundle.vim'
-
-  Plugin 'MarcWeber/vim-addon-mw-utils'
+  Plug 'MarcWeber/vim-addon-mw-utils'
 
   " solarized color scheme
-  Plugin 'altercation/vim-colors-solarized'
+  Plug 'altercation/vim-colors-solarized'
 
   " status bar
-  Plugin 'bling/vim-airline'
+  Plug 'bling/vim-airline'
 
   " golang support
-  Plugin 'fatih/vim-go'
+  Plug 'fatih/vim-go',  { 'for':  ['go'] }
 
   " align text by "=" or ":" or whatever else
-  Plugin 'godlygeek/tabular'
+  Plug 'godlygeek/tabular'
 
   " LESS syntax (CSS extension)
-  Plugin 'groenewege/vim-less'
+  Plug 'groenewege/vim-less', { 'for': ['css'] }
 
   " Snippets for use with ultisnips
-  Plugin 'honza/vim-snippets'
+  Plug 'honza/vim-snippets'
 
   " file search.
-  Plugin 'junegunn/fzf'
-  Plugin 'junegunn/fzf.vim'
+  Plug 'junegunn/fzf'
+  Plug 'junegunn/fzf.vim'
 
   " async syntax checking
-  Plugin 'w0rp/ale'
+  Plug 'w0rp/ale'
 
   " ack for searching
-  Plugin 'mileszs/ack.vim'
+  Plug 'mileszs/ack.vim', { 'on': ['Ack'] }
 
   " show indents
-  Plugin 'nathanaelkane/vim-indent-guides'
+  Plug 'nathanaelkane/vim-indent-guides'
 
   " Better C++ syntax highlighting
-  Plugin 'octol/vim-cpp-enhanced-highlight'
+  Plug 'octol/vim-cpp-enhanced-highlight'
 
   " file navigation
-  Plugin 'scrooloose/nerdtree'
+  Plug 'scrooloose/nerdtree'
 
   " snippets engine
-  Plugin 'SirVer/ultisnips'
+  Plug 'SirVer/ultisnips'
 
   " visual undo tree
-  Plugin 'sjl/gundo.vim'
+  Plug 'sjl/gundo.vim'
 
   " Simple Python folding
-  Plugin 'tmhedberg/SimpylFold'
+  Plug 'tmhedberg/SimpylFold'
 
   " molokai colorscheme
-  Plugin 'tomasr/molokai'
+  Plug 'tomasr/molokai'
 
   " git integration
-  Plugin 'tpope/vim-fugitive'
+  Plug 'tpope/vim-fugitive'
 
   " delete surrounding parentheses, etc
-  Plugin 'tpope/vim-surround'
+  Plug 'tpope/vim-surround'
 
   " Context-aware completion backend.
   if filereadable(expand('~/.at_google'))
     " Google's version of YouCompleteMe conflicts with the public version. Don't
     " enable it if this vimrc is read from a Google machine.
   else
-    Plugin 'Valloric/YouCompleteMe', {
-         \ 'build'      : {
-            \ 'mac'     : './install.py',
-            \ 'unix'    : './install.py',
-            \ 'windows' : 'install.py',
-            \ 'cygwin'  : './install.py'
-            \ }
-         \ }
+    Plug 'Valloric/YouCompleteMe', { 'do' : '~/.vim/bundle/YouCompleteMe/install.py --clang-completer' }
   endif
 
   " syntax highlighting for markdown + latex
-  Plugin 'vim-pandoc/vim-pandoc'
-  Plugin 'vim-pandoc/vim-pandoc-syntax'
+  Plug 'vim-pandoc/vim-pandoc', { 'for': ['markdown'] }
+  Plug 'vim-pandoc/vim-pandoc-syntax', { 'for': ['markdown'] }
 
   " kill buffers without messing up window layout
   " :BD (close buffer)
-  Plugin 'vim-scripts/bufkill.vim'
+  Plug 'vim-scripts/bufkill.vim'
 
   " matlab syntax
-  Plugin 'vim-scripts/MatlabFilesEdition'
+  Plug 'vim-scripts/MatlabFilesEdition', { 'for': ['matlab'] }
 
-  call vundle#end()
+  call plug#end()
 " }}}
 
 " Machine-local vimrc {{{
@@ -488,8 +483,13 @@
   " }}}
 
   " YouCompleteMe {{{
-    " Use Tab and S-Tab to go up/down options list.
-    nnoremap <Leader>jd :YcmCompleter GoTo<CR>
+    " Jump to definition.
+    " C-o: Jump back.
+    " C-i: Jump forward.
+    nnoremap <Leader>yd :YcmCompleter GoTo<CR>
+
+    " Show references in quickfix list.
+    nnoremap <Leader>yr :YcmCompleter GoToReferences<CR>
 
     " A large number, effectively disabling YCM by default.
     let g:ycm_min_num_of_chars_for_completion = 100000

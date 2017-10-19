@@ -1,10 +1,7 @@
 import os
 
-import invoke
 from invoke import task
 from .core import dotfiles
-from .colors import ENDC
-from .colors import FAIL
 from .utils import apt_install
 from .utils import chdir
 from .utils import pip_install
@@ -69,38 +66,7 @@ def vim(ctx):
   apt_install(ctx, "vim-gnome")
 
   # Install plugins with Vundle.
-  print_run(ctx, "vim -c ':PluginInstall' -c 'qa!'", hide="both")
-
-  # Build YouCompleteMe, a semantic autocompletion plugin.
-  import re
-  import lsb_release
-
-  # Parse "16.04" from "Ubuntu 16.04.01 LTS".
-  release_name = lsb_release.get_lsb_information()["DESCRIPTION"]
-  if 'Ubuntu' in release_name:
-    release_full_version = re.search("^Ubuntu ([0-9.]+).*$", release_name).group(1)
-    release_version = re.search("^(\d+[.]\d+).*$", release_full_version)
-  else:
-    release_version = None
-
-  if release_version and release_version >= "16.04":
-    print_run(ctx, "$HOME/.vim/bundle/YouCompleteMe/install.py --clang-completer", hide="out")
-  else:
-    try:
-      # Install YouCompleteMe without C/C++ support. For Ubuntu versions
-      # previous to 16.04, libclang-3.9 isn't available in apt-get. This needs
-      # to be installed manually and set to the 'CC' environment variable to
-      # enable --clang-completer.
-      print_run(ctx, "$HOME/.vim/bundle/YouCompleteMe/install.py", hide="out")
-    except invoke.UnexpectedExit as e:
-      if 'Your C++ compiler does NOT fully support C++11.' in e.result.stderr:
-        error_message = (
-            'Warning!! YouCompleteMe wasn\'t able to find a C++ compiler with '
-            'C++11 support. Upgrade gcc to 5.0 or higher and try again.'
-        )
-        print(FAIL + error_message + ENDC)
-      else:
-        raise e
+  print_run(ctx, "vim -c ':PlugInstall' -c 'qa!'", hide="both")
 
 
 @task(dotfiles)
