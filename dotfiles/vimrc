@@ -10,6 +10,12 @@
   " Load everything in ~/.vim/bundles
   call plug#begin('~/.vim/bundle')
 
+  " Automatically format files.
+  Plug 'Chiel92/vim-autoformat'
+
+  " Code outline. Requires exuberant-ctags or universal-ctags.
+  Plug 'majutsushi/tagbar'
+
   Plug 'MarcWeber/vim-addon-mw-utils'
 
   " solarized color scheme
@@ -371,8 +377,9 @@
   " ale {{{
     " E111: Error on 2-space tabs
     " E114: Error on 2-space tabs (comment)
+    " W0311: Error on 2-space tabs
     " F403: Error on 'from xx import *'
-    let g:ale_python_flake8_options = '--ignore=E111,E114,F403'
+    let g:ale_python_flake8_options = '--ignore=E111,E114,F403,W0311'
   " }}}
 
   " ack.vim {{{
@@ -395,16 +402,6 @@
     noremap <leader>cp :Files<CR>
     noremap <leader>cb :Buffers<CR>
     noremap <leader>ct :Tags<CR>
-  " }}}
-
-  " python-mode {{{
-    let g:pymode_lint = 0           " don't run code checker on save
-    let g:pymode_rope = 0           " don't use rope for code analysis
-    let g:pymode_indent = 0         " don't step on my indentation
-    let g:pymode_options = 0        " don't set wrap, textwidth
-    let g:pymode_folding = 1        " do control indentation
-
-    let g:pymode_virtualenv = 0     " don't detect virtualenvs automatically
   " }}}
 
   " vim-javascript {{{
@@ -507,6 +504,11 @@
       autocmd FileType vim        let g:ycm_min_num_of_chars_for_completion = ycm_enabled
     augroup END
   " }}}
+
+  " tagbar {{{
+    " Open code outline.
+    nnoremap <Leader>tb :TagbarToggle<CR>
+  " }}}
 " }}}
 
 " Languages {{{
@@ -563,7 +565,7 @@
   " python {{{
     augroup python
       autocmd!
-      autocmd FileType python :setlocal tabstop=2 shiftwidth=2 softtabstop=2
+      autocmd FileType python :setlocal tabstop=4 shiftwidth=4 softtabstop=4
     augroup END
   " }}}
 
