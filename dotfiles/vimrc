@@ -469,7 +469,7 @@
   " UltiSnips {{{
     " <CR> to expand snippets. For compatibility with YouCompleteMe. Use C-j
     " and C-k to jump between fields within a snippet.
-    let g:UltiSnipsExpandTrigger = "<nop>"
+    let g:UltiSnipsExpandTrigger = "<NUL>"
     let g:ulti_expand_or_jump_res = 0
     function! ExpandSnippetOrCarriageReturn()
         let snippet = UltiSnips#ExpandSnippetOrJump()
