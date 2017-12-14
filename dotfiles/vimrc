@@ -371,9 +371,9 @@
   " ale {{{
     " E111: Error on 2-space tabs
     " E114: Error on 2-space tabs (comment)
-    " W0311: Error on 2-space tabs
+    " W311: Error on 2-space tabs
     " F403: Error on 'from xx import *'
-    let g:ale_python_flake8_options = '--ignore=E111,E114,F403,W0311'
+    let g:ale_python_flake8_options = '--ignore=E111,E114,F403,W311'
   " }}}
 
   " ack.vim {{{
