@@ -46,7 +46,7 @@ def zsh(ctx):
   apt_install(ctx, "zsh")
 
   # Make zsh the primary shell.
-  sudo_print_run(ctx, "chsh -s $(which zsh)")
+  print_run(ctx, "chsh -s $(which zsh)")
 
 
 @task

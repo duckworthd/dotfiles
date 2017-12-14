@@ -31,3 +31,6 @@ export WORDCHARS='*?_-.[]~&;!#$%^(){}<>'
 
 # Disable nasty stuff like "C-s" from enabling terminal scroll lock.
 stty -ixon -ixoff 2>/dev/null # really, no flow control.
+
+# Default editor is vim, but without loading ~/.vimrc.
+export VISUAL="vim -u NONE"
