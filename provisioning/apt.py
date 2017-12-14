@@ -1,6 +1,7 @@
 import os
 
 from invoke import task
+from .colors import OKRED, ENDC
 from .core import dotfiles
 from .utils import apt_install
 from .utils import chdir
@@ -65,8 +66,8 @@ def vim(ctx):
   "Install vim, a text editor."
   apt_install(ctx, "vim-gnome")
 
-  # Install plugins with Vundle.
-  print_run(ctx, "vim -c ':PlugInstall' -c 'qa!'", hide="both")
+  # Install plugins with vim-plug.
+  print OKRED + "Run :PlugInstall the next time you open vim to install plugins." + ENDC
 
 
 @task(dotfiles)
@@ -165,4 +166,4 @@ def ag(ctx):
 @task(dotfiles)
 def flake8(ctx):
   "Install flake8, a python linter."
-  pip_install(ctx, "flake8")
+  pip_install(ctx, "flake8", sudo=True)
