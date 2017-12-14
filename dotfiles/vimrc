@@ -570,17 +570,10 @@
   " }}}
 
   " python {{{
-    if filereadable(expand('~/.at_google'))
-      augroup python
-        autocmd!
-        autocmd FileType python :setlocal tabstop=2 shiftwidth=2 softtabstop=2
-      augroup END
-    else
-      augroup python
-        autocmd!
-        autocmd FileType python :setlocal tabstop=4 shiftwidth=4 softtabstop=4
-      augroup END
-    endif
+    augroup python
+      autocmd!
+      autocmd FileType python :setlocal tabstop=2 shiftwidth=2 softtabstop=2
+    augroup END
   " }}}
 
   " golang {{{
