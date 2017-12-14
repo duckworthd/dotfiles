@@ -10,16 +10,14 @@
   " Load everything in ~/.vim/bundles
   call plug#begin('~/.vim/bundle')
 
+  " PaperColor color scheme.
+  Plug 'NLKNguyen/papercolor-theme'
+
   " Automatically format files.
   Plug 'Chiel92/vim-autoformat'
 
   " Code outline. Requires exuberant-ctags or universal-ctags.
   Plug 'majutsushi/tagbar'
-
-  Plug 'MarcWeber/vim-addon-mw-utils'
-
-  " solarized color scheme
-  Plug 'altercation/vim-colors-solarized'
 
   " status bar
   Plug 'bling/vim-airline'
@@ -63,9 +61,6 @@
 
   " Simple Python folding
   Plug 'tmhedberg/SimpylFold'
-
-  " molokai colorscheme
-  Plug 'tomasr/molokai'
 
   " git integration
   Plug 'tpope/vim-fugitive'
@@ -296,24 +291,23 @@
 "}}}
 
 " UI {{{
-  function! HasColorScheme(name)
-    " Returns true if a colorscheme is available.
+  function! MaybeSetColorScheme(name)
+    " Sets colorscheme if scheme is available. Returns true if successful.
     let l:pat = 'colors/'.a:name.'.vim'
-    return !empty(globpath(&rtp, l:pat))
+    let l:colorscheme_exists = !empty(globpath(&rtp, l:pat))
+    if l:colorscheme_exists
+      execute 'colorscheme' a:name
+    endif
+    return l:colorscheme_exists
   endfunction
-
-  if has("gui_running")
-    colorscheme solarized
-    set background=dark
-  elseif HasColorScheme("molokai")
-    colorscheme molokai
-  endif
 
   if $TERM =~ "-256color"
     set t_Co=256      " enable 256 colors
-    set t_ut=         " something for playing properly with tmux/screen?
+    set t_ut=         " disable 'background color erase' -- important for tmux.
   endif
-  " set background=dark " dark background (automatically set by sleepwalker)
+
+  call MaybeSetColorScheme("PaperColor")  " Use PaperColor scheme if available.
+  set background=dark     " dark background
   set cursorline          " Hightlight current line
   set cursorcolumn        " Hightlight current column
   set ruler               " Show line ruler
@@ -325,7 +319,7 @@
   set wildmenu            " see options listed in minibuffer
   set scrolloff=3         " minimum number of lines below cursor
   set foldenable          " auto fold code
-  set foldmethod=indent   " fold based on indentation. 'syntax' is too slow on large files
+  set foldmethod=syntax   " fold based on syntax.
   set showcmd             " show partial command in lower right
   set wrap                " wrap lines
 
@@ -514,7 +508,6 @@
 " Languages {{{
   " Javascript {{{
     function! JavaScriptFold()
-      setlocal foldmethod=syntax
       setlocal foldlevelstart=0
       syntax region foldBraces start=/{/ end=/}/ transparent fold keepend extend
 
@@ -556,9 +549,17 @@
       endif
     endfunction
 
+    function! MaybeFoldByIndent()
+      " Sets foldmethod for buffer based on number of lines.
+      if line('$') > 1000
+        setlocal foldmethod=indent  " fold based on indentation. 'syntax' is too slow on large files
+      endif
+    endfunction
+
     augroup LargeFile
       autocmd!
       autocmd BufReadPre * let f=expand("<afile>") | call DisableBigFileOptions(f)
+      autocmd BufReadPost * :call MaybeFoldByIndent()
     augroup END
   " }}}
 
