@@ -380,6 +380,12 @@
     " W0311: Error on 2-space tabs
     " F403: Error on 'from xx import *'
     let g:ale_python_flake8_options = '--ignore=E111,E114,F403,W0311'
+
+    if filereadable(expand('~/.at_google'))
+      let g:ale_linters = {
+      \   'python': [],
+      \ }
+    endif
   " }}}
 
   " ack.vim {{{
@@ -563,10 +569,17 @@
   " }}}
 
   " python {{{
-    augroup python
-      autocmd!
-      autocmd FileType python :setlocal tabstop=4 shiftwidth=4 softtabstop=4
-    augroup END
+    if filereadable(expand('~/.at_google'))
+      augroup python
+        autocmd!
+        autocmd FileType python :setlocal tabstop=2 shiftwidth=2 softtabstop=2
+      augroup END
+    else
+      augroup python
+        autocmd!
+        autocmd FileType python :setlocal tabstop=4 shiftwidth=4 softtabstop=4
+      augroup END
+    endif
   " }}}
 
   " golang {{{
