@@ -91,13 +91,18 @@ def luarocks_install(ctx, name):
     return False
 
 
-def pip_install(ctx, names):
+def pip_install(ctx, names, sudo=False):
   if isinstance(names, basestring):
     names = [names]
   installed = pip_installed(ctx)
   names = [n for n in names if n not in installed]
+
+  runner = print_run
+  if sudo:
+    runner = sudo_print_run
+
   exit_codes = [
-      print_run(ctx, 'pip install "{}"'.format(name)).exited
+      runner(ctx, 'pip install "{}"'.format(name)).exited
       for name in names]
   return all(code == 0 for code in exit_codes)
 
