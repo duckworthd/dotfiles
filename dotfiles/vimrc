@@ -306,6 +306,13 @@
     set t_ut=         " disable 'background color erase' -- important for tmux.
   endif
 
+  " Cursor only in active window.
+  augroup CursorLineOnlyInActiveWindow
+    autocmd!
+    autocmd VimEnter,WinEnter,BufWinEnter * setlocal cursorline cursorcolumn
+    autocmd WinLeave * setlocal nocursorline nocursorcolumn
+  augroup END
+
   call MaybeSetColorScheme("PaperColor")  " Use PaperColor scheme if available.
   set background=dark     " dark background
   set cursorline          " Hightlight current line
