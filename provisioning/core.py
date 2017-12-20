@@ -1,9 +1,11 @@
 import os
-import sys
 
 from invoke import task
 
-from .utils import *
+from .utils import application_exists
+from .utils import command_exists
+from .utils import platform
+from .utils import print_run
 
 
 @task
@@ -14,20 +16,30 @@ def dotfiles(ctx):
       "../dotfiles"
     ))
   HOME = os.environ["HOME"]
-  sources = os.listdir(DOTFILE_ROOT)
 
-  for fname in sources:
-    source = os.path.join(DOTFILE_ROOT,       fname)
-    target = os.path.join(        HOME, "." + fname)
+  def symlink_dotfile(fname):
+    source = os.path.join(DOTFILE_ROOT, fname)
+    target = os.path.join(HOME, "." + fname)
     if not os.path.exists(target):
       print_run(ctx, 'ln -s "{}" "{}"'.format(source, target))
     else:
       print 'Already found dotfile @ {}'.format(target)
 
+  # Copy dotfiles/zzz to ~/.zzz
+  for fname in os.listdir(DOTFILE_ROOT):
+    if fname == 'config':
+      continue
+    symlink_dotfile(fname)
+
+  # Special case: dotfiles/config/zzz to ~/.config/zzz
+  for fname in os.listdir(os.path.join(DOTFILE_ROOT, "config")):
+    symlink_dotfile(os.path.join("config", fname))
+
+
 @task
 def homebrew(ctx):
   """Install homebrew, a package manager for OSX."""
-  if platform(ctx) != "Darwin":
+  if platform() != "Darwin":
     raise Exception(
       'You cannot install Homebrew on a non-OSX system. Any provisioning '
       'requiring Homebrew will fail.'
@@ -36,17 +48,19 @@ def homebrew(ctx):
     print_run(ctx, 'ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"')
   print_run(ctx, "brew update")
 
+
 @task
 def xcode(ctx):
   """Install xcode, build tools for OSX."""
-  if platform(ctx) != "Darwin":
+  if platform() != "Darwin":
     raise Exception('You cannot install XCode on a non-OSX system.')
-  if application_exists(ctx, "Xcode"): 
+  if application_exists(ctx, "Xcode"):
     return
   print_run(ctx, 'open "https://developer.apple.com/downloads/index.action"')
   print (
     "Download and install XCode and Command Line Tools (press ENTER when done)"
   )
+
 
 @task(xcode)
 def xcode_license(ctx):

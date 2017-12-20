@@ -378,9 +378,9 @@
   " ale {{{
     " E111: Error on 2-space tabs
     " E114: Error on 2-space tabs (comment)
-    " W0311: Error on 2-space tabs
+    " W311: Error on 2-space tabs
     " F403: Error on 'from xx import *'
-    let g:ale_python_flake8_options = '--ignore=E111,E114,F403,W0311'
+    let g:ale_python_flake8_options = '--ignore=E111,E114,F403,W311'
 
     if filereadable(expand('~/.at_google'))
       let g:ale_linters = {
@@ -577,17 +577,10 @@
   " }}}
 
   " python {{{
-    if filereadable(expand('~/.at_google'))
-      augroup python
-        autocmd!
-        autocmd FileType python :setlocal tabstop=2 shiftwidth=2 softtabstop=2
-      augroup END
-    else
-      augroup python
-        autocmd!
-        autocmd FileType python :setlocal tabstop=4 shiftwidth=4 softtabstop=4
-      augroup END
-    endif
+    augroup python
+      autocmd!
+      autocmd FileType python :setlocal tabstop=2 shiftwidth=2 softtabstop=2
+    augroup END
   " }}}
 
   " golang {{{

@@ -1,0 +1,1 @@
+/home/duckworthd/.config/fisherman/z/conf.d/z.fish

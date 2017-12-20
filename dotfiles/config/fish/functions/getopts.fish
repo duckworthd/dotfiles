@@ -1,0 +1,1 @@
+/home/duckworthd/.config/fisherman/getopts/getopts.fish
