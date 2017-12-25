@@ -10,6 +10,9 @@
   " Load everything in ~/.vim/bundles
   call plug#begin('~/.vim/bundle')
 
+  " Jump to character.
+  Plug 'easymotion/vim-easymotion'
+
   " PaperColor color scheme.
   Plug 'NLKNguyen/papercolor-theme'
 
@@ -186,16 +189,6 @@
 " }}}
 
 " Keys {{{
-  " USE "0p INSTEAD TO PASTE LAST YANKED CONTENT
-  " " delete doesn't modify clipboard
-  " nnoremap dd  "_dd
-  " nnoremap d   "_d
-  " nnoremap x   "_x
-  " nnoremap X   "_X
-  " vnoremap d   "_d
-  " vnoremap x   "_x
-  " vnoremap X   "_X
-
   " Switching splits
   nnoremap <C-j> <C-W>j
   nnoremap <C-k> <C-W>k
@@ -260,12 +253,6 @@
   inoremap <C-f>  <C-o>W
   inoremap <C-b>  <C-o>B
 
-  " alternatives to arrow keys in insert mode (steps on switch split keys)
-  " inoremap <C-j>  <Down>
-  " inoremap <C-k>  <Up>
-  " inoremap <C-h>  <Left>
-  " inoremap <C-l>  <Right>
-
   " fix weird behaviour in xterm that results in arrow keys entering 'ABCD'
   noremap OD  <Left>
   noremap OC  <Right>
@@ -276,9 +263,6 @@
   noremap <F1> <Nop>
   inoremap <F1> <Nop>
 
-  " delete surrounding function
-  nnoremap <leader>dsf m`F(Bdwxf)x``
-
   " Disable 'open documentation' shortcut
   nnoremap K <Nop>
   vnoremap K <Nop>
@@ -288,6 +272,10 @@
 
   " Reload all buffers that have been changed by other programs.
   noremap <leader>ee :checktime<CR>
+
+  " Re-select text when changing tabbing in visual mode.
+    vnoremap < <gv
+    vnoremap > >gv
 "}}}
 
 " UI {{{
@@ -313,6 +301,8 @@
     autocmd WinLeave * setlocal nocursorline nocursorcolumn
   augroup END
 
+  " Note: You can explore a colorscheme by running,
+  "   :source $VIMRUNTIME/syntax/hitest.vim
   call MaybeSetColorScheme("PaperColor")  " Use PaperColor scheme if available.
   set background=dark     " dark background
   set cursorline          " Hightlight current line
@@ -331,7 +321,7 @@
   set wrap                " wrap lines
 
   set list                  " enable the following
-  set listchars=tab:\ \     " tabs look like spaces
+  set listchars=tab:>-      " tabs look like '>-'
   set listchars+=trail:\•   " • for extra whitespace
   set listchars+=extends:>  " character to show at end when wrapping
   set listchars+=precedes:< " character to show at beginning when wrapping
@@ -341,16 +331,16 @@
   " color trailing whitespace red
   augroup whitespace
     autocmd!
-    highlight ExtraWhitespace ctermfg=red guifg=red
+    highlight ExtraWhitespace ctermbg=red ctermfg=white guibg=red guifg=white
     autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
     autocmd BufWinLeave * call clearmatches()
   augroup END
 
-  " color cursor row/column white on red.
+  " color cursor row/column white on pink. See :help cterm-colors for valid options. Numbers up to t_Co
   augroup cursorcolor
     autocmd!
-    highlight CursorLine cterm=NONE ctermbg=DarkRed ctermfg=White guibg=DarkRed guifg=White
-    highlight CursorColumn cterm=NONE ctermbg=DarkRed ctermfg=White guibg=DarkRed guifg=White
+    highlight CursorLine cterm=NONE ctermbg=White ctermfg=Black guibg=White guifg=Black
+    highlight CursorColumn cterm=NONE ctermbg=White ctermfg=Black guibg=White guifg=Black
   augroup END
 
 
@@ -417,8 +407,13 @@
     let g:html_indent_style1 = "inc"
   " }}}
 
-  " EasyMotion {{{
-    let g:EasyMotion_leader_key = '<Space>'
+  " easymotion {{{
+    " 'F' to start easymotion.
+    nmap F <Plug>(easymotion-prefix)s
+
+    " Default EasyMotionShade (Comment) interacts badly with
+    " cursorline/cursorcolumn colors. Use Normal install.
+    highlight link EasyMotionShade Normal
   " }}}
 
   " vim-indent-guides {{{
