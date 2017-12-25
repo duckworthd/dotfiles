@@ -167,3 +167,17 @@ def ag(ctx):
 def flake8(ctx):
   "Install flake8, a python linter."
   pip_install(ctx, "flake8", sudo=True)
+
+
+@task(dotfiles, fzf)
+def fish(ctx):
+  "Installs fish, an alternative to bash."""
+  sudo_print_run(ctx, "apt-add-repository ppa:fish-shell/release-2")
+  sudo_print_run(ctx, "apt-get update")
+  apt_install(ctx, "fish")
+
+  # fisherman, a plugin manager for fish.
+  print_run(ctx, "curl -Lo ~/.config/fish/functions/fisher.fish --create-dirs https://git.io/fisher")
+
+  # Plugins.
+  print_run(ctx, "fish --command='fisher install z fzf'")

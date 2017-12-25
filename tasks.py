@@ -52,6 +52,7 @@ elif platform() == "Linux":
     ag,
     fzf,
     flake8,
+    fish,
   )
   def all(ctx):
     "Install all recommended packages."
