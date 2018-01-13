@@ -290,8 +290,9 @@
   endfunction
 
   if $TERM =~ "-256color"
-    set t_Co=256      " enable 256 colors
+    set t_Co=256      " force vim to assume terminal supports 256 colors.
     set t_ut=         " disable 'background color erase' -- important for tmux.
+                      " See https://sunaku.github.io/vim-256color-bce.html
   endif
 
   " Cursor only in active window.
