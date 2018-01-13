@@ -1,1 +1,0 @@
-/home/duckworthd/.config/fisherman/get/functions/get.fish

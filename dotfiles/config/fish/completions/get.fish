@@ -1,1 +1,0 @@
-/home/duckworthd/.config/fisherman/get/completions/get.fish

@@ -1,4 +1,13 @@
+completions/get.fish
+conf.d/z.fish
 fishd.*
 fish_history
-
 functions/__*
+functions/await.fish
+functions/fisher.fish
+functions/get.fish
+functions/getopts.fish
+functions/last_job_id.fish
+functions/zadd.awk
+functions/z.awk
+functions/zclean.awk
