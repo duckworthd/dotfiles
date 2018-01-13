@@ -1,0 +1,4 @@
+[profiles]
+  [[default]]
+    custom_command = env TERM=xterm-256color fish
+    use_custom_command = True
