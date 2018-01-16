@@ -4,7 +4,6 @@ fishd.*
 fish_history
 functions/__*
 functions/await.fish
-functions/fisher.fish
 functions/get.fish
 functions/getopts.fish
 functions/last_job_id.fish
