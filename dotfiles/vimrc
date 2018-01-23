@@ -90,6 +90,9 @@
   " matlab syntax
   Plug 'vim-scripts/MatlabFilesEdition', { 'for': ['matlab'] }
 
+  " fish shell syntax.
+  Plug 'dag/vim-fish'
+
   call plug#end()
 " }}}
 
