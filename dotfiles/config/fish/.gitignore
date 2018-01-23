@@ -1,5 +1,6 @@
 completions/get.fish
 conf.d/z.fish
+config_local.fish
 fishd.*
 fish_history
 functions/__*

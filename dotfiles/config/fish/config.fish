@@ -50,3 +50,9 @@ set fish_greeting ""
 if type -q setxkbmap
   setxkbmap -option caps:swapescape
 end
+
+# Source machine-local fish config, if it exists.
+set local_fish_config $HOME/.config/fish/config_local.fish
+if test -e $local_fish_config
+  source $local_fish_config
+end
