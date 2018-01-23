@@ -56,3 +56,7 @@ set local_fish_config $HOME/.config/fish/config_local.fish
 if test -e $local_fish_config
   source $local_fish_config
 end
+
+# Force 256 color support. If terminal emulator doesn't support 256
+# colors, you're gonna have a bad time...
+set --global --export TERM "xterm-256color"
