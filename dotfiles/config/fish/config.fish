@@ -26,8 +26,8 @@
 #
 # Contents of $fish_user_paths are appended to $PATH.
 set extra_paths $HOME/bin $HOME/anaconda2/bin
-for extra_path in extra_paths
-  if test -e $extra_path
+for extra_path in $extra_paths
+  if test -d $extra_path
     set --universal fish_user_paths $extra_path $fish_user_paths
   end
 end
