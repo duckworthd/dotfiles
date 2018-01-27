@@ -90,6 +90,9 @@
   " matlab syntax
   Plug 'vim-scripts/MatlabFilesEdition', { 'for': ['matlab'] }
 
+  " Rust syntax
+  Plug 'rust-lang/rust.vim'
+
   call plug#end()
 " }}}
 
