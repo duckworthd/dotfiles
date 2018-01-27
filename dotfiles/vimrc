@@ -93,6 +93,9 @@
   " Rust syntax
   Plug 'rust-lang/rust.vim'
 
+  " fish shell syntax.
+  Plug 'dag/vim-fish'
+
   call plug#end()
 " }}}
 
