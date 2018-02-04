@@ -24,11 +24,13 @@
 
 # Setup $PATH.
 #
-# Contents of $fish_user_paths are appended to $PATH.
-set extra_paths $HOME/bin $HOME/anaconda2/bin
+# Contents of $fish_user_paths are appended to $PATH. Only add if path isn't already added.
+set extra_paths $HOME/bin $HOME/anaconda2/bin $HOME/.cargo/bin
 for extra_path in $extra_paths
   if test -d $extra_path
-    set --universal fish_user_paths $extra_path $fish_user_paths
+    if not contains $extra_path $fish_user_paths
+      set --universal fish_user_paths $extra_path $fish_user_paths
+    end
   end
 end
 
@@ -48,7 +50,7 @@ set fish_greeting ""
 
 # Swap caps lock, escape.
 if type -q setxkbmap
-  setxkbmap -option caps:swapescape
+  setxkbmap -option caps:escape
 end
 
 # Source machine-local fish config, if it exists.
