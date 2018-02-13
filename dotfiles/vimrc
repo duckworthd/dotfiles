@@ -461,7 +461,7 @@
   " }}}
 
   " vim-airline {{{
-    AirlineTheme light  " Status bar theme.
+    let g:airline_theme="light"  " Status bar theme.
   " }}}
 
   " vim-multiple-cursors {{{
