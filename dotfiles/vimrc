@@ -25,6 +25,9 @@
   " status bar
   Plug 'bling/vim-airline'
 
+  " status bar themes.
+  Plug 'vim-airline/vim-airline-themes'
+
   " golang support
   Plug 'fatih/vim-go',  { 'for':  ['go'] }
 
@@ -89,6 +92,9 @@
 
   " matlab syntax
   Plug 'vim-scripts/MatlabFilesEdition', { 'for': ['matlab'] }
+
+  " fish shell syntax.
+  Plug 'dag/vim-fish'
 
   call plug#end()
 " }}}
@@ -290,8 +296,9 @@
   endfunction
 
   if $TERM =~ "-256color"
-    set t_Co=256      " enable 256 colors
+    set t_Co=256      " force vim to assume terminal supports 256 colors.
     set t_ut=         " disable 'background color erase' -- important for tmux.
+                      " See https://sunaku.github.io/vim-256color-bce.html
   endif
 
   " Cursor only in active window.
@@ -454,7 +461,7 @@
   " }}}
 
   " vim-airline {{{
-    let g:airline#extensions#bufferline#enabled = 1   " integrate with vim-bufferline
+    let g:airline_theme="light"  " Status bar theme.
   " }}}
 
   " vim-multiple-cursors {{{
@@ -510,6 +517,21 @@
   " tagbar {{{
     " Open code outline.
     nnoremap <Leader>tb :TagbarToggle<CR>
+
+    " Rust support. See ... for details.
+     let g:tagbar_type_rust = {
+         \ 'ctagstype' : 'rust',
+         \ 'kinds' : [
+             \'T:types,type definitions',
+             \'f:functions,function definitions',
+             \'g:enum,enumeration names',
+             \'s:structure names',
+             \'m:modules,module names',
+             \'c:consts,static constants',
+             \'t:traits',
+             \'i:impls,trait implementations',
+         \]
+      \}
   " }}}
 " }}}
 
