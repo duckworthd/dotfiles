@@ -102,13 +102,13 @@ def tmux(ctx):
   tar_path = "/tmp/tmux.tar.gz"
   with open(tar_path, "w") as tarfile:
     response = requests.get(
-        "https://github.com/tmux/tmux/releases/download/2.5/tmux-2.5.tar.gz")
+        "https://github.com/tmux/tmux/releases/download/2.6/tmux-2.6.tar.gz")
     tarfile.write(response.content)
 
   # Extract its contents.
   print_run(ctx, "tar zxf {} --directory /tmp".format(tar_path), hide="out")
 
-  with chdir("/tmp/tmux-2.5"):
+  with chdir("/tmp/tmux-2.6"):
     # Build it.
     print_run(ctx, "./configure", hide="out")
     print_run(ctx, "make", hide="out")
