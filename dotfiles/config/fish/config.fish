@@ -50,7 +50,7 @@ set fish_greeting ""
 
 # Swap caps lock, escape.
 if type -q setxkbmap
-  setxkbmap -option caps:escape
+  setxkbmap -option "caps:swapescape"
 end
 
 # Source machine-local fish config, if it exists.
