@@ -25,6 +25,9 @@
   " status bar
   Plug 'bling/vim-airline'
 
+  " status bar themes.
+  Plug 'vim-airline/vim-airline-themes'
+
   " golang support
   Plug 'fatih/vim-go',  { 'for':  ['go'] }
 
@@ -461,7 +464,7 @@
   " }}}
 
   " vim-airline {{{
-    let g:airline#extensions#bufferline#enabled = 1   " integrate with vim-bufferline
+    let g:airline_theme="light"  " Status bar theme.
   " }}}
 
   " vim-multiple-cursors {{{

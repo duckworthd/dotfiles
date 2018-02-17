@@ -9,7 +9,7 @@
 # $ sudo apt-add-repository ppa:fish-shell/release-2
 # $ sudo apt-get update
 # $ sudo apt-get install fish
-#
+
 # Requires fisherman (https://github.com/fisherman/fisherman).
 # $ curl -Lo ~/.config/fish/functions/fisher.fish --create-dirs https://git.io/fisher
 #
@@ -50,7 +50,7 @@ set fish_greeting ""
 
 # Swap caps lock, escape.
 if type -q setxkbmap
-  setxkbmap -option caps:escape
+  setxkbmap -option "caps:swapescape"
 end
 
 # Source machine-local fish config, if it exists.
@@ -62,3 +62,9 @@ end
 # Force 256 color support. If terminal emulator doesn't support 256
 # colors, you're gonna have a bad time...
 set --global --export TERM "xterm-256color"
+
+# Disable right click on clickpad.
+if type -q synclient
+  synclient RightButtonAreaLeft=0
+  synclient RightButtonAreaTop=0
+end
