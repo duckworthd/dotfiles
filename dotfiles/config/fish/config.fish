@@ -25,7 +25,7 @@
 # Setup $PATH.
 #
 # Contents of $fish_user_paths are appended to $PATH. Only add if path isn't already added.
-set extra_paths $HOME/bin $HOME/anaconda2/bin $HOME/.cargo/bin
+set extra_paths $HOME/bin $HOME/anaconda2/bin $HOME/.cargo/bin $HOME/bin/aarch64-none-elf/bin
 for extra_path in $extra_paths
   if test -d $extra_path
     if not contains $extra_path $fish_user_paths
