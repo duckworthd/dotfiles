@@ -65,6 +65,6 @@ set --global --export TERM "xterm-256color"
 
 # Disable right click on clickpad.
 if type -q synclient
-  synclient RightButtonAreaLeft=0
-  synclient RightButtonAreaTop=0
+  synclient RightButtonAreaLeft=0 2> /dev/null
+  synclient RightButtonAreaTop=0 2> /dev/null
 end
