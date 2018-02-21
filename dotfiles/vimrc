@@ -130,6 +130,7 @@
   syntax on                 " syntax highlighting
   filetype plugin indent on " use plugin, indentation style for filetype
   set textwidth=0           " don't automatically split lines after they get too long
+  set encoding=utf-8        " default to UTF-8
   set fileencoding=utf-8    " default to UTF-8
   set switchbuf=usetab      " when using :bn and such, iterate across tabs too
   set mouse=a               " enable mouse usage on some terminals
@@ -280,8 +281,11 @@
   noremap <leader>ee :checktime<CR>
 
   " Re-select text when changing tabbing in visual mode.
-    vnoremap < <gv
-    vnoremap > >gv
+  vnoremap < <gv
+  vnoremap > >gv
+
+  " Fix syntax highlighting with folding.
+  nnoremap U :syntax sync fromstart<CR>:redraw!<CR>
 "}}}
 
 " UI {{{
@@ -461,7 +465,7 @@
   " }}}
 
   " vim-airline {{{
-    let g:airline_theme="light"  " Status bar theme.
+    let g:airline_theme="molokai"  " Status bar theme.
   " }}}
 
   " vim-multiple-cursors {{{
