@@ -93,6 +93,9 @@
   " matlab syntax
   Plug 'vim-scripts/MatlabFilesEdition', { 'for': ['matlab'] }
 
+  " Rust syntax
+  Plug 'rust-lang/rust.vim'
+
   " fish shell syntax.
   Plug 'dag/vim-fish'
 

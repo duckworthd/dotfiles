@@ -3,3 +3,5 @@
 [user]
 	name = Daniel Duckworth
 	email = duckworthd@gmail.com
+[merge]
+	tool = meld

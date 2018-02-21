@@ -9,7 +9,7 @@
 # $ sudo apt-add-repository ppa:fish-shell/release-2
 # $ sudo apt-get update
 # $ sudo apt-get install fish
-#
+
 # Requires fisherman (https://github.com/fisherman/fisherman).
 # $ curl -Lo ~/.config/fish/functions/fisher.fish --create-dirs https://git.io/fisher
 #
@@ -25,7 +25,7 @@
 # Setup $PATH.
 #
 # Contents of $fish_user_paths are appended to $PATH. Only add if path isn't already added.
-set extra_paths $HOME/bin $HOME/anaconda2/bin $HOME/.cargo/bin
+set extra_paths $HOME/bin $HOME/anaconda2/bin $HOME/.cargo/bin $HOME/bin/aarch64-none-elf/bin
 for extra_path in $extra_paths
   if test -d $extra_path
     if not contains $extra_path $fish_user_paths
@@ -62,3 +62,9 @@ end
 # Force 256 color support. If terminal emulator doesn't support 256
 # colors, you're gonna have a bad time...
 set --global --export TERM "xterm-256color"
+
+# Disable right click on clickpad.
+if type -q synclient
+  synclient RightButtonAreaLeft=0 2> /dev/null
+  synclient RightButtonAreaTop=0 2> /dev/null
+end
