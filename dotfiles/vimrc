@@ -291,8 +291,7 @@
   nnoremap U :syntax sync fromstart<CR>:redraw!<CR>
 
   " Copy from global clipboard
-  nnoremap <C-S-v> "+p
-  inoremap <C-S-V> <Esc>"+pa
+  nnoremap <leader>v "+p
 "}}}
 
 " UI {{{
