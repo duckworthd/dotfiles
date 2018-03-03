@@ -292,6 +292,7 @@
 
   " Copy from global clipboard
   nnoremap <leader>v "+p
+  inoremap <C-v> <Esc>"+pa
 "}}}
 
 " UI {{{
