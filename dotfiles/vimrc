@@ -289,6 +289,10 @@
 
   " Fix syntax highlighting with folding.
   nnoremap U :syntax sync fromstart<CR>:redraw!<CR>
+
+  " Copy from global clipboard
+  nnoremap <leader>v "+p
+  inoremap <C-v> <Esc>"+pa
 "}}}
 
 " UI {{{
