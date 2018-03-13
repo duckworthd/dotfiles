@@ -331,6 +331,7 @@
   set scrolloff=3         " minimum number of lines below cursor
   set foldenable          " auto fold code
   set foldmethod=syntax   " fold based on syntax.
+  set foldlevel=100       " start with everything unfolded.
   set showcmd             " show partial command in lower right
   set wrap                " wrap lines
 
