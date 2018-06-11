@@ -46,7 +46,8 @@ def zsh(ctx):
   apt_install(ctx, "zsh")
 
   # Make zsh the primary shell.
-  print_run(ctx, "chsh -s $(which zsh)")
+  if not os.path.exists(os.path.expanduser("~/.at_google")):
+    print_run(ctx, "chsh -s $(which zsh)")
 
 
 @task
@@ -172,8 +173,9 @@ def flake8(ctx):
 @task(dotfiles, fzf)
 def fish(ctx):
   "Installs fish, an alternative to bash."""
-  sudo_print_run(ctx, "apt-add-repository ppa:fish-shell/release-2")
-  sudo_print_run(ctx, "apt-get update")
+  if not os.path.exists(os.path.expanduser("~/.at_google")):
+    sudo_print_run(ctx, "apt-add-repository ppa:fish-shell/release-2")
+    sudo_print_run(ctx, "apt-get update")
   apt_install(ctx, "fish")
 
   # fisherman, a plugin manager for fish.
