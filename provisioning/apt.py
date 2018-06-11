@@ -29,12 +29,6 @@ def ctags(ctx):
 
 
 @task
-def ack(ctx):
-  "Install ack, a tool for navigating source code semantically."
-  apt_install(ctx, "ack-grep")
-
-
-@task
 def xclip(ctx):
   "Install xclip, a tool for copying text from terminal to your clipboard."
   apt_install(ctx, "xclip")

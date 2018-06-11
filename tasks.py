@@ -42,17 +42,19 @@ elif platform() == "Linux":
   from provisioning.core import dotfiles
 
   @task(
+    ag,
     dotfiles,
-    vim,
-    xclip,
-    zsh,
-    xmonad,
+    dropbox,
+    fish,
+    flake8,
+    fzf,
+    keepass2,
     terminator,
     tmux,
-    ag,
-    fzf,
-    flake8,
-    fish,
+    vim,
+    xclip,
+    xmonad,
+    zsh,
   )
   def all(ctx):
     "Install all recommended packages."
