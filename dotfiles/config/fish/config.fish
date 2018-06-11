@@ -35,10 +35,10 @@ for extra_path in $extra_paths
 end
 
 # Use vim for command line editor.
-set EDITOR (which vim)" -u NONE"
+set EDITOR (which vim)
 
-# Use vim-style command line editing.
-set --global fish_key_bindings fish_vi_key_bindings
+# Use emacs-style command line editing.
+set --global fish_key_bindings fish_default_key_bindings
 
 # Aliases
 alias rm="rm -i"
