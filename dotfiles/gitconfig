@@ -5,3 +5,5 @@
 	email = duckworthd@gmail.com
 [merge]
 	tool = meld
+[push]
+	default = simple
