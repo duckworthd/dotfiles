@@ -79,7 +79,7 @@
     " Google's version of YouCompleteMe conflicts with the public version. Don't
     " enable it if this vimrc is read from a Google machine.
   else
-    Plug 'Valloric/YouCompleteMe', { 'do' : '~/.vim/bundle/YouCompleteMe/install.py --clang-completer' }
+    Plug 'Valloric/YouCompleteMe', { 'do' : '~/.vim/bundle/YouCompleteMe/install.py --clang-completer --rust-completer' }
   endif
 
   " syntax highlighting for markdown + latex

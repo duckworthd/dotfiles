@@ -17,23 +17,46 @@ def dotfiles(ctx):
     ))
   HOME = os.environ["HOME"]
 
-  def symlink_dotfile(fname):
-    source = os.path.join(DOTFILE_ROOT, fname)
-    target = os.path.join(HOME, "." + fname)
-    if not os.path.exists(target):
-      print_run(ctx, 'ln -s "{}" "{}"'.format(source, target))
+  def create_symlink(source, target):
+    print_run(ctx, 'ln -s "{}" "{}"'.format(source, target))
+
+  def recursive_symlink_dotfiles(source, target):
+    """Recursively explore directories, creating dirs/files on the way."""
+    if not os.path.exists(target) and os.path.islink(target):
+      # exists() returns False for broken symlinks. Remove the broken link.
+      os.unlink(target)
+
+    if os.path.exists(target) and os.path.isdir(source) and os.path.islink(target):
+      print 'Found symlinked dir. Skipping. {}'.format(target)
+      # Don't modify symlinked directories.
+      return
+
+    if os.path.isdir(source):
+      # If the directory is missing, create one symlink for all of its contents.
+      if not os.path.exists(target):
+        create_symlink(source, target)
+        return
+
+      # Directory already exists. Create a symlink for files underneath it.
+      for fname in os.listdir(source):
+        recursive_symlink_dotfiles(
+            os.path.join(source, fname),
+            os.path.join(target, fname))
+
     else:
-      print 'Already found dotfile @ {}'.format(target)
+      if os.path.exists(target):
+        # If file exists, don't replace it.
+        print 'Found dotfile. Skipping.: {}'.format(target)
 
-  # Copy dotfiles/zzz to ~/.zzz
+      else:
+        # If file doesn't exist, create a symlink.
+        print
+        create_symlink(source, target)
+
   for fname in os.listdir(DOTFILE_ROOT):
-    if fname == 'config':
-      continue
-    symlink_dotfile(fname)
-
-  # Special case: dotfiles/config/zzz to ~/.config/zzz
-  for fname in os.listdir(os.path.join(DOTFILE_ROOT, "config")):
-    symlink_dotfile(os.path.join("config", fname))
+    recursive_symlink_dotfiles(
+        os.path.join(DOTFILE_ROOT, fname),
+        os.path.join(HOME, "." + fname))
 
 
 @task
