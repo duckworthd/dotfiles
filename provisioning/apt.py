@@ -29,12 +29,6 @@ def ctags(ctx):
 
 
 @task
-def ack(ctx):
-  "Install ack, a tool for navigating source code semantically."
-  apt_install(ctx, "ack-grep")
-
-
-@task
 def xclip(ctx):
   "Install xclip, a tool for copying text from terminal to your clipboard."
   apt_install(ctx, "xclip")
@@ -46,7 +40,8 @@ def zsh(ctx):
   apt_install(ctx, "zsh")
 
   # Make zsh the primary shell.
-  print_run(ctx, "chsh -s $(which zsh)")
+  if not os.path.exists(os.path.expanduser("~/.at_google")):
+    print_run(ctx, "chsh -s $(which zsh)")
 
 
 @task
@@ -102,13 +97,13 @@ def tmux(ctx):
   tar_path = "/tmp/tmux.tar.gz"
   with open(tar_path, "w") as tarfile:
     response = requests.get(
-        "https://github.com/tmux/tmux/releases/download/2.5/tmux-2.5.tar.gz")
+        "https://github.com/tmux/tmux/releases/download/2.6/tmux-2.6.tar.gz")
     tarfile.write(response.content)
 
   # Extract its contents.
   print_run(ctx, "tar zxf {} --directory /tmp".format(tar_path), hide="out")
 
-  with chdir("/tmp/tmux-2.5"):
+  with chdir("/tmp/tmux-2.6"):
     # Build it.
     print_run(ctx, "./configure", hide="out")
     print_run(ctx, "make", hide="out")
@@ -172,8 +167,9 @@ def flake8(ctx):
 @task(dotfiles, fzf)
 def fish(ctx):
   "Installs fish, an alternative to bash."""
-  sudo_print_run(ctx, "apt-add-repository ppa:fish-shell/release-2")
-  sudo_print_run(ctx, "apt-get update")
+  if not os.path.exists(os.path.expanduser("~/.at_google")):
+    sudo_print_run(ctx, "apt-add-repository ppa:fish-shell/release-2")
+    sudo_print_run(ctx, "apt-get update")
   apt_install(ctx, "fish")
 
   # fisherman, a plugin manager for fish.
