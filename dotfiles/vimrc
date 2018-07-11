@@ -145,6 +145,8 @@
   set autoread              " if a buffer hasn't been edited and has been
                             " changed by another program, reload it when
                             " :checktime is called.
+  set ttimeoutlen=100       " Wait 100ms for escape sequences. This is causes
+                            " vim to stop pausing upon entering <Esc>-O.
 " }}}
 
 " Tabs {{{
@@ -263,12 +265,6 @@
   inoremap <C-f>  <C-o>W
   inoremap <C-b>  <C-o>B
 
-  " fix weird behaviour in xterm that results in arrow keys entering 'ABCD'
-  noremap OD  <Left>
-  noremap OC  <Right>
-  noremap OA  <Up>
-  noremap OB  <Down>
-
   " Disable help by F1
   noremap <F1> <Nop>
   inoremap <F1> <Nop>
@@ -293,6 +289,9 @@
   " Copy from global clipboard
   nnoremap <leader>v "+p
   inoremap <C-v> <Esc>"+pa
+
+  " Disable Ex mode.
+  noremap Q <Nop>
 "}}}
 
 " UI {{{
