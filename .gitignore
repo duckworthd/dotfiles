@@ -2,6 +2,9 @@
 .dropbox
 .svn
 
+# managed by fisher.
+dotfiles/config/fish/*
+
 # default directory for virtualenv
 env
 
