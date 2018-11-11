@@ -34,9 +34,6 @@
   " align text by "=" or ":" or whatever else
   Plug 'godlygeek/tabular'
 
-  " LESS syntax (CSS extension)
-  Plug 'groenewege/vim-less', { 'for': ['css'] }
-
   " Snippets for use with ultisnips
   Plug 'honza/vim-snippets'
 
@@ -89,12 +86,6 @@
   " kill buffers without messing up window layout
   " :BD (close buffer)
   Plug 'vim-scripts/bufkill.vim'
-
-  " matlab syntax
-  Plug 'vim-scripts/MatlabFilesEdition', { 'for': ['matlab'] }
-
-  " Rust syntax
-  Plug 'rust-lang/rust.vim'
 
   " fish shell syntax.
   Plug 'dag/vim-fish'
