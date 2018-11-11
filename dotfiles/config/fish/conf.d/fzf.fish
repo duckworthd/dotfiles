@@ -1,1 +1,0 @@
-/home/duckworthd/.config/fisherman/fzf/conf.d/fzf.fish

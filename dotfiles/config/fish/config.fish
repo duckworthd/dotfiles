@@ -22,20 +22,17 @@
 # A-c      # find path, cd into it.
 # A-e      # open command in $EDITOR.
 
-# Setup $PATH.
-#
-# Contents of $fish_user_paths are appended to $PATH. Only add if path isn't already added.
-set extra_paths $HOME/bin $HOME/anaconda2/bin $HOME/.cargo/bin $HOME/bin/aarch64-none-elf/bin
-for extra_path in $extra_paths
-  if test -d $extra_path
-    if not contains $extra_path $fish_user_paths
-      set --universal fish_user_paths $extra_path $fish_user_paths
-    end
-  end
-end
-
-# Use vim for command line editor.
-set EDITOR (which vim)
+# # Setup $PATH.
+# #
+# # Contents of $fish_user_paths are appended to $PATH. Only add if path isn't already added.
+# set extra_paths $HOME/bin
+# for extra_path in $extra_paths
+#   if test -d $extra_path
+#     if not contains $extra_path $fish_user_paths
+#       set --universal fish_user_paths $extra_path $fish_user_paths
+#     end
+#   end
+# end
 
 # Use emacs-style command line editing.
 set --global fish_key_bindings fish_default_key_bindings
