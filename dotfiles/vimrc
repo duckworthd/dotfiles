@@ -90,6 +90,9 @@
   " fish shell syntax.
   Plug 'dag/vim-fish'
 
+  " Copy to clipboard using OSC 52.
+  Plug 'haya14busa/vim-poweryank'
+
   call plug#end()
 " }}}
 
@@ -534,6 +537,14 @@
              \'i:impls,trait implementations',
          \]
       \}
+  " }}}
+
+  " PowerYank {{{
+    " Map yank to <leader>y
+    map <Leader>y <Plug>(operator-poweryank-osc52)
+
+    " Unable to open file with fish as default shell.
+    set shell=/bin/bash
   " }}}
 " }}}
 
