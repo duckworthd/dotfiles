@@ -93,6 +93,9 @@
   " Swap panes with <leader>ww.
   Plug 'wesQ3/vim-windowswap'
 
+  " Copy to clipboard using OSC 52.
+  Plug 'haya14busa/vim-poweryank'
+
   call plug#end()
 " }}}
 
