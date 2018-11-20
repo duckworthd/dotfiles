@@ -90,6 +90,9 @@
   " fish shell syntax.
   Plug 'dag/vim-fish'
 
+  " Swap panes with <leader>ww.
+  Plug 'wesQ3/vim-windowswap'
+
   call plug#end()
 " }}}
 
