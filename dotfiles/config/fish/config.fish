@@ -22,9 +22,10 @@
 # A-c      # find path, cd into it.
 # A-e      # open command in $EDITOR.
 
-# # Setup $PATH.
-set PATH $PATH $HOME/bin
-export PATH
+# Setup $PATH.
+set -x PATH $HOME/bin $HOME/.local/bin $PATH
+set -x EDITOR vim
+
 
 # Use emacs-style command line editing.
 set --global fish_key_bindings fish_default_key_bindings
