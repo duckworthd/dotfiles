@@ -177,3 +177,9 @@ def fish(ctx):
 
   # Plugins.
   print_run(ctx, "fish --command='fisher install z fzf'")
+
+
+@task(dotfiles)
+def alsamixergui(ctx):
+  "Install alsamixer, a curses-powered volume-control tool."
+  apt_install(ctx, "alsamixergui")
