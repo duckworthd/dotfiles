@@ -1,6 +1,11 @@
 " Plugins {{{
   set nocompatible
 
+  " Some plugins expect a POSIX-compatible shell (fish isn't).
+  if &shell =~# 'fish$'
+    set shell=sh
+  endif
+
   " Download vim-plug if necessary.
   if empty(glob("~/.vim/autoload/plug.vim"))
     execute '!mkdir -p ~/.vim/autoload'
@@ -87,7 +92,7 @@
   " Swap panes with <leader>ww.
   Plug 'wesQ3/vim-windowswap'
 
-  " Copy to clipboard using OSC 52.
+  " Copy to clipboard using OSC52.
   Plug 'haya14busa/vim-poweryank'
 
   call plug#end()
@@ -481,6 +486,11 @@
       autocmd FileType python     let g:ycm_min_num_of_chars_for_completion = ycm_enabled
       autocmd FileType vim        let g:ycm_min_num_of_chars_for_completion = ycm_enabled
     augroup END
+  " }}}
+
+  " vim-poweryank{{{
+    " Copy to clipboard over SSH.
+    map <Leader>y <Plug>(operator-poweryank-osc52)
   " }}}
 
 " }}}
