@@ -149,6 +149,8 @@ def fzf(ctx):
 
   # Copy binary to ~/bin.
   destination_dir = os.path.join(os.path.expanduser("~"), "bin")
+  if not os.path.exists(destination_dir):
+    os.makedirs(destination_dir)
   print_run(ctx, "cp /tmp/fzf {}".format(destination_dir), hide="out")
 
 
@@ -176,7 +178,9 @@ def fish(ctx):
   print_run(ctx, "curl -Lo ~/.config/fish/functions/fisher.fish --create-dirs https://git.io/fisher")
 
   # Plugins.
-  print_run(ctx, "fish --command='fisher install z fzf'")
+  #
+  # TODO(duckworthd): Hangs for unknown reasons. Figure out why.
+  # print_run(ctx, "fish --command='fisher add z fzf'")
 
 
 @task(dotfiles)
