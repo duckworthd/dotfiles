@@ -187,3 +187,8 @@ def fish(ctx):
 def alsamixergui(ctx):
   "Install alsamixer, a curses-powered volume-control tool."
   apt_install(ctx, "alsamixergui")
+
+
+@task
+def spotify(ctx):
+  apt_install(ctx, "spotify-client")

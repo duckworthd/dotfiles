@@ -50,6 +50,7 @@ elif platform() == "Linux":
     flake8,
     fzf,
     keepass2,
+    spotify,
     terminator,
     tmux,
     vim,
