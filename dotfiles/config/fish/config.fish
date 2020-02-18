@@ -23,7 +23,7 @@
 # A-e      # open command in $EDITOR.
 
 # Setup $PATH.
-set --export PATH $HOME/bin $PATH
+set --export PATH $HOME/bin $HOME/.local/bin $PATH
 
 # Default editor is vim.
 set --export EDITOR (which vim)

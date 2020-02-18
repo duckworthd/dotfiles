@@ -1,6 +1,11 @@
 " Plugins {{{
   set nocompatible
 
+  " Some plugins expect a POSIX-compatible shell (fish isn't).
+  if &shell =~# 'fish$'
+    set shell=sh
+  endif
+
   " Download vim-plug if necessary.
   if empty(glob("~/.vim/autoload/plug.vim"))
     execute '!mkdir -p ~/.vim/autoload'
@@ -18,9 +23,6 @@
 
   " Automatically format files.
   Plug 'Chiel92/vim-autoformat'
-
-  " Code outline. Requires exuberant-ctags or universal-ctags.
-  Plug 'majutsushi/tagbar'
 
   " status bar
   Plug 'bling/vim-airline'
@@ -46,9 +48,6 @@
 
   " ack for searching
   Plug 'mileszs/ack.vim', { 'on': ['Ack'] }
-
-  " show indents
-  Plug 'nathanaelkane/vim-indent-guides'
 
   " Better C++ syntax highlighting
   Plug 'octol/vim-cpp-enhanced-highlight'
@@ -89,6 +88,12 @@
 
   " fish shell syntax.
   Plug 'dag/vim-fish'
+
+  " Swap panes with <leader>ww.
+  Plug 'wesQ3/vim-windowswap'
+
+  " Copy to clipboard using OSC52.
+  Plug 'haya14busa/vim-poweryank'
 
   call plug#end()
 " }}}
@@ -305,8 +310,8 @@
   " Cursor only in active window.
   augroup CursorLineOnlyInActiveWindow
     autocmd!
-    autocmd VimEnter,WinEnter,BufWinEnter * setlocal cursorline cursorcolumn
-    autocmd WinLeave * setlocal nocursorline nocursorcolumn
+    autocmd VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+    autocmd WinLeave * setlocal nocursorline
   augroup END
 
   " Note: You can explore a colorscheme by running,
@@ -314,7 +319,6 @@
   call MaybeSetColorScheme("PaperColor")  " Use PaperColor scheme if available.
   set background=dark     " dark background
   set cursorline          " Hightlight current line
-  set cursorcolumn        " Hightlight current column
   set ruler               " Show line ruler
   set number              " line numbers
   set hlsearch            " highlight search matches
@@ -336,6 +340,7 @@
   set listchars+=precedes:< " character to show at beginning when wrapping
 
   set completeopt=menuone,longest " popup menu for completions, insert longest match first
+  set ttyfast             " indicates a fast terminal connection.
 
   " color trailing whitespace red
   augroup whitespace
@@ -344,15 +349,6 @@
     autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
     autocmd BufWinLeave * call clearmatches()
   augroup END
-
-  " color cursor row/column white on pink. See :help cterm-colors for valid options. Numbers up to t_Co
-  augroup cursorcolor
-    autocmd!
-    highlight CursorLine cterm=NONE ctermbg=White ctermfg=Black guibg=White guifg=Black
-    highlight CursorColumn cterm=NONE ctermbg=White ctermfg=Black guibg=White guifg=Black
-  augroup END
-
-
 "}}}
 
 " Status Line {{{
@@ -369,7 +365,6 @@
 
 " Etc {{{
   set history=1000  " long history
-  " set spell         " spell check
 "}}}
 
 " Plugins Configuration {{{
@@ -425,25 +420,6 @@
     highlight link EasyMotionShade Normal
   " }}}
 
-  " vim-indent-guides {{{
-    let g:indent_guides_enable_on_vim_startup = 1
-
-    function! IndentGuidesFor256Color()
-      if $TERM =~ "-256color" && exists("g:colors_name") && g:colors_name == "monokai"
-        " 256 colors doesn't play nicely with vim-indent-guides. Set its colors
-        " explicitly.
-        let g:indent_guides_auto_colors = 0
-        highlight IndentGuidesOdd  guibg=darkgrey ctermbg=236
-        highlight IndentGuidesEven guibg=darkgrey ctermbg=237
-      endif
-    endfunction
-
-    augroup indent-guides
-      autocmd!
-      autocmd VimEnter,Colorscheme * :call IndentGuidesFor256Color()
-    augroup END
-  " }}}
-
   " Tabular {{{
     " these patterns only match the first = or : on a line
     nnoremap <Leader>t= :Tabularize /^[^=]*\zs=<CR>
@@ -464,10 +440,6 @@
 
   " vim-airline {{{
     let g:airline_theme="molokai"  " Status bar theme.
-  " }}}
-
-  " vim-multiple-cursors {{{
-    let g:multi_cursor_quit_key='<C-c>'
   " }}}
 
   " vim-pandoc {{{
@@ -516,25 +488,11 @@
     augroup END
   " }}}
 
-  " tagbar {{{
-    " Open code outline.
-    nnoremap <Leader>tb :TagbarToggle<CR>
-
-    " Rust support. See ... for details.
-     let g:tagbar_type_rust = {
-         \ 'ctagstype' : 'rust',
-         \ 'kinds' : [
-             \'T:types,type definitions',
-             \'f:functions,function definitions',
-             \'g:enum,enumeration names',
-             \'s:structure names',
-             \'m:modules,module names',
-             \'c:consts,static constants',
-             \'t:traits',
-             \'i:impls,trait implementations',
-         \]
-      \}
+  " vim-poweryank{{{
+    " Copy to clipboard over SSH.
+    map <Leader>y <Plug>(operator-poweryank-osc52)
   " }}}
+
 " }}}
 
 " Languages {{{
@@ -552,14 +510,6 @@
     augroup javascript
       autocmd!
       autocmd FileType javascript :call JavaScriptFold()
-    augroup END
-  " }}}
-
-  " Pig {{{
-    augroup pig
-      autocmd!
-      autocmd BufNewFile,BufRead *{.pig,.pig.substituted,.pig.expanded} :setlocal filetype=pig syntax=pig
-        " whenever you open/read a .pig file, use pig syntax
     augroup END
   " }}}
 

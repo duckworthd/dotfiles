@@ -43,12 +43,14 @@ elif platform() == "Linux":
 
   @task(
     ag,
+    alsamixergui,
     dotfiles,
     dropbox,
     fish,
     flake8,
     fzf,
     keepass2,
+    spotify,
     terminator,
     tmux,
     vim,
