@@ -114,6 +114,8 @@ def tmux(ctx):
       os.makedirs(destination_dir)
     print_run(ctx, "cp ./tmux {}/tmux".format(destination_dir), hide="out")
 
+  print OKRED + "Run CTRL+b I the next time you open tmux to install plugins." + ENDC
+
 
 @task
 def keepass2(ctx):
