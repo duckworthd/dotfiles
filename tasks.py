@@ -49,6 +49,7 @@ elif platform() == "Linux":
     fish,
     flake8,
     fzf,
+    htop,
     keepass2,
     spotify,
     terminator,

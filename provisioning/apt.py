@@ -194,3 +194,9 @@ def alsamixergui(ctx):
 @task
 def spotify(ctx):
   apt_install(ctx, "spotify-client")
+
+
+@task
+def htop(ctx):
+  "Install htop, a nicer version of top."
+  apt_install(ctx, "htop")
