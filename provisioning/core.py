@@ -2,10 +2,8 @@ import os
 
 from invoke import task
 
-from .utils import application_exists
-from .utils import command_exists
-from .utils import platform
-from .utils import print_run
+from provisioning.utils import platform
+from provisioning.utils import print_run
 
 
 @task
@@ -18,7 +16,7 @@ def dotfiles(ctx):
   HOME = os.environ["HOME"]
 
   def create_symlink(source, target):
-    print_run(ctx, 'ln -s "{}" "{}"'.format(source, target))
+    print_run(ctx, f'ln -s "{source}" "{target}"')
 
   def recursive_symlink_dotfiles(source, target):
     """Recursively explore directories, creating dirs/files on the way."""
@@ -27,7 +25,7 @@ def dotfiles(ctx):
       os.unlink(target)
 
     if os.path.exists(target) and os.path.isdir(source) and os.path.islink(target):
-      print 'Found symlinked dir. Skipping. {}'.format(target)
+      print(f'Found symlinked dir. Skipping. {target}')
       # Don't modify symlinked directories.
       return
 
@@ -46,46 +44,14 @@ def dotfiles(ctx):
     else:
       if os.path.exists(target):
         # If file exists, don't replace it.
-        print 'Found dotfile. Skipping.: {}'.format(target)
+        print(f'Found dotfile. Skipping. {target}')
+        pass 
 
       else:
         # If file doesn't exist, create a symlink.
-        print
         create_symlink(source, target)
 
   for fname in os.listdir(DOTFILE_ROOT):
     recursive_symlink_dotfiles(
         os.path.join(DOTFILE_ROOT, fname),
         os.path.join(HOME, "." + fname))
-
-
-@task
-def homebrew(ctx):
-  """Install homebrew, a package manager for OSX."""
-  if platform() != "Darwin":
-    raise Exception(
-      'You cannot install Homebrew on a non-OSX system. Any provisioning '
-      'requiring Homebrew will fail.'
-    )
-  if not command_exists(ctx, "brew"):
-    print_run(ctx, 'ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"')
-  print_run(ctx, "brew update")
-
-
-@task
-def xcode(ctx):
-  """Install xcode, build tools for OSX."""
-  if platform() != "Darwin":
-    raise Exception('You cannot install XCode on a non-OSX system.')
-  if application_exists(ctx, "Xcode"):
-    return
-  print_run(ctx, 'open "https://developer.apple.com/downloads/index.action"')
-  print (
-    "Download and install XCode and Command Line Tools (press ENTER when done)"
-  )
-
-
-@task(xcode)
-def xcode_license(ctx):
-  """Sign the xcode license."""
-  print_run(ctx, "sudo xcodebuild -license")

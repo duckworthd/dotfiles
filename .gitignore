@@ -1,22 +1,15 @@
 .DS_store
-.dropbox
-.svn
-
-# managed by fisher.
-dotfiles/config/fish/*
 
 # default directory for virtualenv
 env
 
-# managed by vim's Vundle.vim
+# managed by vim's package manager.
 dotfiles/vim/bundle/*
 dotfiles/vim/.netrw*
 
-# managed by EMACS's package.el
-dotfiles/emacs.d/*
-
-# xmonad's temporary files
-dotfiles/xmonad/*
-
 # ignore python compiled stuff
 *.py[co]
+
+# managed by tmux's package manager.
+dotfiles/tmux/plugins
+dotfiles/tmux/resurrect

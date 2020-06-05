@@ -7,16 +7,13 @@
   endif
 
   " Download vim-plug if necessary.
-  if empty(glob("~/.vim/autoload/plug.vim"))
-    execute '!mkdir -p ~/.vim/autoload'
-    execute '!curl -fLo ~/.vim/autoload/plug.vim https://raw.github.com/junegunn/vim-plug/master/plug.vim'
+  if empty(glob("$HOME/.config/nvim/site/autoload/plug.vim"))
+    execute '!mkdir -p ~/.config/nvim/site/autoload'
+    execute '!curl -fLo ~/.config/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
   endif
 
-  " Load everything in ~/.vim/bundles
+  " Load everything in ~/.vim/bundle.
   call plug#begin('~/.vim/bundle')
-
-  " Jump to character.
-  Plug 'easymotion/vim-easymotion'
 
   " PaperColor color scheme.
   Plug 'NLKNguyen/papercolor-theme'
@@ -36,9 +33,6 @@
   " align text by "=" or ":" or whatever else
   Plug 'godlygeek/tabular'
 
-  " Snippets for use with ultisnips
-  Plug 'honza/vim-snippets'
-
   " file search.
   Plug 'junegunn/fzf'
   Plug 'junegunn/fzf.vim'
@@ -46,17 +40,11 @@
   " async syntax checking
   Plug 'w0rp/ale'
 
-  " ack for searching
-  Plug 'mileszs/ack.vim', { 'on': ['Ack'] }
-
   " Better C++ syntax highlighting
   Plug 'octol/vim-cpp-enhanced-highlight'
 
   " file navigation
   Plug 'scrooloose/nerdtree'
-
-  " snippets engine
-  Plug 'SirVer/ultisnips'
 
   " visual undo tree
   Plug 'sjl/gundo.vim'
@@ -64,19 +52,11 @@
   " Simple Python folding
   Plug 'tmhedberg/SimpylFold'
 
-  " git integration
-  Plug 'tpope/vim-fugitive'
-
   " delete surrounding parentheses, etc
   Plug 'tpope/vim-surround'
 
   " Context-aware completion backend.
-  if filereadable(expand('~/.at_google'))
-    " Google's version of YouCompleteMe conflicts with the public version. Don't
-    " enable it if this vimrc is read from a Google machine.
-  else
-    Plug 'Valloric/YouCompleteMe', { 'do' : '~/.vim/bundle/YouCompleteMe/install.py --clang-completer --rust-completer' }
-  endif
+  Plug 'Valloric/YouCompleteMe', { 'do' : './install.py --clang-completer --rust-completer' }
 
   " syntax highlighting for markdown + latex
   Plug 'vim-pandoc/vim-pandoc', { 'for': ['markdown'] }
@@ -86,12 +66,6 @@
   " :BD (close buffer)
   Plug 'vim-scripts/bufkill.vim'
 
-  " fish shell syntax.
-  Plug 'dag/vim-fish'
-
-  " Swap panes with <leader>ww.
-  Plug 'wesQ3/vim-windowswap'
-
   " Copy to clipboard using OSC52.
   Plug 'haya14busa/vim-poweryank'
 
@@ -99,7 +73,7 @@
 " }}}
 
 " Machine-local vimrc {{{
-  if filereadable(expand("~/.vimrc-local"))
+  if filereadable(expand("~/.config/nvim/init-local.vim"))
     source ~/.vimrc-local
   endif
 " }}}
@@ -383,13 +357,6 @@
     endif
   " }}}
 
-  " ack.vim {{{
-    " Use ag instead of ack if available.
-    if executable('ag')
-      let g:ackprg = 'ag --nogroup --nocolor --column'
-    endif
-  " }}}
-
   " NERDTree {{{
     nnoremap <leader>nt   :NERDTreeToggle<CR>
     let NERDTreeIgnore = ['\.pyc$']
@@ -405,21 +372,6 @@
     noremap <leader>ct :Tags<CR>
   " }}}
 
-  " vim-javascript {{{
-    let g:html_indent_inctags = "html,body,head,tbody"
-    let g:html_indent_script1 = "inc"
-    let g:html_indent_style1 = "inc"
-  " }}}
-
-  " easymotion {{{
-    " 'F' to start easymotion.
-    nmap F <Plug>(easymotion-prefix)s
-
-    " Default EasyMotionShade (Comment) interacts badly with
-    " cursorline/cursorcolumn colors. Use Normal install.
-    highlight link EasyMotionShade Normal
-  " }}}
-
   " Tabular {{{
     " these patterns only match the first = or : on a line
     nnoremap <Leader>t= :Tabularize /^[^=]*\zs=<CR>
@@ -428,10 +380,6 @@
     vnoremap <Leader>t: :Tabularize /^[^:]*\zs:<CR>
     nnoremap <Leader>t, :Tabularize/(\\|,/l0l0r0r1r0r1r0r1r0r1r0r1<CR>
     vnoremap <Leader>t, :Tabularize/(\\|,/l0l0r0r1r0r1r0r1r0r1r0r1<CR>
-  " }}}
-
-  " ack.vim {{{
-    nnoremap <Leader>a :Ack<space>
   " }}}
 
   " gundo.vim {{{
@@ -444,22 +392,6 @@
 
   " vim-pandoc {{{
     let g:pandoc#syntax#conceal#use = 0   " disable replacing raw text with pretty versions
-  " }}}
-
-  " UltiSnips {{{
-    " <CR> to expand snippets. For compatibility with YouCompleteMe. Use C-j
-    " and C-k to jump between fields within a snippet.
-    let g:UltiSnipsExpandTrigger = "<NUL>"
-    let g:ulti_expand_or_jump_res = 0
-    function! ExpandSnippetOrCarriageReturn()
-        let snippet = UltiSnips#ExpandSnippetOrJump()
-        if g:ulti_expand_or_jump_res > 0
-            return snippet
-        else
-            return "\<CR>"
-        endif
-    endfunction
-    inoremap <expr><CR> pumvisible() ? "<C-R>=ExpandSnippetOrCarriageReturn()<CR>" : "\<CR>"
   " }}}
 
   " YouCompleteMe {{{
@@ -496,23 +428,6 @@
 " }}}
 
 " Languages {{{
-  " Javascript {{{
-    function! JavaScriptFold()
-      setlocal foldlevelstart=0
-      syntax region foldBraces start=/{/ end=/}/ transparent fold keepend extend
-
-      function! FoldText()
-        return substitute(getline(v:foldstart), '{.*', '{...}', '')
-      endfunction
-      setlocal foldtext=FoldText()
-    endfunction
-
-    augroup javascript
-      autocmd!
-      autocmd FileType javascript :call JavaScriptFold()
-    augroup END
-  " }}}
-
   " vimrc {{{
     augroup vim
       autocmd!

@@ -1,19 +1,5 @@
 duckworthd's dotfiles
 =====================
 
-Configuration files and provisioning for OSX and Linux machines in the style
-that duckworthd likes best.
-
-Included software
-=================
-- Alfred: Launch apps quickly
-- Amethyst/xMonad: Never manage window placement by hand
-- Chrome, Dropbox, Evernote: Productiv
-- KeePassX: Managing passwords safely
-
-- ack: > grep
-- autojump: Navigate folders faster
-- emacs, vim: Text editors of the future, today!
-- iPython, numpy, scipy, matplotlib, pandas: SCIENCE!
-- tmux: Manage terminals across ssh. > screen.
-- zsh: > bash
+Configuration files and provisioning for Linux machines in the style that
+duckworthd likes best.
