@@ -79,6 +79,7 @@ def python3_dev(c):
 
 @task
 def requests(c):
+  """Install requests, a Python library for downloading URLs."""
   try:
     import requests
     return
@@ -107,7 +108,7 @@ def fzf(c):
 
 @task(git_init_submodules, core.dotfiles, cmake, python3_dev)
 def neovim(c):
-  "Install vim, a text editor."
+  "Install neovim, a text editor."
   if utils.command_exists(c, 'nvim'):
     return
 
