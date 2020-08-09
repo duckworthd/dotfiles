@@ -28,7 +28,7 @@ function install_invoke_if_missing() {
 
   if [[ ${IS_INVOKE_AVAILABLE} -eq 1 ]]; then
     if [[ "${PLATFORM}" == "Linux" ]]; then
-      python3 -m pip install 'invoke'
+      python3 -m pip install 'invoke' 'setuptools'
     else
       echo "Unrecognized OS: ${PLATFORM}. Please install invoke manually."
       exit 1
