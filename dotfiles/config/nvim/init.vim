@@ -7,9 +7,8 @@
   endif
 
   " Download vim-plug if necessary.
-  if empty(glob("$HOME/.config/nvim/site/autoload/plug.vim"))
-    execute '!mkdir -p ~/.config/nvim/site/autoload'
-    execute '!curl -fLo ~/.config/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  if empty(glob("$HOME/.local/share/nvim/site/autoload/plug.vim"))
+    execute '!curl -fLo $HOME/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
   endif
 
   " Load everything in ~/.vim/bundle.
