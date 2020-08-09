@@ -6,6 +6,12 @@ from provisioning import core
 from provisioning import utils
 
 
+ZSH_APPEND_TO_ZSHRC = """
+
+export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
+"""
+
+
 @task(core.dotfiles)
 def ag(c):
   "Install ag, an improved grep."
@@ -157,4 +163,7 @@ def zsh(c):
     return
   utils.apt_install(c, "zsh")
   utils.print_run(c, 'sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"')
+  with open(os.path.expanduser("~/.zshrc"), "a") as zshrc:
+    zshrc.write(ZSH_APPEND_TO_ZSHRC)
   utils.print_run(c, "chsh -s $(which zsh)")
+
