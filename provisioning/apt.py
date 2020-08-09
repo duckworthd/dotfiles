@@ -53,19 +53,10 @@ def keepass2(c):
 
 @task
 def maestral(c):
-  """Install Keepass2, a password storage app."""
-  if os.path.exists(os.path.expanduser('~/.local/bin/maestral')):
-    return
-  utils.pip_install(c, "maestral[gui]")
-  utils.print_run(c, "~/.local/bin/maestral autostart --yes", hide="out")
-
-
-@task
-def maestral(c):
   """Install maestral, an open source Dropbox client."""
   if os.path.exists(os.path.expanduser('~/.local/bin/maestral')):
     return
-  utils.pip_install(c, "maestral[gui]")
+  utils.pip_install(c, "maestral")  # TODO(duckworthd): Re-enable maestral[gui] when "pip3 install PyQT5" works again.
   utils.print_run(c, "~/.local/bin/maestral autostart --yes", hide="out")
 
 
@@ -166,4 +157,4 @@ def zsh(c):
     return
   utils.apt_install(c, "zsh")
   utils.print_run(c, 'sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"')
-  utils.print_run(ctx, "chsh -s $(which zsh)")
+  utils.print_run(c, "chsh -s $(which zsh)")
