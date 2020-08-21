@@ -160,7 +160,7 @@ def zsh(c):
 
 
 @task(zsh)
-def ohmyzsh(c):
+def oh_my_zsh(c):
   """Installs oh-my-zsh, an extension suite for ZSH."""
   destination = os.path.expanduser("~/.oh-my-zsh")
   if os.path.exists(destination):
@@ -168,11 +168,21 @@ def ohmyzsh(c):
   utils.print_run(c, 'sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"')
 
 
-@task(ohmyzsh, git)
+@task(oh_my_zsh, git)
 def powerlevel10k(c):
   """Installs powerlevel10k, a theme for oh-my-zsh."""
   source = "https://github.com/romkatv/powerlevel10k.git"
   destination = os.path.expanduser("~/.oh-my-zsh/custom/themes/powerlevel10k")
+  if os.path.exists(destination):
+    return
+  utils.print_run(c, f"git clone --depth=1 {source} {destination}", hide="out")
+
+
+@task(oh_my_zsh, git)
+def zsh_syntax_highlighting(c):
+  """Installs zsh-syntax-highlighting, an extension for oh-my-zsh."""
+  source = "https://github.com/zsh-users/zsh-syntax-highlighting.git"
+  destination = os.path.expanduser("~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting")
   if os.path.exists(destination):
     return
   utils.print_run(c, f"git clone --depth=1 {source} {destination}", hide="out")
