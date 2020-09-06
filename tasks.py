@@ -14,6 +14,7 @@ from provisioning.core import *
   apt.htop,
   apt.keepass2,
   apt.maestral,
+  apt.meld,
   apt.neovim,
   apt.oh_my_zsh,
   apt.powerlevel10k,

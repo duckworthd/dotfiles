@@ -186,3 +186,10 @@ def zsh_syntax_highlighting(c):
   if os.path.exists(destination):
     return
   utils.print_run(c, f"git clone --depth=1 {source} {destination}", hide="out")
+
+@task
+def meld(c):
+  """Installs meld, a 3-way merge tool."""
+  if utils.command_exists(c, 'meld'):
+    return
+  utils.apt_install(c, "meld")
