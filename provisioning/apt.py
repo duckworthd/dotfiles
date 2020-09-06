@@ -103,7 +103,7 @@ def neovim(c):
   if utils.command_exists(c, 'nvim'):
     return
 
-  utils.apt_install(c, "neovim")
+  utils.apt_install(c, ["neovim", "python3-neovim"])
 
   # Install plugins with vim-plug.
   print(colors.OKRED + "Run :PlugInstall the next time you open vim to install plugins." + colors.ENDC)

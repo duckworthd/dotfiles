@@ -8,12 +8,14 @@ from provisioning import colors
 
 
 def is_apt_installed(c, package):
-  return (0 == print_run(c, f'dpkg -l "{package}"', hide="both"))
+  result = print_run(c, f'dpkg -l "{package}"', hide="both")
+  return (0 == result.return_code)
 
 
 def command_exists(c, cmd, args="--version"):
   try:
-    return (0 == print_run(c, f"{cmd} {args}", hide="both").exited)
+    result = print_run(c, f"{cmd} {args}", hide="both")
+    return (0 == result.return_code)
   except invoke.exceptions.Failure:
     return False
 
@@ -29,7 +31,7 @@ def pip_install(c, names, sudo=False):
     runner = sudo_print_run
 
   exit_codes = [
-      runner(c, f'python3 -m pip install "{name}"').exited
+      runner(c, f'python3 -m pip install "{name}"').return_code
       for name in names]
   return all(code == 0 for code in exit_codes)
 
@@ -45,7 +47,8 @@ def platform():
 
 def is_pip_installed(c, package):
   try:
-    return (0 == print_run(c, f'python3 -c "import {package}"', hide="both"))
+    result = print_run(c, f'python3 -c "import {package}"', hide="both")
+    return 0 == result.return_code
   except invoke.exceptions.Failure:
     return False
 
