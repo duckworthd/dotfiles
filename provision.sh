@@ -14,6 +14,7 @@ function install_pip_if_missing() {
   if [[ ${IS_PIP_AVAILABLE} -eq 1 ]]; then
     if [[ "${PLATFORM}" == "Linux" ]]; then
       sudo apt-get --yes install python3-pip
+      python3 -m pip install 'pip' --upgrade
     else
       echo "Unrecognized OS: ${PLATFORM}. Please install pip3 manually."
       exit 1
@@ -28,7 +29,7 @@ function install_invoke_if_missing() {
 
   if [[ ${IS_INVOKE_AVAILABLE} -eq 1 ]]; then
     if [[ "${PLATFORM}" == "Linux" ]]; then
-      python3 -m pip install 'invoke'
+      python3 -m pip install 'invoke' 'setuptools'
     else
       echo "Unrecognized OS: ${PLATFORM}. Please install invoke manually."
       exit 1

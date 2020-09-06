@@ -15,9 +15,12 @@ from provisioning.core import *
   apt.keepass2,
   apt.maestral,
   apt.neovim,
+  apt.oh_my_zsh,
+  apt.powerlevel10k,
   apt.tmux,
   apt.xclip,
   apt.zsh,
+  apt.zsh_syntax_highlighting,
 )
 def all(c):
   "Install all recommended packages."

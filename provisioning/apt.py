@@ -53,19 +53,10 @@ def keepass2(c):
 
 @task
 def maestral(c):
-  """Install Keepass2, a password storage app."""
-  if os.path.exists(os.path.expanduser('~/.local/bin/maestral')):
-    return
-  utils.pip_install(c, "maestral[gui]")
-  utils.print_run(c, "~/.local/bin/maestral autostart --yes", hide="out")
-
-
-@task
-def maestral(c):
   """Install maestral, an open source Dropbox client."""
   if os.path.exists(os.path.expanduser('~/.local/bin/maestral')):
     return
-  utils.pip_install(c, "maestral[gui]")
+  utils.pip_install(c, "maestral")  # TODO(duckworthd): Re-enable maestral[gui] when "pip3 install PyQT5" works again.
   utils.print_run(c, "~/.local/bin/maestral autostart --yes", hide="out")
 
 
@@ -165,5 +156,33 @@ def zsh(c):
   if utils.command_exists(c, 'zsh'):
     return
   utils.apt_install(c, "zsh")
+  utils.print_run(c, "chsh -s $(which zsh)")
+
+
+@task(zsh)
+def oh_my_zsh(c):
+  """Installs oh-my-zsh, an extension suite for ZSH."""
+  destination = os.path.expanduser("~/.oh-my-zsh")
+  if os.path.exists(destination):
+    return
   utils.print_run(c, 'sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"')
-  utils.print_run(ctx, "chsh -s $(which zsh)")
+
+
+@task(oh_my_zsh, git)
+def powerlevel10k(c):
+  """Installs powerlevel10k, a theme for oh-my-zsh."""
+  source = "https://github.com/romkatv/powerlevel10k.git"
+  destination = os.path.expanduser("~/.oh-my-zsh/custom/themes/powerlevel10k")
+  if os.path.exists(destination):
+    return
+  utils.print_run(c, f"git clone --depth=1 {source} {destination}", hide="out")
+
+
+@task(oh_my_zsh, git)
+def zsh_syntax_highlighting(c):
+  """Installs zsh-syntax-highlighting, an extension for oh-my-zsh."""
+  source = "https://github.com/zsh-users/zsh-syntax-highlighting.git"
+  destination = os.path.expanduser("~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting")
+  if os.path.exists(destination):
+    return
+  utils.print_run(c, f"git clone --depth=1 {source} {destination}", hide="out")
