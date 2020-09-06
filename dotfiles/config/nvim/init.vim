@@ -56,7 +56,7 @@
   Plug 'tpope/vim-surround'
 
   " Context-aware completion backend.
-  Plug 'Valloric/YouCompleteMe', { 'do' : './install.py --clang-completer --rust-completer' }
+  Plug 'Valloric/YouCompleteMe', { 'do' : './install.py --clang-completer --rust-completer --go-completer' }
 
   " syntax highlighting for markdown + latex
   Plug 'vim-pandoc/vim-pandoc', { 'for': ['markdown'] }
@@ -471,6 +471,13 @@
     augroup golang
       autocmd!
       autocmd FileType go :setlocal tabstop=4 shiftwidth=4 softtabstop=4 foldnestmax=1
+    augroup END
+  " }}}
+
+  " markdown {{{
+    augroup markdown
+      autocmd!
+      autocmd! BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
     augroup END
   " }}}
 " }}}
