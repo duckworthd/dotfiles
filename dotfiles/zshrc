@@ -143,3 +143,8 @@ fi
 if [[ -f "$HOME/.p10k.zsh" ]]; then
   source ~/.p10k.zsh
 fi
+
+# Use nvim for vim if possible.
+if type nvim &> /dev/null; then
+  alias vim=nvim
+fi
