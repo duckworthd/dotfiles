@@ -112,7 +112,7 @@ fi
 export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 
 # Set default editor.
-export EDITOR=vim
+export EDITOR=nvim
 
 # Enable fzf file completion.
 if [[ -f "$HOME/.fzf.zsh" ]]; then
