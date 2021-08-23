@@ -55,7 +55,7 @@
   Plug 'tpope/vim-surround'
 
   " Context-aware completion backend.
-  Plug 'Valloric/YouCompleteMe', { 'do' : './install.py --clang-completer --rust-completer --go-completer' }
+  Plug 'Valloric/YouCompleteMe', { 'do' : 'python3 ./install.py --all' }
 
   " syntax highlighting for markdown + latex
   Plug 'vim-pandoc/vim-pandoc', { 'for': ['markdown'] }
