@@ -70,7 +70,6 @@ ZSH_THEME="robbyrussell"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   git
-  zsh-syntax-highlighting
 )
 
 if [[ -d "$HOME/.oh-my-zsh/custom/themes/powerlevel10k" ]]; then
@@ -148,3 +147,9 @@ fi
 if type nvim &> /dev/null; then
   alias vim=nvim
 fi
+
+# Anaconda
+if [[ -d "/usr/local/anaconda3/bin" ]]; then
+  export PATH="/usr/local/anaconda3/bin:${PATH}"
+fi
+
