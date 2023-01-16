@@ -123,6 +123,12 @@ if type "setxkbmap" > /dev/null; then
   setxkbmap -option "caps:swapescape"
 fi
 
+# Disable back and forward mouse buttons
+if type "xmodmap" > /dev/null; then
+  # Disable mouse buttons 8-10.
+  xmodmap -e "pointer = 1 2 3 4 5 6 7 0 0 0 0 0 0" &> /dev/null
+fi
+
 # Force 256 color support. If terminal emulator doesn't support 256 colors,
 # you're gonna have a bad time...
 export TERM="xterm-256color"
