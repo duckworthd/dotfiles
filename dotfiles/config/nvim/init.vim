@@ -261,6 +261,10 @@
 
   " Disable Ex mode.
   noremap Q <Nop>
+
+  " Neovim maps Y to y$. This undoes that change.
+  " https://github.com/neovim/neovim/pull/13268
+  nnoremap Y Y
 "}}}
 
 " UI {{{
