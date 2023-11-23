@@ -120,7 +120,7 @@ fi
 
 # Swap caps lock, escape.
 if type "setxkbmap" > /dev/null; then
-  setxkbmap -option "caps:swapescape"
+  setxkbmap -option "caps:escape"
 fi
 
 # Disable back and forward mouse buttons
@@ -159,3 +159,10 @@ if [[ -d "/usr/local/anaconda3/bin" ]]; then
   export PATH="/usr/local/anaconda3/bin:${PATH}"
 fi
 
+# Import pyenv
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+if type "pyenv" > /dev/null; then
+  eval "$(pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
+fi
