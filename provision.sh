@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env bash -i
 #
 # This script uses "invoke", a Python package akin to Ruby's rake, to provision
 # a system with standard apps duckworthd@ uses. If invoke isn't installed, it
@@ -40,4 +40,4 @@ function install_invoke_if_missing() {
 # Execute invoke with command line args.
 install_pip_if_missing
 install_invoke_if_missing
-python3 -m invoke "$@"
+invoke "$@"
