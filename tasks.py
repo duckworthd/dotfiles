@@ -7,8 +7,8 @@ from provisioning.apt import *
 from provisioning.core import *
 
 @task(
-  apt.ag,
   core.dotfiles,
+  apt.ag,
   apt.fzf,
   apt.git,
   apt.htop,
