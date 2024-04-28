@@ -3,8 +3,7 @@ import os
 
 from invoke import task
 
-from provisioning.utils import platform
-from provisioning.utils import print_run
+from . import utils
 
 
 @task
@@ -17,7 +16,7 @@ def dotfiles(ctx):
   HOME = os.environ["HOME"]
 
   def create_symlink(source, target):
-    print_run(ctx, f'ln -s "{source}" "{target}"')
+    utils.print_run(ctx, f'ln -s "{source}" "{target}"')
 
   def recursive_symlink_dotfiles(source, target):
     """Recursively explore directories, creating dirs/files on the way."""
@@ -62,7 +61,7 @@ def oh_my_zsh(c):
   destination = os.path.expanduser("~/.oh-my-zsh")
   if os.path.exists(destination):
     return
-  print_run(c, 'sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"')
+  utils.print_run(c, 'sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"')
 
 
 def powerlevel10k(c):
@@ -71,10 +70,17 @@ def powerlevel10k(c):
   destination = os.path.expanduser("~/.oh-my-zsh/custom/themes/powerlevel10k")
   if os.path.exists(destination):
     return
-  print_run(c, f"git clone --depth=1 {source} {destination}", hide="out")
+  utils.print_run(c, f"git clone --depth=1 {source} {destination}", hide="out")
 
 
 @task
 def git_init_submodules(c):
   """Initialize all git submodules in this repository."""
-  print_run(c, "git submodule update --init --recursive", hide="out")
+  utils.print_run(c, "git submodule update --init --recursive", hide="out")
+
+
+@task
+def homebrew(c):
+  if utils.command_exists(c, 'brew'):
+    return
+  utils.print_run(c, '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"')

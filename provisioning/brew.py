@@ -3,7 +3,6 @@ import functools
 
 from invoke import task
 
-from . import brew
 from . import core
 from . import utils
 
@@ -16,7 +15,7 @@ def _brew_install_task(c, *, package):
 
 def _create_brew_install_task(package, dependencies=None):
   """Creates a new 'brew install <package>' rule."""
-  dependencies = dependencies or []
+  dependencies = [core.homebrew] + (dependencies or [])
   rule = functools.partial(_brew_install_task, package=package)
   rule = task(*dependencies)(rule)
   return rule
@@ -29,7 +28,7 @@ maestral = _create_brew_install_task('maestral')
 python3 = _create_brew_install_task('python3')
 fzf = _create_brew_install_task('fzf')
 neovim = _create_brew_install_task('neovim', [core.dotfiles, core.git_init_submodules])
-neovide = _create_brew_install_task('neovide')
+neovide = _create_brew_install_task('neovide', [core.dotfiles, core.git_init_submodules])
 tmux = _create_brew_install_task('tmux', [core.dotfiles])
 zsh = _create_brew_install_task('zsh', [core.dotfiles, core.git_init_submodules])
 
