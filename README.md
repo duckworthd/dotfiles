@@ -7,17 +7,17 @@ duckworthd likes best.
 To list available packages,
 
 ```bash
-$ ./provision.sh --list
+$ ./run.sh --list
 ```
 
 To install all recommended packages,
 
 ```bash
-$ ./provision.sh all
+$ ./run.sh all
 ```
 
 To install a particular recommended package,
 
 ```bash
-$ ./provision.sh <package name>
+$ ./run.sh <package name>
 ```
