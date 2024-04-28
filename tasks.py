@@ -27,6 +27,8 @@ DEPENDENCIES = {
   'Darwin': (
     core.dotfiles,
     brew.ag,
+    brew.discord,
+    brew.firefox,
     brew.fzf,
     brew.htop,
     brew.keepassxc,

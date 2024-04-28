@@ -25,7 +25,7 @@ def dotfiles(ctx):
       os.unlink(target)
 
     if os.path.exists(target) and os.path.isdir(source) and os.path.islink(target):
-      print(f'Found symlinked dir. Skipping. {target}')
+      print(f'Found symlinked directory. Skipping. {target}')
       # Don't modify symlinked directories.
       return
 
@@ -43,9 +43,10 @@ def dotfiles(ctx):
 
     else:
       if os.path.exists(target):
-        # If file exists, don't replace it.
-        print(f'Found dotfile. Skipping. {target}')
-        pass 
+        if os.path.islink(target):
+          print(f'Found symlinked dotfile. Skipping. {target}')
+        else:
+          print(f'Found original dotfile. Skipping. {target}')
 
       else:
         # If file doesn't exist, create a symlink.
@@ -61,7 +62,10 @@ def oh_my_zsh(c):
   destination = os.path.expanduser("~/.oh-my-zsh")
   if os.path.exists(destination):
     return
-  utils.print_run(c, 'sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"')
+  utils.print_run(
+      c,
+      'sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"'
+  )
 
 
 def powerlevel10k(c):
@@ -83,4 +87,7 @@ def git_init_submodules(c):
 def homebrew(c):
   if utils.command_exists(c, 'brew'):
     return
-  utils.print_run(c, '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"')
+  utils.print_run(
+      c,
+      '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
+  )
