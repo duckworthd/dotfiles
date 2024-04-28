@@ -1,28 +1,45 @@
+import platform
+
 from invoke import task
+
 from provisioning import apt
+from provisioning import brew
 from provisioning import core
-from provisioning import utils
 
-from provisioning.apt import *
-from provisioning.core import *
 
-@task(
-  core.dotfiles,
-  apt.ag,
-  apt.fzf,
-  apt.git,
-  apt.htop,
-  apt.keepass2,
-  apt.maestral,
-  apt.meld,
-  apt.neovim,
-  apt.oh_my_zsh,
-  apt.powerlevel10k,
-  apt.tmux,
-  apt.xclip,
-  apt.zsh,
-  apt.zsh_syntax_highlighting,
-)
+DEPENDENCIES = {
+  'Linux:': (
+    core.dotfiles,
+    apt.ag,
+    apt.fzf,
+    apt.git,
+    apt.htop,
+    apt.keepass2,
+    apt.maestral,
+    apt.meld,
+    apt.neovim,
+    apt.oh_my_zsh,
+    apt.powerlevel10k,
+    apt.tmux,
+    apt.xclip,
+    apt.zsh,
+  ),
+  'Darwin': (
+    core.dotfiles,
+    brew.ag,
+    brew.fzf,
+    brew.htop,
+    brew.keepassxc,
+    brew.maestral,
+    brew.neovim,
+    brew.oh_my_zsh,
+    brew.powerlevel10k,
+    brew.tmux,
+    brew.zsh,
+  )
+}
+
+@task(*DEPENDENCIES[platform.system()])
 def all(c):
-  "Install all recommended packages."
-  pass
+  """Install all dependencies."""
+  print('All done!')

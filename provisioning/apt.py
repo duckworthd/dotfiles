@@ -1,9 +1,11 @@
+"""Install with apt."""
 import os
 
 from invoke import task
-from provisioning import colors
-from provisioning import core
-from provisioning import utils
+
+from . import colors
+from . import core
+from . import utils
 
 
 @task(core.dotfiles)
@@ -28,12 +30,6 @@ def git(c):
   if utils.command_exists(c, 'git'):
     return
   utils.apt_install(c, "git")
-
-
-@task(git)
-def git_init_submodules(c):
-  "Initialize all submodules in this repository."
-  utils.print_run(c, "git submodule update --init --recursive", hide="out")
 
 
 @task
@@ -97,7 +93,7 @@ def fzf(c):
   utils.print_run(c, "~/.fzf/install --all")
 
 
-@task(git_init_submodules, core.dotfiles, cmake, python3_dev)
+@task(core.git_init_submodules, core.dotfiles, cmake, python3_dev)
 def neovim(c):
   "Install neovim, a text editor."
   if utils.command_exists(c, 'nvim'):
@@ -150,7 +146,7 @@ def tmux(c):
   print(colors.OKRED + "Run CTRL+b I the next time you open tmux to install plugins." + colors.ENDC)
 
 
-@task(git_init_submodules, core.dotfiles)
+@task(core.git_init_submodules, core.dotfiles)
 def zsh(c):
   "Install zsh, an alternative to bash."
   if utils.command_exists(c, 'zsh'):
@@ -162,30 +158,14 @@ def zsh(c):
 @task(zsh)
 def oh_my_zsh(c):
   """Installs oh-my-zsh, an extension suite for ZSH."""
-  destination = os.path.expanduser("~/.oh-my-zsh")
-  if os.path.exists(destination):
-    return
-  utils.print_run(c, 'sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"')
+  core.oh_my_zsh(c)
 
 
 @task(oh_my_zsh, git)
 def powerlevel10k(c):
   """Installs powerlevel10k, a theme for oh-my-zsh."""
-  source = "https://github.com/romkatv/powerlevel10k.git"
-  destination = os.path.expanduser("~/.oh-my-zsh/custom/themes/powerlevel10k")
-  if os.path.exists(destination):
-    return
-  utils.print_run(c, f"git clone --depth=1 {source} {destination}", hide="out")
+  core.powerlevel10k(c)
 
-
-@task(oh_my_zsh, git)
-def zsh_syntax_highlighting(c):
-  """Installs zsh-syntax-highlighting, an extension for oh-my-zsh."""
-  source = "https://github.com/zsh-users/zsh-syntax-highlighting.git"
-  destination = os.path.expanduser("~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting")
-  if os.path.exists(destination):
-    return
-  utils.print_run(c, f"git clone --depth=1 {source} {destination}", hide="out")
 
 @task
 def meld(c):

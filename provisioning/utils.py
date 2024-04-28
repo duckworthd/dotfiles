@@ -93,3 +93,28 @@ def chdir(target_dir):
   os.chdir(target_dir)
   yield
   os.chdir(original_dir)
+
+
+def is_brew_installed(c, package):
+  try:
+    result = print_run(c, f'brew list {package}', hide="both")
+    return 0 == result.return_code
+  except invoke.exceptions.Failure:
+    return False
+
+
+def brew_install(c, names):
+  if isinstance(names, str):
+    names = [names]
+
+  if len(names) > 0:
+    cmd = [
+        'brew',
+        'install',
+        strjoin(names),
+    ]
+    cmd = strjoin(cmd)
+
+    return (0 == (print_run(c, cmd, hide="out")).exited)
+  else:
+    return False

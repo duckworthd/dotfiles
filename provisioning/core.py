@@ -1,3 +1,4 @@
+"""Platform-independent tasks."""
 import os
 
 from invoke import task
@@ -55,3 +56,25 @@ def dotfiles(ctx):
     recursive_symlink_dotfiles(
         os.path.join(DOTFILE_ROOT, fname),
         os.path.join(HOME, "." + fname))
+
+def oh_my_zsh(c):
+  """Installs oh-my-zsh, an extension suite for ZSH."""
+  destination = os.path.expanduser("~/.oh-my-zsh")
+  if os.path.exists(destination):
+    return
+  print_run(c, 'sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"')
+
+
+def powerlevel10k(c):
+  """Installs powerlevel10k, a theme for oh-my-zsh."""
+  source = "https://github.com/romkatv/powerlevel10k.git"
+  destination = os.path.expanduser("~/.oh-my-zsh/custom/themes/powerlevel10k")
+  if os.path.exists(destination):
+    return
+  print_run(c, f"git clone --depth=1 {source} {destination}", hide="out")
+
+
+@task
+def git_init_submodules(c):
+  """Initialize all git submodules in this repository."""
+  print_run(c, "git submodule update --init --recursive", hide="out")
