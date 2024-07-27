@@ -19,7 +19,9 @@ def _brew_install_task(c, *, package, message=None):
 def _create_brew_install_task(package, dependencies=None, message=None):
   """Creates a new 'brew install <package>' rule."""
   dependencies = [core.homebrew] + (dependencies or [])
-  rule = functools.partial(_brew_install_task, package=package, message=message)
+  rule = functools.partial(_brew_install_task,
+                           package=package,
+                           message=message)
   rule = task(*dependencies)(rule)
   return rule
 
@@ -32,9 +34,7 @@ htop = _create_brew_install_task('htop')
 keepassxc = _create_brew_install_task('keepassxc')
 maestral = _create_brew_install_task('maestral')
 neovide = _create_brew_install_task(
-    'neovide',
-    dependencies=[core.dotfiles, core.git_init_submodules],
-)
+    'neovide', dependencies=[core.dotfiles, core.git_init_submodules])
 neovim = _create_brew_install_task(
     'neovim',
     dependencies=[core.dotfiles, core.git_init_submodules],
@@ -43,7 +43,10 @@ python3 = _create_brew_install_task('python3')
 tmux = _create_brew_install_task(
     'tmux', [core.dotfiles],
     message='Run CTRL+b I the next time you open tmux to install plugins.')
-zsh = _create_brew_install_task('zsh', [core.dotfiles, core.git_init_submodules])
+vlc = _create_brew_install_task('vlc')
+zsh = _create_brew_install_task('zsh',
+                                [core.dotfiles, core.git_init_submodules])
+
 
 @task(zsh)
 def oh_my_zsh(c):

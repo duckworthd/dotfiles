@@ -87,7 +87,6 @@ def fzf(c):
   """Install fzf, a fuzzy file finder."""
   if utils.command_exists(c, "fzf"):
     return
-
   if not os.path.exists(os.path.expanduser("~/.fzf")):
     utils.print_run(c, "git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf")
   utils.print_run(c, "~/.fzf/install --all")
@@ -98,7 +97,6 @@ def neovim(c):
   "Install neovim, a text editor."
   if utils.command_exists(c, 'nvim'):
     return
-
   utils.apt_install(c, ["neovim", "python3-neovim"])
 
   # Install plugins with vim-plug.

@@ -37,6 +37,7 @@ DEPENDENCIES = {
     brew.oh_my_zsh,
     brew.powerlevel10k,
     brew.tmux,
+    brew.vlc,
     brew.zsh,
   )
 }
