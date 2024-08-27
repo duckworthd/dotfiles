@@ -108,6 +108,13 @@ fi
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+# Enable homebrew if possible
+
+if [[ -d "/opt/homebrew/bin" ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
+
 # Include local /bin directories.
 export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 
