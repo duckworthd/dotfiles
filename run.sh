@@ -1,4 +1,4 @@
-#!/usr/bin/env bash -i
+#!/usr/bin/env bash
 #
 # This script uses "invoke", a Python package akin to Ruby's rake, to provision
 # a system with standard apps duckworthd@ uses. If invoke isn't installed, it
