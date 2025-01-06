@@ -8,7 +8,7 @@ from provisioning import core
 
 
 DEPENDENCIES = {
-  'Linux:': (
+  'Linux': (
     core.dotfiles,
     apt.ag,
     apt.fzf,
@@ -41,6 +41,10 @@ DEPENDENCIES = {
     brew.zsh,
   )
 }
+
+if platform.system() not in DEPENDENCIES:
+  raise NotImplementedError(f"Unrecognized platform: {platform.system()}")
+
 
 @task(*DEPENDENCIES[platform.system()])
 def all(c):

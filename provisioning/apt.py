@@ -106,6 +106,8 @@ def neovim(c):
 @task(requests)
 def tmux(c):
   """Install tmux, a terminal multiplexer, from source."""
+  TMUX_VERSION = "3.5a"
+
   if os.path.exists(os.path.expanduser("~/bin/tmux")):
     return
 
@@ -122,7 +124,7 @@ def tmux(c):
 
   # Downlaod tarball.
   response = requests.get(
-      "https://github.com/tmux/tmux/releases/download/3.1b/tmux-3.1b.tar.gz")
+      f"https://github.com/tmux/tmux/releases/download/{TMUX_VERSION}/tmux-{TMUX_VERSION}.tar.gz")
   tar_path = "/tmp/tmux.tar.gz"
   with open(tar_path, "wb") as tarfile:
     tarfile.write(response.content)
@@ -130,7 +132,7 @@ def tmux(c):
   # Extract its contents.
   utils.print_run(c, f"tar -zxf {tar_path} --directory /tmp", hide="out")
 
-  with utils.chdir("/tmp/tmux-3.1b"):
+  with utils.chdir(f"/tmp/tmux-{TMUX_VERSION}"):
     # Build it.
     utils.print_run(c, "./configure --enable-static", hide="out")
     utils.print_run(c, "make", hide="out")
