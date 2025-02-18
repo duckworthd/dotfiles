@@ -54,9 +54,6 @@
   " delete surrounding parentheses, etc
   Plug 'tpope/vim-surround'
 
-  " Context-aware completion backend.
-  Plug 'Valloric/YouCompleteMe', { 'do' : 'python3 ./install.py --all' }
-
   " syntax highlighting for markdown + latex
   Plug 'vim-pandoc/vim-pandoc', { 'for': ['markdown'] }
   Plug 'vim-pandoc/vim-pandoc-syntax', { 'for': ['markdown'] }
@@ -395,32 +392,6 @@
 
   " vim-pandoc {{{
     let g:pandoc#syntax#conceal#use = 0   " disable replacing raw text with pretty versions
-  " }}}
-
-  " YouCompleteMe {{{
-    " Jump to definition.
-    " C-o: Jump back.
-    " C-i: Jump forward.
-    nnoremap <Leader>yd :YcmCompleter GoTo<CR>
-
-    " Show references in quickfix list.
-    nnoremap <Leader>yr :YcmCompleter GoToReferences<CR>
-
-    " A large number, effectively disabling YCM by default.
-    let g:ycm_min_num_of_chars_for_completion = 100000
-
-    " Don't let YCM disable Syntastic
-    let g:ycm_show_diagnostics_ui = 0
-
-    " Only enable YCM for specific languages.
-    let ycm_enabled = 3
-    augroup ycm
-      autocmd!
-      autocmd FileType cpp        let g:ycm_min_num_of_chars_for_completion = ycm_enabled
-      autocmd FileType javascript let g:ycm_min_num_of_chars_for_completion = ycm_enabled
-      autocmd FileType python     let g:ycm_min_num_of_chars_for_completion = ycm_enabled
-      autocmd FileType vim        let g:ycm_min_num_of_chars_for_completion = ycm_enabled
-    augroup END
   " }}}
 
   " vim-poweryank{{{
