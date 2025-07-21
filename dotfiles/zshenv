@@ -1,0 +1,6 @@
+
+# Import local machine's .zshrc if available.
+if [[ -f "$HOME/.zshenv-local" ]]; then
+  source "$HOME/.zshenv-local"
+fi
+
