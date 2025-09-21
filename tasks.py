@@ -14,7 +14,7 @@ DEPENDENCIES = {
     apt.fzf,
     apt.git,
     apt.htop,
-    apt.keepass2,
+    apt.keepassx,
     apt.maestral,
     apt.meld,
     apt.neovim,

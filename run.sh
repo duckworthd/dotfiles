@@ -8,13 +8,12 @@ PLATFORM=$(uname)
 
 # Installs pip globally if it's not available.
 function install_pip_if_missing() {
-  hash pip3 2>/dev/null
+  hash pipx 2>/dev/null
   IS_PIP_AVAILABLE=$?
 
   if [[ ${IS_PIP_AVAILABLE} -eq 1 ]]; then
     if [[ "${PLATFORM}" == "Linux" ]]; then
-      sudo apt-get --yes install python3-pip
-      python3 -m pip install 'pip' --upgrade
+      sudo apt-get --yes install pipx python3-setuptools
     else
       echo "Unrecognized OS: ${PLATFORM}. Please install pip3 manually."
       exit 1
@@ -29,7 +28,7 @@ function install_invoke_if_missing() {
 
   if [[ ${IS_INVOKE_AVAILABLE} -eq 1 ]]; then
     if [[ "${PLATFORM}" == "Linux" ]]; then
-      python3 -m pip install 'invoke' 'setuptools'
+      pipx install 'invoke'
     else
       echo "Unrecognized OS: ${PLATFORM}. Please install invoke manually."
       exit 1
@@ -40,4 +39,4 @@ function install_invoke_if_missing() {
 # Execute invoke with command line args.
 install_pip_if_missing
 install_invoke_if_missing
-invoke "$@"
+~/.local/bin/invoke "$@"

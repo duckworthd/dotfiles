@@ -36,9 +36,6 @@
   Plug 'junegunn/fzf'
   Plug 'junegunn/fzf.vim'
 
-  " async syntax checking
-  Plug 'w0rp/ale'
-
   " Better C++ syntax highlighting
   Plug 'octol/vim-cpp-enhanced-highlight'
 
@@ -64,6 +61,9 @@
 
   " Copy to clipboard using OSC52.
   Plug 'haya14busa/vim-poweryank'
+
+  " Show syntax errorS
+  Plug 'dense-analysis/ale'
 
   call plug#end()
 " }}}

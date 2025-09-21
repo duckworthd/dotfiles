@@ -36,6 +36,17 @@ def pip_install(c, names, sudo=False):
   return all(code == 0 for code in exit_codes)
 
 
+def pipx_inject(c, names):
+  if isinstance(names, str):
+    names = [names]
+
+  exit_codes = [
+      print_run(c, f'pipx inject "invoke" "{name}"').return_code
+      for name in names
+  ]
+  return all(code == 0 for code in exit_codes)
+
+
 def pip_installed(c):
   installed = print_run(c, "python3 -m pip freeze", hide='both').stdout.strip().split("\n")
   return [p.split("==")[0] for p in installed]

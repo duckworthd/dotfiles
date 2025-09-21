@@ -1,7 +1,8 @@
 """Install with apt."""
 import os
+import re
 
-from invoke import task
+from invoke import call, task
 
 from . import colors
 from . import core
@@ -41,11 +42,12 @@ def htop(c):
 
 
 @task
-def keepass2(c):
-  """Install Keepass2, a password storage app."""
-  if utils.command_exists(c, 'keepass2'):
+def keepassx(c):
+  """Install keepassx, a password storage app."""
+  if utils.is_apt_installed(c, 'keepassx'):
     return
-  utils.apt_install(c, "keepass2")
+  utils.apt_install(c, "keepassx")
+
 
 @task
 def maestral(c):
@@ -65,13 +67,18 @@ def python3_dev(c):
 
 
 @task
-def requests(c):
+def requests(c, method="apt"):
   """Install requests, a Python library for downloading URLs."""
   try:
     import requests
     return
   except ImportError:
-    utils.pip_install(c, "requests")
+    if method == "apt":
+      utils.apt_install(c, "python3-requests")
+    elif method == "pipx":
+      utils.pipx_inject(c, "requests")
+    else:
+      raise NotImplementedError(method)
 
 
 @task
@@ -103,11 +110,9 @@ def neovim(c):
   print(colors.OKRED + "Run :PlugInstall the next time you open vim to install plugins." + colors.ENDC)
 
 
-@task(requests)
+@task(pre=[call(requests, method="pipx")])
 def tmux(c):
   """Install tmux, a terminal multiplexer, from source."""
-  TMUX_VERSION = "3.5a"
-
   if os.path.exists(os.path.expanduser("~/bin/tmux")):
     return
 
@@ -122,9 +127,20 @@ def tmux(c):
       "pkg-config",
   ])
 
+  # Discover latest TMUX version
+  response = requests.get("https://api.github.com/repos/tmux/tmux/releases/latest")
+  response.raise_for_status()
+  response = response.json()
+  assets = response.get("assets", [])
+  assets = [a for a in assets if re.search("^tmux-(.*)[.]tar[.]gz$", a["name"]) is not None]
+  if len(assets) != 1:
+    raise ValueError(f"Expected to find exactly one *.tar.gz file. Found: {assets}")
+  tmux_version = re.search("^tmux-(.*)[.]tar[.]gz$", assets[0]["name"]).group(1)
+  tar_gz_url = assets[0]["browser_download_url"]
+  print(colors.OKRED + f"Discovered tmux version {tmux_version}" + colors.ENDC)
+
   # Downlaod tarball.
-  response = requests.get(
-      f"https://github.com/tmux/tmux/releases/download/{TMUX_VERSION}/tmux-{TMUX_VERSION}.tar.gz")
+  response = requests.get(tar_gz_url)
   tar_path = "/tmp/tmux.tar.gz"
   with open(tar_path, "wb") as tarfile:
     tarfile.write(response.content)
@@ -132,7 +148,7 @@ def tmux(c):
   # Extract its contents.
   utils.print_run(c, f"tar -zxf {tar_path} --directory /tmp", hide="out")
 
-  with utils.chdir(f"/tmp/tmux-{TMUX_VERSION}"):
+  with utils.chdir(f"/tmp/tmux-{tmux_version}"):
     # Build it.
     utils.print_run(c, "./configure --enable-static", hide="out")
     utils.print_run(c, "make", hide="out")
