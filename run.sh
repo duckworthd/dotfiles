@@ -28,7 +28,7 @@ function install_invoke_if_missing() {
 
   if [[ ${IS_INVOKE_AVAILABLE} -eq 1 ]]; then
     if [[ "${PLATFORM}" == "Linux" ]]; then
-      pipx install 'invoke'
+      pipx install 'invoke' --force
     else
       echo "Unrecognized OS: ${PLATFORM}. Please install invoke manually."
       exit 1

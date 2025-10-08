@@ -66,7 +66,7 @@ def is_pip_installed(c, package):
 
 def print_run(c, cmd, *args, **kwargs):
   print(colors.OKBLUE + "$ {}".format(cmd) + colors.ENDC)
-  return c.run(cmd, *args, **kwargs)
+  return c.run(cmd, *args, **kwargs, warn=True)
 
 
 def sudo_print_run(c, cmd, *args, **kwargs):
