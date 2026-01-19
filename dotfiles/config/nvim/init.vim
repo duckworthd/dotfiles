@@ -388,6 +388,7 @@
 
   " vim-airline {{{
     let g:airline_theme="molokai"  " Status bar theme.
+    let g:airline#extensions#whitespace#symbol = '!'  " See https://github.com/vim-airline/vim-airline/issues/2704#issuecomment-2585373253
   " }}}
 
   " vim-pandoc {{{
