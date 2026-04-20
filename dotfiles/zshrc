@@ -116,8 +116,15 @@ if [[ -f "$HOME/.fzf.zsh" ]]; then
 fi
 
 # Swap caps lock, escape.
-if type "setxkbmap" > /dev/null; then
-  setxkbmap -option "caps:escape"
+# Check if we are on Wayland
+if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
+  if [ "$XDG_CURRENT_DESKTOP" = "GNOME" ] || [ "$XDG_CURRENT_DESKTOP" = "ubuntu:GNOME" ]; then
+    gsettings set org.gnome.desktop.input-sources xkb-options "['caps:escape']"
+  fi
+else
+  if type "setxkbmap" > /dev/null; then
+    setxkbmap -option "caps:escape"
+  fi
 fi
 
 # Disable back and forward mouse buttons
@@ -155,6 +162,11 @@ fi
 local CUDA_BIN=/usr/local/cuda/bin
 if [[ -d "${CUDA_BIN}" ]]; then
   PATH="${CUDA_BIN}:${PATH}"
+fi
+
+# Force bash scripts to import ~/.bashrc
+if [[ -f "${HOME}/.bashrc" ]]; then
+  export BASH_ENV="${HOME}/.bashrc"
 fi
 
 # >>> conda initialize >>>
