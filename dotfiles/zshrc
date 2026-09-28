@@ -115,6 +115,7 @@ export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 
 # Check if "nvim" is in associative array $commands. If so, set default editor.
 if (( $+commands[nvim] )); then
+  alias vim=nvim
   export EDITOR=nvim
 fi
 
@@ -123,20 +124,17 @@ if [[ -f "$HOME/.fzf.zsh" ]]; then
   source ~/.fzf.zsh
 fi
 
-# Swap caps lock, escape.
-# Check if we are on Wayland
-if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
-  if [ "$XDG_CURRENT_DESKTOP" = "GNOME" ] || [ "$XDG_CURRENT_DESKTOP" = "ubuntu:GNOME" ]; then
-    gsettings set org.gnome.desktop.input-sources xkb-options "['caps:escape']"
-  fi
-else
-  if type "setxkbmap" > /dev/null; then
-    setxkbmap -option "caps:escape"
-  fi
+# Swap caps lock <> escape.
+if [[ "$XDG_SESSION_TYPE" == "wayland" && "$XDG_CURRENT_DESKTOP" == *GNOME* ]]; then
+  # Wayland + Gnome
+  gsettings set org.gnome.desktop.input-sources xkb-options "['caps:escape']"
+elif [[ "$XDG_SESSION_TYPE" == "x11" && -n "$DISPLAY" && (( $+commands[setxkbmap] )) ]]; then
+  # X11 + Gnome
+  setxkbmap -option "caps:escape"
 fi
 
 # Disable back and forward mouse buttons
-if type "xmodmap" > /dev/null; then
+if (( $+commands[xmodmap] )); then
   # Disable mouse buttons 8-10.
   xmodmap -e "pointer = 1 2 3 4 5 6 7 0 0 0 0 0 0" &> /dev/null
 fi
@@ -146,7 +144,7 @@ fi
 # export TERM="xterm-256color"
 
 # Disable right click on clickpad.
-if type synclient > /dev/null; then
+if (( $+commands[synclient] )); then
   synclient RightButtonAreaLeft=0 2> /dev/null
   synclient RightButtonAreaTop=0 2> /dev/null
 fi
@@ -159,11 +157,6 @@ fi
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 if [[ -f "$HOME/.p10k.zsh" ]]; then
   source ~/.p10k.zsh
-fi
-
-# Use nvim for vim if possible.
-if type nvim &> /dev/null; then
-  alias vim=nvim
 fi
 
 # Add CUDA to PATH.
